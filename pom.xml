@@ -25,6 +25,7 @@
 
     <modules>
         <module>rdd-service-registry</module>
+        <module>rdd-spike</module>
     </modules>
 
     <dependencyManagement>

@@ -1,7 +1,5 @@
 server:
   port: 8881
-  servlet:
-    context-path: /service-registry
 
 spring:
   application:
@@ -14,6 +12,6 @@ eureka:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/service-registy
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
     server:
       waitTimeInMsWhenSyncEmpty: 0
