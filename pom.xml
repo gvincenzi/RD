@@ -23,7 +23,9 @@
         <swagger.version>2.9.2</swagger.version>
     </properties>
 
-    <modules></modules>
+    <modules>
+        <module>rdd-service-registry</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
