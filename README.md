@@ -17,6 +17,4 @@ Le tecnologie e i framework utilizzati in questo progetto sono principalmente:
 - Swagger
 
 ## Build Information
-**Travis Ci page** : [Click here to view build history](https://travis-ci.org/gvincenzi/rdd)
-
-**Last build** : <img src="https://travis-ci.org/gvincenzi/rdd.svg?branch=master" alt="last build satus">
+![example workflow](https://github.com/gvincenzi/RDD/actions/workflows/maven.yml/badge.svg)
