@@ -1,0 +1,4 @@
+info:
+  name: RDD - Registro Digitale Ditribuito - Dispositivo di Distribuzione - Molecola (Test)
+  artifact: '@project.artifactId@'
+  version: '@project.version@'
