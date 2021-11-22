@@ -21,11 +21,14 @@
         <java.version>11</java.version>
         <spring-cloud.version>Greenwich.SR4</spring-cloud.version>
         <swagger.version>2.9.2</swagger.version>
+        <lombok.version>1.18.16</lombok.version>
+        <jackson.version>2.13.0</jackson.version>
     </properties>
 
     <modules>
         <module>rdd-service-registry</module>
         <module>rdd-spike</module>
+        <module>rdd-distribution-domain</module>
     </modules>
 
     <dependencyManagement>
