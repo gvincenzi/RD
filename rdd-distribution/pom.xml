@@ -11,8 +11,8 @@
 
     <packaging>jar</packaging>
     <groupId>org.rdd</groupId>
-    <artifactId>rdd-distribuzione-dominio</artifactId>
-    <description>RDD - Registro Digitale Ditribuito - Dispositivo di Distribuzione - Atomo di Dominio</description>
+    <artifactId>rdd-distribution</artifactId>
+    <description>RDD - Registro Digitale Ditribuito - Dispositivo di Distribuzione - Molecola</description>
 
     <dependencies>
         <dependency>
@@ -26,6 +26,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

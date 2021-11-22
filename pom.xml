@@ -28,7 +28,7 @@
     <modules>
         <module>rdd-service-registry</module>
         <module>rdd-spike</module>
-        <module>rdd-distribution-domain</module>
+        <module>rdd-distribution</module>
     </modules>
 
     <dependencyManagement>

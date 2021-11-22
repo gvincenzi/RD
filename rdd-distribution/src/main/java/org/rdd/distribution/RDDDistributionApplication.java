@@ -1,4 +1,4 @@
-package org.rdd.distribution.domain;
+package org.rdd.distribution;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

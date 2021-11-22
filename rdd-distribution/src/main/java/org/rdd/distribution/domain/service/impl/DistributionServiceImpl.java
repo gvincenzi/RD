@@ -2,7 +2,7 @@ package org.rdd.distribution.domain.service.impl;
 
 import org.rdd.distribution.domain.entity.Entry;
 import org.rdd.distribution.domain.entity.EntryProposition;
-import org.rdd.distribution.domain.service.DeliveryValenceService;
+import org.rdd.distribution.domain.service.valence.DeliveryValenceService;
 import org.rdd.distribution.domain.service.DistributionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

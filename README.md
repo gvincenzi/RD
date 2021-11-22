@@ -33,9 +33,11 @@ Il Sistema di accesso qualificato si compone di due moduli:
 
 ### Dispositivo di distribuzione
 Questa molecola rappresenta il dispositivo che ha il compito di raccogliere le richieste dall'esterno della macromolecola e di smistarle verso l'interno.
-La molecola si compone di due atomi:
+La molecola si compone di due atomi e uno spike:
+- Lo spike della molecola (che si realizza tramite lo sviluppo di un'API REST di accesso al modulo)
 - L'atomo di Dominio, Domain atom (Do)
 - L'atomo di distribuzione, Delivery atom (De)
 
 ![Interazioni con l'esterno del dispositivo di distribuzione](src/main/resources/img/distribution_schema.png?raw=true)
 
+[Qui l'implementazione della molecola di distribuzione](https://github.com/gvincenzi/RDD/tree/master/rdd-distribution).

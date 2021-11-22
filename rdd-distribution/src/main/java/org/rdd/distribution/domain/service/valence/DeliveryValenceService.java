@@ -1,4 +1,4 @@
-package org.rdd.distribution.domain.service;
+package org.rdd.distribution.domain.service.valence;
 
 import org.rdd.distribution.domain.entity.Entry;
 import org.rdd.distribution.domain.entity.EntryProposition;
