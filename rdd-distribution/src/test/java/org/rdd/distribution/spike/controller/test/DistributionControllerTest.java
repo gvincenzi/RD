@@ -1,0 +1,108 @@
+package org.rdd.distribution.spike.controller.test;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.extern.java.Log;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.rdd.distribution.binding.message.DistributionEventType;
+import org.rdd.distribution.domain.entity.Document;
+import org.rdd.distribution.domain.entity.EntryProposition;
+import org.rdd.distribution.domain.entity.Participant;
+import org.rdd.distribution.domain.service.DistributionService;
+import org.rdd.distribution.spike.controller.DistributionController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@Log
+@RunWith(SpringRunner.class)
+@WebMvcTest(DistributionController.class)
+@ActiveProfiles("test")
+public class DistributionControllerTest {
+    private static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
+    @Autowired
+    private MockMvc mvc;
+
+    @MockBean
+    DistributionService distributionService;
+
+    protected static Document getNewDocument(String json) throws JsonProcessingException {
+        log.info(json);
+        Document document = mapper.readValue(json, Document.class);
+        log.info(mapper.writeValueAsString(document));
+
+        return document;
+    }
+
+    private EntryProposition getEntryProposition() throws JsonProcessingException {
+        EntryProposition entryProposition = new EntryProposition();
+        String json = "{\"title\":\"Test document\",\"countryName\":\"Italy\","
+                + "\"countryPopulation\":60591668,\"male\":29665645,\"female\":30921362}";
+        entryProposition.setDocument(getNewDocument(json));
+        Participant owner = new Participant();
+        owner.setMail("test@test.com");
+        entryProposition.setOwner(owner);
+        return entryProposition;
+    }
+
+    @WithMockUser(value = "test")
+    @Test
+    public void entryOk() throws Exception {
+        EntryProposition entryProposition = getEntryProposition();
+
+        Mockito.when(distributionService.addNewEntry(entryProposition)).thenReturn(Boolean.TRUE);
+        mvc.perform(post("/entry")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(entryProposition)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @WithMockUser(value = "test")
+    @Test
+    public void entryKo() throws Exception {
+        EntryProposition entryProposition = getEntryProposition();
+
+        Mockito.when(distributionService.addNewEntry(entryProposition)).thenReturn(Boolean.FALSE);
+        mvc.perform(post("/entry")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(entryProposition)))
+                .andDo(print())
+                .andExpect(status().isNotAcceptable())
+                .andReturn();
+    }
+
+    @WithAnonymousUser
+    @Test
+    public void entryNoUser() throws Exception {
+        EntryProposition entryProposition = getEntryProposition();
+
+        Mockito.when(distributionService.addNewEntry(entryProposition)).thenReturn(Boolean.FALSE);
+        mvc.perform(post("/entry")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(entryProposition)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+    }
+}

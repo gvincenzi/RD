@@ -1,5 +1,5 @@
 info:
-  name: RDD - Registro Digitale Ditribuito - Dispositivo di Distribuzione - Molecola (Test)
+  name: RDD - Dispositivo di Distribuzione - Molecola (Test)
   artifact: '@project.artifactId@'
   version: '@project.version@'
 
@@ -18,3 +18,7 @@ spring:
           entryPropositionChannel:
             producer:
               routingKeyExpression: "'rddEntryPropositionChannel'"
+
+rdd:
+  username: test
+  password: test
