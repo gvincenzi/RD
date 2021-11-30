@@ -6,7 +6,7 @@ import org.rdd.distribution.domain.entity.EntryProposition;
 import java.util.Set;
 
 public interface DistributionService {
-    Entry addNewEntry(EntryProposition entryProposition);
+    Boolean addNewEntry(EntryProposition entryProposition);
     Set<Entry> getListOfAllExistingEntries();
     Boolean verifyRegistryIntegrity();
 }

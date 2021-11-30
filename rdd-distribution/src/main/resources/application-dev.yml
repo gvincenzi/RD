@@ -11,6 +11,18 @@ server:
 spring:
   application:
     name: rdd-distribution
+  rabbitmq:
+    addresses: amqps://server
+  cloud:
+    stream:
+      bindings:
+        entryPropositionChannel:
+          destination: rdd.topic
+      rabbit:
+        bindings:
+          entryPropositionChannel:
+            producer:
+              routingKeyExpression: "'rddEntryPropositionChannel'"
 
 eureka:
   instance:

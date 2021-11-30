@@ -2,3 +2,19 @@ info:
   name: RDD - Registro Digitale Ditribuito - Dispositivo di Distribuzione - Molecola (Test)
   artifact: '@project.artifactId@'
   version: '@project.version@'
+
+spring:
+  application:
+    name: rdd-distribution
+  rabbitmq:
+    addresses: amqp://server
+  cloud:
+    stream:
+      bindings:
+        entryPropositionChannel:
+          destination: rdd.test.topic
+      rabbit:
+        bindings:
+          entryPropositionChannel:
+            producer:
+              routingKeyExpression: "'rddEntryPropositionChannel'"

@@ -15,7 +15,7 @@ public class DistributionServiceImpl implements DistributionService {
     DeliveryValenceService deliveryValenceService;
 
     @Override
-    public Entry addNewEntry(EntryProposition entryProposition) {
+    public Boolean addNewEntry(EntryProposition entryProposition) {
         return deliveryValenceService.addNewEntry(entryProposition);
     }
 

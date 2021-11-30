@@ -1,4 +1,4 @@
-package org.rdd.distribution.domain.service.test;
+package org.rdd.distribution.delivery.service.valence.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,14 +7,18 @@ import lombok.extern.java.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.rdd.distribution.binding.message.DistributionEventType;
+import org.rdd.distribution.binding.message.DistributionMessage;
+import org.rdd.distribution.delivery.service.EventService;
 import org.rdd.distribution.domain.entity.Document;
 import org.rdd.distribution.domain.entity.EntryProposition;
 import org.rdd.distribution.domain.entity.Participant;
-import org.rdd.distribution.domain.service.DistributionService;
-import org.rdd.distribution.domain.service.valence.DeliveryValenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.AssertionErrors;
@@ -23,14 +27,14 @@ import org.springframework.test.util.AssertionErrors;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class DistributionServiceTest {
+public class EventServiceTest {
     private static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Autowired
-    DistributionService distributionService;
+    EventService eventService;
 
     @MockBean
-    DeliveryValenceService deliveryValenceService;
+    MessageChannel entryPropositionChannel;
 
     protected static Document getNewDocument(String json) throws JsonProcessingException {
         log.info(json);
@@ -54,9 +58,12 @@ public class DistributionServiceTest {
     @Test
     public void addNewEntry() throws JsonProcessingException {
         EntryProposition entryProposition = getEntryProposition();
-        Mockito.when(deliveryValenceService.addNewEntry(entryProposition)).thenReturn(Boolean.TRUE);
+        DistributionMessage distributionMessage = new DistributionMessage();
+        distributionMessage.setEntryProposition(entryProposition);
+        Message<DistributionMessage> msg = MessageBuilder.withPayload(distributionMessage).build();
+        Mockito.when(entryPropositionChannel.send(Mockito.any(Message.class))).thenReturn(Boolean.TRUE);
 
-        Boolean proposed = distributionService.addNewEntry(entryProposition);
+        Boolean proposed = eventService.sendEntryProposition(DistributionEventType.ENTRY_PROPOSITION, entryProposition);
         AssertionErrors.assertEquals("Error in Entry object proposition reception", Boolean.TRUE, proposed);
     }
 }

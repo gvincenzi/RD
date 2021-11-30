@@ -24,11 +24,9 @@ hs_err_pid*
 *.ipr
 
 ### Development Properties files
-application-dev.yml
+**/src/main/resources/application-private.yml
 
 ### Other files and/or directory
-!**/src/main/**
-!**/src/test/**
 mvnw*
 !.mvn/wrapper/maven-wrapper.jar
 target/

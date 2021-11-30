@@ -1,4 +1,4 @@
-package org.rdd.distribution.domain.service.test;
+package org.rdd.distribution.delivery.service.valence.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +7,8 @@ import lombok.extern.java.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.rdd.distribution.binding.message.DistributionEventType;
+import org.rdd.distribution.delivery.service.EventService;
 import org.rdd.distribution.domain.entity.Document;
 import org.rdd.distribution.domain.entity.EntryProposition;
 import org.rdd.distribution.domain.entity.Participant;
@@ -23,14 +25,14 @@ import org.springframework.test.util.AssertionErrors;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class DistributionServiceTest {
+public class DeliveryServiceTest {
     private static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Autowired
-    DistributionService distributionService;
+    DeliveryValenceService deliveryValenceService;
 
     @MockBean
-    DeliveryValenceService deliveryValenceService;
+    EventService eventService;
 
     protected static Document getNewDocument(String json) throws JsonProcessingException {
         log.info(json);
@@ -54,9 +56,8 @@ public class DistributionServiceTest {
     @Test
     public void addNewEntry() throws JsonProcessingException {
         EntryProposition entryProposition = getEntryProposition();
-        Mockito.when(deliveryValenceService.addNewEntry(entryProposition)).thenReturn(Boolean.TRUE);
-
-        Boolean proposed = distributionService.addNewEntry(entryProposition);
+        Mockito.when(eventService.sendEntryProposition(DistributionEventType.ENTRY_PROPOSITION, entryProposition)).thenReturn(Boolean.TRUE);
+        Boolean proposed = deliveryValenceService.addNewEntry(entryProposition);
         AssertionErrors.assertEquals("Error in Entry object proposition reception", Boolean.TRUE, proposed);
     }
 }
