@@ -18,12 +18,22 @@ public class EventServiceImpl implements EventService {
     MessageChannel requestChannel;
 
     @Override
-    public DistributionMessage sendEntryProposition(EntryProposition entryProposition) {
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+    public DistributionMessage<EntryProposition> sendEntryProposition(EntryProposition entryProposition) {
+        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(entryProposition);
-        Message<DistributionMessage> msg = MessageBuilder.withPayload(distributionMessage).build();
+        Message<DistributionMessage<EntryProposition>> msg = MessageBuilder.withPayload(distributionMessage).build();
+        requestChannel.send(msg);
+
+        return distributionMessage;
+    }
+
+    private DistributionMessage<Void> getVoidDistributionMessage(DistributionEventType listEntriesRequest) {
+        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
+        distributionMessage.setCorrelationID(UUID.randomUUID());
+        distributionMessage.setType(listEntriesRequest);
+        Message<DistributionMessage<Void>> msg = MessageBuilder.withPayload(distributionMessage).build();
         requestChannel.send(msg);
 
         return distributionMessage;
@@ -31,24 +41,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public DistributionMessage<Void> sendListEntriesRequest() {
-        DistributionMessage distributionMessage = new DistributionMessage<Void>();
-        distributionMessage.setCorrelationID(UUID.randomUUID());
-        distributionMessage.setType(DistributionEventType.LIST_ENTRIES_REQUEST);
-        Message<DistributionMessage> msg = MessageBuilder.withPayload(distributionMessage).build();
-        requestChannel.send(msg);
-
-        return distributionMessage;
+        return getVoidDistributionMessage(DistributionEventType.LIST_ENTRIES_REQUEST);
     }
 
     @Override
     public DistributionMessage<Void> sendIntegrityVerificationRequest() {
-        DistributionMessage distributionMessage = new DistributionMessage<Void>();
-        distributionMessage.setCorrelationID(UUID.randomUUID());
-        distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
-        Message<DistributionMessage> msg = MessageBuilder.withPayload(distributionMessage).build();
-        requestChannel.send(msg);
-
-        return distributionMessage;
+        return getVoidDistributionMessage(DistributionEventType.INTEGRITY_VERIFICATION);
     }
 }
 

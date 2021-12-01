@@ -10,7 +10,6 @@ import org.mockito.Mockito;
 import org.rdd.distribution.binding.message.DistributionEventType;
 import org.rdd.distribution.binding.message.DistributionMessage;
 import org.rdd.distribution.domain.entity.Document;
-import org.rdd.distribution.domain.entity.Entry;
 import org.rdd.distribution.domain.entity.EntryProposition;
 import org.rdd.distribution.domain.entity.Participant;
 import org.rdd.distribution.domain.service.DistributionService;
@@ -22,9 +21,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.AssertionErrors;
 
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Log
@@ -59,23 +55,10 @@ public class DistributionServiceTest {
         return entryProposition;
     }
 
-    private Entry getEntry() throws JsonProcessingException {
-        Entry entry = new Entry();
-        String json = "{\"title\":\"Test document\",\"countryName\":\"Italy\","
-                + "\"countryPopulation\":60591668,\"male\":29665645,\"female\":30921362}";
-        entry.setDocument(getNewDocument(json));
-        Participant owner = new Participant();
-        owner.setMail("test@test.com");
-        entry.setOwner(owner);
-        entry.setId(1000L);
-        entry.setInsertionDate(Instant.now());
-        return entry;
-    }
-
     @Test
     public void addNewEntry() throws JsonProcessingException {
         EntryProposition entryProposition = getEntryProposition();
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(entryProposition);
@@ -89,7 +72,7 @@ public class DistributionServiceTest {
 
     @Test
     public void getListOfAllExistingEntries() {
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.LIST_ENTRIES_REQUEST);
         Mockito.when(deliveryValenceService.getListOfAllExistingEntries()).thenReturn(distributionMessage);
@@ -100,7 +83,7 @@ public class DistributionServiceTest {
 
     @Test
     public void verifyRegistryIntegrity() {
-        DistributionMessage distributionMessage = new DistributionMessage<Void>();
+        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
         Mockito.when(deliveryValenceService.verifyRegistryIntegrity()).thenReturn(distributionMessage);

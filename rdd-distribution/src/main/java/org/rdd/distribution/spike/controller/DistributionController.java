@@ -18,30 +18,27 @@ public class DistributionController {
     DistributionService distributionService;
 
     @PostMapping("/entry/proposition")
-    public ResponseEntity<DistributionMessage> entryProposition(@RequestBody EntryProposition entryProposition) {
-        DistributionMessage distributionMessage = distributionService.addNewEntry(entryProposition);
-        ResponseEntity responseEntity =  distributionMessage.getCorrelationID() != null ?
-            new ResponseEntity(distributionMessage, HttpStatus.OK) :
-            new ResponseEntity(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
-        return responseEntity;
+    public ResponseEntity<DistributionMessage<EntryProposition>> entryProposition(@RequestBody EntryProposition entryProposition) {
+        DistributionMessage<EntryProposition> distributionMessage = distributionService.addNewEntry(entryProposition);
+        return distributionMessage.getCorrelationID() != null ?
+            new ResponseEntity<>(distributionMessage, HttpStatus.OK) :
+            new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping("/entry/list")
-    public ResponseEntity<DistributionMessage> getListOfAllExistingEntries() {
-        DistributionMessage distributionMessage = distributionService.getListOfAllExistingEntries();
-        ResponseEntity responseEntity =  distributionMessage.getCorrelationID() != null ?
-                new ResponseEntity(distributionMessage, HttpStatus.OK) :
-                new ResponseEntity(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
-        return responseEntity;
+    public ResponseEntity<DistributionMessage<Void>> getListOfAllExistingEntries() {
+        DistributionMessage<Void> distributionMessage = distributionService.getListOfAllExistingEntries();
+        return distributionMessage.getCorrelationID() != null ?
+                new ResponseEntity<>(distributionMessage, HttpStatus.OK) :
+                new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<DistributionMessage> integrityVerification() {
-        DistributionMessage distributionMessage = distributionService.verifyRegistryIntegrity();
-        ResponseEntity responseEntity =  distributionMessage.getCorrelationID() != null ?
-                new ResponseEntity(distributionMessage, HttpStatus.OK) :
-                new ResponseEntity(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
-        return responseEntity;
+    public ResponseEntity<DistributionMessage<Void>> integrityVerification() {
+        DistributionMessage<Void> distributionMessage = distributionService.verifyRegistryIntegrity();
+        return distributionMessage.getCorrelationID() != null ?
+                new ResponseEntity<>(distributionMessage, HttpStatus.OK) :
+                new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
     }
 
 }

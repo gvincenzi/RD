@@ -11,10 +11,8 @@ import org.rdd.distribution.binding.message.DistributionEventType;
 import org.rdd.distribution.binding.message.DistributionMessage;
 import org.rdd.distribution.delivery.service.EventService;
 import org.rdd.distribution.domain.entity.Document;
-import org.rdd.distribution.domain.entity.Entry;
 import org.rdd.distribution.domain.entity.EntryProposition;
 import org.rdd.distribution.domain.entity.Participant;
-import org.rdd.distribution.domain.service.DistributionService;
 import org.rdd.distribution.domain.service.valence.DeliveryValenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,9 +21,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.AssertionErrors;
 
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Log
@@ -63,12 +58,12 @@ public class DeliveryValenceServiceTest {
     @Test
     public void addNewEntry() throws JsonProcessingException {
         EntryProposition entryProposition = getEntryProposition();
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setContent(entryProposition);
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setCorrelationID(UUID.randomUUID());
         Mockito.when(eventService.sendEntryProposition(entryProposition)).thenReturn(distributionMessage);
-        DistributionMessage proposed = deliveryValenceService.addNewEntry(entryProposition);
+        DistributionMessage<EntryProposition> proposed = deliveryValenceService.addNewEntry(entryProposition);
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.ENTRY_PROPOSITION,proposed.getType());
         AssertionErrors.assertEquals("EntryProposition is not equal", entryProposition, proposed.getContent());
@@ -76,7 +71,7 @@ public class DeliveryValenceServiceTest {
 
     @Test
     public void getListOfAllExistingEntries() {
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.LIST_ENTRIES_REQUEST);
         distributionMessage.setCorrelationID(UUID.randomUUID());
         Mockito.when(eventService.sendListEntriesRequest()).thenReturn(distributionMessage);
@@ -87,7 +82,7 @@ public class DeliveryValenceServiceTest {
 
     @Test
     public void verifyRegistryIntegrity() {
-        DistributionMessage distributionMessage = new DistributionMessage<Void>();
+        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
         distributionMessage.setCorrelationID(UUID.randomUUID());
         Mockito.when(eventService.sendIntegrityVerificationRequest()).thenReturn(distributionMessage);
