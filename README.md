@@ -41,3 +41,14 @@ La molecola si compone di due atomi e uno spike:
 ![Interazioni con l'esterno del dispositivo di distribuzione](src/main/resources/img/distribution_schema.png?raw=true)
 
 [Qui l'implementazione della molecola di distribuzione](https://github.com/gvincenzi/RDD/tree/master/rdd-distribution).
+
+### Dispositivo di programmazione
+Questa molecola rappresenta il dispositivo che ha il compito di inviare notifiche in caso di eventi particolari (aggiunta di un documento nel regisro, per esempio), 
+ma anche per eseguire delle istruzioni programmate che possono a loro volta generare notifiche verso gli utenti.
+La molecola si compone di due atomi :
+- L'atomo delle istruzioni, Instruction atom (In)
+- L'atomo di notifica, Notifier atom (No)
+
+![Interazioni con l'esterno del dispositivo di programmazione](src/main/resources/img/scheduler_schema.png?raw=true)
+
+[Qui l'implementazione della molecola di programmazione](https://github.com/gvincenzi/RDD/tree/master/rdd-scheduler).
