@@ -20,9 +20,9 @@ spring:
           destination: rdd.topic
       rabbit:
         bindings:
-          entryPropositionChannel:
+          requestChannel:
             producer:
-              routingKeyExpression: "'rddEntryPropositionChannel'"
+              routingKeyExpression: "'rddRequestChannel'"
 
 eureka:
   instance:

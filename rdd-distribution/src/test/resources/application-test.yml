@@ -15,9 +15,9 @@ spring:
           destination: rdd.test.topic
       rabbit:
         bindings:
-          entryPropositionChannel:
+          requestChannel:
             producer:
-              routingKeyExpression: "'rddEntryPropositionChannel'"
+              routingKeyExpression: "'rddRequestChannel'"
 
 rdd:
   username: test

@@ -18,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.AssertionErrors;
@@ -34,7 +33,7 @@ public class EventServiceTest {
     EventService eventService;
 
     @MockBean
-    MessageChannel entryPropositionChannel;
+    MessageChannel requestChannel;
 
     protected static Document getNewDocument(String json) throws JsonProcessingException {
         log.info(json);
@@ -58,12 +57,32 @@ public class EventServiceTest {
     @Test
     public void addNewEntry() throws JsonProcessingException {
         EntryProposition entryProposition = getEntryProposition();
-        DistributionMessage distributionMessage = new DistributionMessage();
-        distributionMessage.setEntryProposition(entryProposition);
-        Message<DistributionMessage> msg = MessageBuilder.withPayload(distributionMessage).build();
-        Mockito.when(entryPropositionChannel.send(Mockito.any(Message.class))).thenReturn(Boolean.TRUE);
+        Mockito.when(requestChannel.send(Mockito.any(Message.class))).thenReturn(Boolean.TRUE);
 
-        Boolean proposed = eventService.sendEntryProposition(DistributionEventType.ENTRY_PROPOSITION, entryProposition);
-        AssertionErrors.assertEquals("Error in Entry object proposition reception", Boolean.TRUE, proposed);
+        DistributionMessage<EntryProposition> proposed = eventService.sendEntryProposition(entryProposition);
+        AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
+        AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.ENTRY_PROPOSITION,proposed.getType());
+        AssertionErrors.assertEquals("EntryProposition is not equal", entryProposition, proposed.getContent());
+
+    }
+
+    @Test
+    public void sendListEntriesRequest() {
+        Mockito.when(requestChannel.send(Mockito.any(Message.class))).thenReturn(Boolean.TRUE);
+
+        DistributionMessage<Void> proposed = eventService.sendListEntriesRequest();
+        AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
+        AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.LIST_ENTRIES_REQUEST,proposed.getType());
+
+    }
+
+    @Test
+    public void sendIntegrityVerificationRequest() {
+        Mockito.when(requestChannel.send(Mockito.any(Message.class))).thenReturn(Boolean.TRUE);
+
+        DistributionMessage<Void> proposed = eventService.sendIntegrityVerificationRequest();
+        AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
+        AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.INTEGRITY_VERIFICATION,proposed.getType());
+
     }
 }

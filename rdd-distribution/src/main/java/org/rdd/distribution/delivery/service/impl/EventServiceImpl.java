@@ -10,23 +10,45 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class EventServiceImpl implements EventService {
     @Autowired
-    MessageChannel entryPropositionChannel;
+    MessageChannel requestChannel;
 
     @Override
-    public Boolean sendEntryProposition(DistributionEventType eventType, EntryProposition entryProposition) {
-        DistributionMessage distributionMessage = new DistributionMessage();
-        distributionMessage.setEntryProposition(entryProposition);
+    public DistributionMessage sendEntryProposition(EntryProposition entryProposition) {
+        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        distributionMessage.setCorrelationID(UUID.randomUUID());
+        distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
+        distributionMessage.setContent(entryProposition);
         Message<DistributionMessage> msg = MessageBuilder.withPayload(distributionMessage).build();
-        Boolean result = Boolean.FALSE;
+        requestChannel.send(msg);
 
-        switch (eventType){
-            case ENTRY_PROPOSITION: result = entryPropositionChannel.send(msg); break;
-        }
+        return distributionMessage;
+    }
 
-        return result;
+    @Override
+    public DistributionMessage<Void> sendListEntriesRequest() {
+        DistributionMessage distributionMessage = new DistributionMessage<Void>();
+        distributionMessage.setCorrelationID(UUID.randomUUID());
+        distributionMessage.setType(DistributionEventType.LIST_ENTRIES_REQUEST);
+        Message<DistributionMessage> msg = MessageBuilder.withPayload(distributionMessage).build();
+        requestChannel.send(msg);
+
+        return distributionMessage;
+    }
+
+    @Override
+    public DistributionMessage<Void> sendIntegrityVerificationRequest() {
+        DistributionMessage distributionMessage = new DistributionMessage<Void>();
+        distributionMessage.setCorrelationID(UUID.randomUUID());
+        distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
+        Message<DistributionMessage> msg = MessageBuilder.withPayload(distributionMessage).build();
+        requestChannel.send(msg);
+
+        return distributionMessage;
     }
 }
 

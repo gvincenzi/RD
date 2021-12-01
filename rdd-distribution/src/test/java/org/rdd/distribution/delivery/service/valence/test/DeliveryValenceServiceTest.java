@@ -1,4 +1,4 @@
-package org.rdd.distribution.domain.service.test;
+package org.rdd.distribution.delivery.service.valence.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.rdd.distribution.binding.message.DistributionEventType;
 import org.rdd.distribution.binding.message.DistributionMessage;
+import org.rdd.distribution.delivery.service.EventService;
 import org.rdd.distribution.domain.entity.Document;
 import org.rdd.distribution.domain.entity.Entry;
 import org.rdd.distribution.domain.entity.EntryProposition;
@@ -31,14 +32,14 @@ import java.util.UUID;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-public class DistributionServiceTest {
+public class DeliveryValenceServiceTest {
     private static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Autowired
-    DistributionService distributionService;
+    DeliveryValenceService deliveryValenceService;
 
     @MockBean
-    DeliveryValenceService deliveryValenceService;
+    EventService eventService;
 
     protected static Document getNewDocument(String json) throws JsonProcessingException {
         log.info(json);
@@ -59,29 +60,15 @@ public class DistributionServiceTest {
         return entryProposition;
     }
 
-    private Entry getEntry() throws JsonProcessingException {
-        Entry entry = new Entry();
-        String json = "{\"title\":\"Test document\",\"countryName\":\"Italy\","
-                + "\"countryPopulation\":60591668,\"male\":29665645,\"female\":30921362}";
-        entry.setDocument(getNewDocument(json));
-        Participant owner = new Participant();
-        owner.setMail("test@test.com");
-        entry.setOwner(owner);
-        entry.setId(1000L);
-        entry.setInsertionDate(Instant.now());
-        return entry;
-    }
-
     @Test
     public void addNewEntry() throws JsonProcessingException {
         EntryProposition entryProposition = getEntryProposition();
         DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
-        distributionMessage.setCorrelationID(UUID.randomUUID());
-        distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(entryProposition);
-        Mockito.when(deliveryValenceService.addNewEntry(entryProposition)).thenReturn(distributionMessage);
-
-        DistributionMessage<EntryProposition> proposed = distributionService.addNewEntry(entryProposition);
+        distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
+        distributionMessage.setCorrelationID(UUID.randomUUID());
+        Mockito.when(eventService.sendEntryProposition(entryProposition)).thenReturn(distributionMessage);
+        DistributionMessage proposed = deliveryValenceService.addNewEntry(entryProposition);
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.ENTRY_PROPOSITION,proposed.getType());
         AssertionErrors.assertEquals("EntryProposition is not equal", entryProposition, proposed.getContent());
@@ -90,10 +77,10 @@ public class DistributionServiceTest {
     @Test
     public void getListOfAllExistingEntries() {
         DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
-        distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.LIST_ENTRIES_REQUEST);
-        Mockito.when(deliveryValenceService.getListOfAllExistingEntries()).thenReturn(distributionMessage);
-        DistributionMessage<Void> proposed = distributionService.getListOfAllExistingEntries();
+        distributionMessage.setCorrelationID(UUID.randomUUID());
+        Mockito.when(eventService.sendListEntriesRequest()).thenReturn(distributionMessage);
+        DistributionMessage<Void> proposed = deliveryValenceService.getListOfAllExistingEntries();
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.LIST_ENTRIES_REQUEST,proposed.getType());
     }
@@ -101,10 +88,10 @@ public class DistributionServiceTest {
     @Test
     public void verifyRegistryIntegrity() {
         DistributionMessage distributionMessage = new DistributionMessage<Void>();
-        distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
-        Mockito.when(deliveryValenceService.verifyRegistryIntegrity()).thenReturn(distributionMessage);
-        DistributionMessage<Void> proposed = distributionService.verifyRegistryIntegrity();
+        distributionMessage.setCorrelationID(UUID.randomUUID());
+        Mockito.when(eventService.sendIntegrityVerificationRequest()).thenReturn(distributionMessage);
+        DistributionMessage<Void> proposed = deliveryValenceService.verifyRegistryIntegrity();
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.INTEGRITY_VERIFICATION,proposed.getType());
     }

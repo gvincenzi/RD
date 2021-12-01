@@ -1,13 +1,11 @@
 package org.rdd.distribution.domain.service.impl;
 
-import org.rdd.distribution.domain.entity.Entry;
+import org.rdd.distribution.binding.message.DistributionMessage;
 import org.rdd.distribution.domain.entity.EntryProposition;
-import org.rdd.distribution.domain.service.valence.DeliveryValenceService;
 import org.rdd.distribution.domain.service.DistributionService;
+import org.rdd.distribution.domain.service.valence.DeliveryValenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 @Service
 public class DistributionServiceImpl implements DistributionService {
@@ -15,17 +13,17 @@ public class DistributionServiceImpl implements DistributionService {
     DeliveryValenceService deliveryValenceService;
 
     @Override
-    public Boolean addNewEntry(EntryProposition entryProposition) {
+    public DistributionMessage addNewEntry(EntryProposition entryProposition) {
         return deliveryValenceService.addNewEntry(entryProposition);
     }
 
     @Override
-    public Set<Entry> getListOfAllExistingEntries() {
+    public DistributionMessage<Void> getListOfAllExistingEntries() {
         return deliveryValenceService.getListOfAllExistingEntries();
     }
 
     @Override
-    public Boolean verifyRegistryIntegrity() {
+    public DistributionMessage<Void> verifyRegistryIntegrity() {
         return deliveryValenceService.verifyRegistryIntegrity();
     }
 }
