@@ -13,7 +13,7 @@ public class DistributionServiceImpl implements DistributionService {
     DeliveryValenceService deliveryValenceService;
 
     @Override
-    public DistributionMessage addNewEntry(EntryProposition entryProposition) {
+    public DistributionMessage<EntryProposition> addNewEntry(EntryProposition entryProposition) {
         return deliveryValenceService.addNewEntry(entryProposition);
     }
 

@@ -27,7 +27,7 @@ import org.springframework.test.util.AssertionErrors;
 @SpringBootTest
 @ActiveProfiles("test")
 public class EventServiceTest {
-    private static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private static final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Autowired
     EventService eventService;

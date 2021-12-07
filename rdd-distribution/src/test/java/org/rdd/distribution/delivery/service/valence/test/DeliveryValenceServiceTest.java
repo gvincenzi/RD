@@ -28,7 +28,7 @@ import java.util.UUID;
 @SpringBootTest
 @ActiveProfiles("test")
 public class DeliveryValenceServiceTest {
-    private static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private static final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Autowired
     DeliveryValenceService deliveryValenceService;

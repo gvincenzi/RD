@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <packaging>jar</packaging>
-    <groupId>org.rdd</groupId>
     <artifactId>rdd-service-registry</artifactId>
     <description>RDD - Registro Digitale Ditribuito - Service Registry</description>
 

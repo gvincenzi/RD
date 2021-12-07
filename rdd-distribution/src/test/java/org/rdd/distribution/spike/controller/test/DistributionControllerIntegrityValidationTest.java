@@ -1,14 +1,11 @@
 package org.rdd.distribution.spike.controller.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.java.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.rdd.distribution.binding.message.DistributionEventType;
 import org.rdd.distribution.binding.message.DistributionMessage;
-import org.rdd.distribution.domain.entity.EntryProposition;
 import org.rdd.distribution.domain.service.DistributionService;
 import org.rdd.distribution.spike.controller.DistributionController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(DistributionController.class)
 @ActiveProfiles("test")
 public class DistributionControllerIntegrityValidationTest {
-    private static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-
     @Autowired
     private MockMvc mvc;
 
@@ -43,7 +38,7 @@ public class DistributionControllerIntegrityValidationTest {
     @WithMockUser(value = "test")
     @Test
     public void entryOk() throws Exception {
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
         Mockito.when(distributionService.verifyRegistryIntegrity()).thenReturn(distributionMessage);
@@ -59,7 +54,7 @@ public class DistributionControllerIntegrityValidationTest {
     @WithMockUser(value = "test")
     @Test
     public void entryKo() throws Exception {
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
         Mockito.when(distributionService.verifyRegistryIntegrity()).thenReturn(distributionMessage);
         mvc.perform(post("/verify")
@@ -74,7 +69,7 @@ public class DistributionControllerIntegrityValidationTest {
     @WithAnonymousUser
     @Test
     public void entryNoUser() throws Exception {
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
         Mockito.when(distributionService.verifyRegistryIntegrity()).thenReturn(distributionMessage);
         mvc.perform(post("/verify")

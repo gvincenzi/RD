@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(DistributionController.class)
 @ActiveProfiles("test")
 public class DistributionControllerEntryPropositionTest {
-    private static ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private static final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Autowired
     private MockMvc mvc;
@@ -66,7 +66,7 @@ public class DistributionControllerEntryPropositionTest {
     @Test
     public void entryOk() throws Exception {
         EntryProposition entryProposition = getEntryProposition();
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(entryProposition);
@@ -84,7 +84,7 @@ public class DistributionControllerEntryPropositionTest {
     @Test
     public void entryKo() throws Exception {
         EntryProposition entryProposition = getEntryProposition();
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(entryProposition);
         Mockito.when(distributionService.addNewEntry(entryProposition)).thenReturn(distributionMessage);
@@ -101,7 +101,7 @@ public class DistributionControllerEntryPropositionTest {
     @Test
     public void entryNoUser() throws Exception {
         EntryProposition entryProposition = getEntryProposition();
-        DistributionMessage distributionMessage = new DistributionMessage<EntryProposition>();
+        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(entryProposition);
         Mockito.when(distributionService.addNewEntry(entryProposition)).thenReturn(distributionMessage);
