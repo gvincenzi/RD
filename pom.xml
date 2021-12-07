@@ -29,7 +29,7 @@
         <module>rdd-service-registry</module>
         <module>rdd-spike</module>
         <module>rdd-distribution</module>
-        <module>rd-scheduler</module>
+        <module>rdd-scheduler</module>
         <module>rdd-node</module>
     </modules>
 
