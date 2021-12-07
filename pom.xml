@@ -30,6 +30,7 @@
         <module>rdd-spike</module>
         <module>rdd-distribution</module>
         <module>rd-scheduler</module>
+        <module>rdd-node</module>
     </modules>
 
     <dependencyManagement>

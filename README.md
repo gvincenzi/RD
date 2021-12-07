@@ -52,3 +52,19 @@ La molecola si compone di due atomi :
 ![Interazioni con l'esterno del dispositivo di programmazione](src/main/resources/img/scheduler_schema.png?raw=true)
 
 [Qui l'implementazione della molecola di programmazione](https://github.com/gvincenzi/RDD/tree/master/rdd-scheduler).
+
+### Nodo del registro
+Questa molecola è il cuore del Registro Digitale Distribuito : è la molecola che contiene il registro nella sue interezza e potrà essere istanziata un numero di volte pari al numero di attori coinvolti nella vita del registro.
+Nel funzionamento di base proposto per un RDD non si procederà mai al fork del registro: ogni volta che uno dei nodi prenderà in carico l'inserimento di un nuovo documento, gli altri si forzeranno in uno stato di "freeze" in attesa che l'operazione sia stata completato dalla loro molecola gemella.
+
+In questa implementazione Open Source di base di un RDD utilizziamo un database embedded relazionale: in una versione di produzione invece si invita all'utilizzo di soluzioni NoSQL per rendere l'RDD capace di salvare qualsiasi tipo di informazione, qualsiasi sia la sua struttura.
+
+Si potrà anche integrare sistemi di ricerca (come Apache Lucene, per fornire un esempio) per rendere possibile, agevole ed efficiente una ricerca nel contenuto dei documenti salvati nell'RDD. 
+
+La molecola si compone di un solo atomo :
+- L'atomo del cuore delle operazioni, Core atom (Co)
+
+![Interazioni con l'esterno del nodo di un RDD](src/main/resources/img/node_schema.png?raw=true)
+
+[Qui l'implementazione del nodo di un RDD](https://github.com/gvincenzi/RDD/tree/master/rdd-node).
+ 
