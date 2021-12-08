@@ -1,0 +1,24 @@
+info:
+  name: RDC - Dispositivo di Distribuzione - Molecola (Test)
+  artifact: '@project.artifactId@'
+  version: '@project.version@'
+
+spring:
+  application:
+    name: rdc-distribution
+  rabbitmq:
+    addresses: amqp://server
+  cloud:
+    stream:
+      bindings:
+        entryPropositionChannel:
+          destination: rdc.test.topic
+      rabbit:
+        bindings:
+          requestChannel:
+            producer:
+              routingKeyExpression: "'rdcRequestChannel'"
+
+rdc:
+  username: test
+  password: test

@@ -10,11 +10,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>org.rdd</groupId>
-    <artifactId>rdd-parent</artifactId>
+    <groupId>org.rdc</groupId>
+    <artifactId>rdc-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>rdd-parent</name>
-    <description>RDD - Registro Digitale Ditribuito - Parent project</description>
+    <name>rdc-parent</name>
+    <description>RDC - Registro Digitale Contribuito - Parent project</description>
     <packaging>pom</packaging>
 
     <properties>
@@ -26,11 +26,11 @@
     </properties>
 
     <modules>
-        <module>rdd-service-registry</module>
-        <module>rdd-spike</module>
-        <module>rdd-distribution</module>
-        <module>rdd-scheduler</module>
-        <module>rdd-node</module>
+        <module>rdc-service-registry</module>
+        <module>rdc-spike</module>
+        <module>rdc-distribution</module>
+        <module>rdc-scheduler</module>
+        <module>rdc-node</module>
     </modules>
 
     <dependencyManagement>

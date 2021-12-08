@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: rdc-scheduler
+  rabbitmq:
+    addresses: amqp://test
+
+template:
+  entry: "Salve,\nCon questa mail si segnala il corretto inserimento del domcumento da lei proposto : \nTitolo: %s\n\nCordialmente\nMail automatica generata dal dispositivo di programmazione"
+  subject:
+    entry: "RDC - Conferma inserimento di un nuovo documento"
+
+mail:
+  host: smtp.test.com
+  port: 587
+  username: user@test.com
+  password: pass
+
+  transport:
+    protocol: smtp
+
+  smtp:
+    auth: true
+    starttls:
+      enable: true

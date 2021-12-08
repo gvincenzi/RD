@@ -1,0 +1,42 @@
+server:
+  port: 8881
+  servlet:
+    context-path: /rdc
+
+spring:
+  application:
+    name: rdc-spike
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8880/eureka
+zuul:
+  host:
+    connect-timeout-millis: 15000
+    socket-timeout-millis: 15000
+  ignored-services: '*'
+  routes:
+    rdc-distribution:
+      path: /distribution/**
+      serviceId: rdc-distribution
+      stripPrefix: true
+      sensitiveHeaders:
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 32000
+
+
+ribbon:
+  ReadTimeout: 15000
+  connection-timeout: 15000
+  eureka:
+    enabled: true

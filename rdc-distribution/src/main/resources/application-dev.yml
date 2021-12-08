@@ -1,0 +1,38 @@
+info:
+  name: RDC - Dispositivo di Distribuzione - Molecola (Development)
+  artifact: '@project.artifactId@'
+  version: '@project.version@'
+
+server:
+  port: 8882
+  servlet:
+    context-path: /spike
+
+spring:
+  application:
+    name: rdc-distribution
+  rabbitmq:
+    addresses: amqps://server
+  cloud:
+    stream:
+      bindings:
+        entryPropositionChannel:
+          destination: rdc.topic
+      rabbit:
+        bindings:
+          requestChannel:
+            producer:
+              routingKeyExpression: "'rdcRequestChannel'"
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8880/eureka
+
+rdc:
+  username: rdc
+  password: rdc
