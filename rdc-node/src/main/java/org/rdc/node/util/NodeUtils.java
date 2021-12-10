@@ -7,10 +7,7 @@ import java.security.MessageDigest;
 
 public class NodeUtils {
     private static final char ZERO = '0';
-    private static final String UTF_8 = "UTF-8";
     private static final String ALGORITHM = "SHA-256";
-
-    public NodeUtils(){}
 
     public static String applySha256(String input) throws RDCNodeException {
         try {

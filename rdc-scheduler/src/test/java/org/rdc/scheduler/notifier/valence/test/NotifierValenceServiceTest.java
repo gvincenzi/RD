@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
 import java.util.Random;
+import java.util.UUID;
 
 @Log
 @RunWith(SpringRunner.class)
@@ -49,7 +50,7 @@ public class NotifierValenceServiceTest {
         Participant owner = new Participant();
         owner.setMail("test@test.com");
         entry.setOwner(owner);
-        entry.setId(new Random().nextLong());
+        entry.setId(UUID.randomUUID().toString());
         entry.setInsertionInstant(Instant.now());
         return entry;
     }

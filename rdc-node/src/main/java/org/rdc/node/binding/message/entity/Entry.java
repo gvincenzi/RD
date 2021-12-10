@@ -1,4 +1,4 @@
-package org.rdc.scheduler.domain.entity;
+package org.rdc.node.binding.message.entity;
 
 import lombok.Data;
 
