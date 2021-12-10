@@ -27,7 +27,7 @@ public class NotifierValenceServiceImpl implements NotifierValenceService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(participant.getMail());
             message.setSubject(templateEntrySubject);
-            message.setText(templateEntryMessage != null && templateEntryMessage.getText() != null ? String.format(templateEntryMessage.getText(), entry.getDocument().getTitle()) : StringUtils.EMPTY);
+            message.setText(templateEntryMessage != null && templateEntryMessage.getText() != null ? String.format(templateEntryMessage.getText(), entry.getDocument()) : StringUtils.EMPTY);
             javaMailSender.send(message);
         }
     }

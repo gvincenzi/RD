@@ -35,4 +35,12 @@ public class Document {
         result = 31 * result + getDetails().hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "'" + title + '\'' +
+                ", " + details +
+                '}';
+    }
 }

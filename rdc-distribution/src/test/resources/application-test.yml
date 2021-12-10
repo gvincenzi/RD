@@ -10,14 +10,11 @@ spring:
     addresses: amqp://server
   cloud:
     stream:
-      bindings:
-        entryPropositionChannel:
-          destination: rdc.test.topic
       rabbit:
         bindings:
           requestChannel:
             producer:
-              routingKeyExpression: "'rdcRequestChannel'"
+              routingKeyExpression: "'rdcTestRequestChannel'"
 
 rdc:
   username: test

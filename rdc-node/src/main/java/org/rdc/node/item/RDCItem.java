@@ -22,15 +22,17 @@ public class RDCItem implements Comparable<RDCItem>{
     private org.rdc.node.binding.message.entity.Document document;
     private Participant owner;
     private Set<Participant> validators;
+    private String nodeIstanceName;
 
     @Transient
     private Boolean validated;
 
-    public RDCItem(org.rdc.node.binding.message.entity.Document document, String previousId, Participant owner) {
+    public RDCItem(org.rdc.node.binding.message.entity.Document document, String previousId, Participant owner, String nodeIstanceName) {
         this.setOwner(owner);
         this.setPreviousId(previousId);
         this.setDocument(document);
         this.setTimestamp(Instant.now());
+        this.setNodeIstanceName(nodeIstanceName);
     }
 
     @Override

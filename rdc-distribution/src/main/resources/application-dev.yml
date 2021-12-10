@@ -15,9 +15,6 @@ spring:
     addresses: amqps://server
   cloud:
     stream:
-      bindings:
-        entryPropositionChannel:
-          destination: rdc.topic
       rabbit:
         bindings:
           requestChannel:

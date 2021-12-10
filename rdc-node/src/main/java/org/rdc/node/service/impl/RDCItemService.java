@@ -26,6 +26,9 @@ public abstract class RDCItemService implements IRDCItemService {
 	@Value("${required.validation.number}")
 	private Integer requiredValidationNumber;
 
+	@Value("${spring.application.name}")
+	private String instanceName;
+
 	public abstract boolean isHashResolved(RDCItem rdcItem, Integer difficultLevel);
 	public abstract String calculateHash(RDCItem rdcItem) throws RDCNodeException;
 	
@@ -33,10 +36,10 @@ public abstract class RDCItemService implements IRDCItemService {
 		if (document == null || owner == null) {
 			throw new RDCNodeException("Document and Owner are mandatory");
 		}
-		RDCItem rdcItem = new RDCItem(document, previous != null ? previous.getId() : GENESIS, owner);
+		RDCItem rdcItem = new RDCItem(document, previous != null ? previous.getId() : GENESIS, owner, instanceName);
 		
-		Random random = new Random(rdcItem.getTimestamp().getEpochSecond());
-		int nonce = Math.abs(random.nextInt());
+		Random random = new Random(rdcItem.getTimestamp().toEpochMilli());
+		int nonce = random.nextInt();
 		rdcItem.setNonce(nonce);
 		rdcItem.setId(calculateHash(rdcItem));
 		while (!isHashResolved(rdcItem, difficultLevel)) {
