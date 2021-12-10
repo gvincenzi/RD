@@ -10,11 +10,12 @@ spring:
     addresses: amqp://server
   cloud:
     stream:
-      rabbit:
-        bindings:
-          requestChannel:
-            producer:
-              routingKeyExpression: "'rdcTestRequestChannel'"
+      bindings:
+        responseChannel:
+          destination: responseChannel
+        requestChannel:
+          producer:
+            routingKeyExpression: "'rdcRequestChannel'"
 
 rdc:
   username: test

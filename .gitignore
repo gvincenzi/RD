@@ -24,7 +24,7 @@ hs_err_pid*
 *.ipr
 
 ### Development Properties files
-**/src/main/resources/application-private.yml
+**/src/main/resources/application-private*.yml
 
 ### Other files and/or directory
 mvnw*

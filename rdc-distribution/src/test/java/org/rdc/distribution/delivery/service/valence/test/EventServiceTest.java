@@ -14,10 +14,12 @@ import org.rdc.distribution.domain.entity.Document;
 import org.rdc.distribution.domain.entity.EntryProposition;
 import org.rdc.distribution.domain.entity.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.SubscribableChannel;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.AssertionErrors;
@@ -33,7 +35,12 @@ public class EventServiceTest {
     EventService eventService;
 
     @MockBean
+    @Qualifier("requestChannel")
     MessageChannel requestChannel;
+
+    @MockBean
+    @Qualifier("responseChannel")
+    SubscribableChannel responseChannel;
 
     protected static Document getNewDocument(String json) throws JsonProcessingException {
         log.info(json);
