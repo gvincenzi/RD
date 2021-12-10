@@ -1,5 +1,7 @@
 package org.rdc.distribution.delivery.service.impl;
 
+import lombok.extern.java.Log;
+import org.rdc.distribution.binding.MQListener;
 import org.rdc.distribution.binding.message.DistributionEventType;
 import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.delivery.service.EventService;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Log
 @Service
 public class EventServiceImpl implements EventService {
     @Autowired
@@ -19,13 +22,23 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public DistributionMessage<EntryProposition> sendEntryProposition(EntryProposition entryProposition) {
+        while(Boolean.FALSE.equals(MQListener.lastCorrelationIDProcessed)){
+            log.info("Waiting last correlationID process");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                log.severe(e.getMessage());
+            }
+        }
+
         DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(entryProposition);
         Message<DistributionMessage<EntryProposition>> msg = MessageBuilder.withPayload(distributionMessage).build();
         requestChannel.send(msg);
-
+        MQListener.lastCorrelationIDProcessed = Boolean.FALSE;
+        log.info(String.format("Correlation ID [%s] waiting for processing",distributionMessage.getCorrelationID().toString()));
         return distributionMessage;
     }
 
