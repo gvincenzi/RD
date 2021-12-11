@@ -20,9 +20,11 @@ public class EventServiceImpl implements EventService {
     @Autowired
     MessageChannel requestChannel;
 
+    UUID lastCorrelationID;
+
     @Override
     public DistributionMessage<EntryProposition> sendEntryProposition(EntryProposition entryProposition) {
-        while(Boolean.FALSE.equals(MQListener.lastCorrelationIDProcessed)){
+        while(MQListener.correlationIDs.contains(lastCorrelationID)){
             log.info("Waiting last correlationID process");
             try {
                 Thread.sleep(1000);
@@ -37,7 +39,8 @@ public class EventServiceImpl implements EventService {
         distributionMessage.setContent(entryProposition);
         Message<DistributionMessage<EntryProposition>> msg = MessageBuilder.withPayload(distributionMessage).build();
         requestChannel.send(msg);
-        MQListener.lastCorrelationIDProcessed = Boolean.FALSE;
+        lastCorrelationID = distributionMessage.getCorrelationID();
+        MQListener.correlationIDs.add(lastCorrelationID);
         log.info(String.format("Correlation ID [%s] waiting for processing",distributionMessage.getCorrelationID().toString()));
         return distributionMessage;
     }

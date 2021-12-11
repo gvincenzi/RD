@@ -7,5 +7,6 @@ import org.rdc.node.item.RDCItem;
 
 public interface IRDCItemService {
 	RDCItem add(Document document, Participant owner) throws RDCNodeException;
-	Boolean validate(Iterable<RDCItem> items, Participant validator) throws RDCNodeException;
+	Boolean forceAddItem(RDCItem rdcItem) throws RDCNodeException;
+	Boolean validate(Iterable<RDCItem> items) throws RDCNodeException;
 }

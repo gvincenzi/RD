@@ -1,5 +1,6 @@
 package org.rdc.node.service.impl;
 
+import lombok.extern.java.Log;
 import org.rdc.node.binding.message.entity.Document;
 import org.rdc.node.binding.message.entity.Participant;
 import org.rdc.node.exception.RDCNodeException;
@@ -9,11 +10,13 @@ import org.rdc.node.service.IRDCItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+@Log
 public abstract class RDCItemService implements IRDCItemService {
 	private static final String GENESIS = "GENESIS";
 
@@ -53,7 +56,13 @@ public abstract class RDCItemService implements IRDCItemService {
 	}
 
 	@Override
-	public Boolean validate(Iterable<RDCItem> items, Participant validator) throws RDCNodeException {
+	public Boolean forceAddItem(RDCItem rdcItem) throws RDCNodeException {
+		rdcItemRepository.save(rdcItem);
+		return validate(rdcItemRepository.findAll());
+	}
+
+	@Override
+	public Boolean validate(Iterable<RDCItem> items) throws RDCNodeException {
 		if (items == null) {
 			throw new RDCNodeException("Iterable items collection is mandatory");
 		}
@@ -79,8 +88,8 @@ public abstract class RDCItemService implements IRDCItemService {
 				result = false;
 			}
 			
-			if(i==rdcItems.size()-1 && currentItem.getValidators().size()<requiredValidationNumber && !currentItem.getOwner().equals(validator) && !currentItem.getValidators().contains(validator)){
-				currentItem.getValidators().add(validator);
+			if(i==rdcItems.size()-1 && currentItem.getValidators().size()<requiredValidationNumber && !currentItem.getValidators().contains(instanceName)){
+				currentItem.getValidators().add(instanceName);
 				rdcItemRepository.save(currentItem);
 			}
 		}

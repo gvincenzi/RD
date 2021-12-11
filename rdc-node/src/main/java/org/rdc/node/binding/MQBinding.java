@@ -11,4 +11,7 @@ public interface MQBinding {
 
     @Output("responseChannel")
     MessageChannel responseChannel();
+
+    @Input("distributionChannel")
+    SubscribableChannel distributionChannel();
 }
