@@ -45,7 +45,7 @@ public abstract class RDCItemService implements IRDCItemService {
 		rdcItem.setNonce(nonce);
 		rdcItem.setId(calculateHash(rdcItem));
 		while (!isHashResolved(rdcItem, difficultLevel)) {
-			nonce = Math.abs(random.nextInt());
+			nonce = random.nextInt();
 			rdcItem.setNonce(nonce);
 			rdcItem.setId(calculateHash(rdcItem));
 		}

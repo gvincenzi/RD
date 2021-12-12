@@ -18,7 +18,7 @@ import java.util.UUID;
 @Log
 @EnableBinding(MQBinding.class)
 public class MQListener {
-    public volatile static Set<UUID> correlationIDs = new HashSet<>();
+    public static volatile Set<UUID> correlationIDs = new HashSet<>();
 
     @Autowired
     MessageChannel distributionChannel;
