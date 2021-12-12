@@ -1,4 +1,4 @@
-package org.rdc.node.item;
+package org.rdc.node.domain.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -7,7 +7,7 @@ import org.rdc.node.binding.message.DistributionEventType;
 import org.rdc.node.binding.message.DistributionMessage;
 import org.rdc.node.binding.message.entity.ItemProposition;
 import org.rdc.node.exception.RDCNodeException;
-import org.rdc.node.item.RDCItem;
+import org.rdc.node.domain.entity.RDCItem;
 import org.rdc.node.service.impl.RDCItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

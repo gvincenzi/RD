@@ -1,7 +1,7 @@
 package org.rdc.node.service.impl.base;
 
 import org.rdc.node.exception.RDCNodeException;
-import org.rdc.node.item.RDCItem;
+import org.rdc.node.domain.entity.RDCItem;
 import org.rdc.node.service.impl.RDCItemService;
 import org.rdc.node.util.NodeUtils;
 import org.springframework.stereotype.Service;

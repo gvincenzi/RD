@@ -4,13 +4,12 @@ import lombok.extern.java.Log;
 import org.rdc.node.binding.message.entity.Document;
 import org.rdc.node.binding.message.entity.Participant;
 import org.rdc.node.exception.RDCNodeException;
-import org.rdc.node.item.RDCItem;
+import org.rdc.node.domain.entity.RDCItem;
 import org.rdc.node.repository.RDCItemRepository;
 import org.rdc.node.service.IRDCItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -101,6 +100,9 @@ public abstract class RDCItemService implements IRDCItemService {
 	public RDCItem add(Document document, Participant owner) throws RDCNodeException {
 		if (document == null) {
 			throw new RDCNodeException("Document is mandatory");
+		}
+		if (owner == null) {
+			throw new RDCNodeException("Owner is mandatory");
 		}
 		RDCItem previous = rdcItemRepository.findTopByOrderByTimestampDesc();
 		RDCItem newItem = getNewItem(document, previous, owner);
