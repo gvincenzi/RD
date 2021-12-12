@@ -12,7 +12,7 @@ import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.domain.entity.Participant;
 import org.rdc.distribution.spike.controller.DistributionController;
 import org.rdc.distribution.domain.entity.Document;
-import org.rdc.distribution.domain.entity.EntryProposition;
+import org.rdc.distribution.domain.entity.ItemProposition;
 import org.rdc.distribution.domain.service.DistributionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(DistributionController.class)
 @ActiveProfiles("test")
-public class DistributionControllerEntryPropositionTest {
+public class DistributionControllerItemPropositionTest {
     private static final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Autowired
@@ -51,30 +51,30 @@ public class DistributionControllerEntryPropositionTest {
         return document;
     }
 
-    private EntryProposition getEntryProposition() throws JsonProcessingException {
-        EntryProposition entryProposition = new EntryProposition();
+    private ItemProposition getEntryProposition() throws JsonProcessingException {
+        ItemProposition itemProposition = new ItemProposition();
         String json = "{\"title\":\"Test document\",\"countryName\":\"Italy\","
                 + "\"countryPopulation\":60591668,\"male\":29665645,\"female\":30921362}";
-        entryProposition.setDocument(getNewDocument(json));
+        itemProposition.setDocument(getNewDocument(json));
         Participant owner = new Participant();
         owner.setMail("test@test.com");
-        entryProposition.setOwner(owner);
-        return entryProposition;
+        itemProposition.setOwner(owner);
+        return itemProposition;
     }
 
     @WithMockUser(value = "test")
     @Test
     public void entryOk() throws Exception {
-        EntryProposition entryProposition = getEntryProposition();
-        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
+        ItemProposition itemProposition = getEntryProposition();
+        DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
-        distributionMessage.setContent(entryProposition);
-        Mockito.when(distributionService.addNewEntry(entryProposition)).thenReturn(distributionMessage);
-        mvc.perform(post("/entry/proposition")
+        distributionMessage.setContent(itemProposition);
+        Mockito.when(distributionService.addNewEntry(itemProposition)).thenReturn(distributionMessage);
+        mvc.perform(post("/item/proposition")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(entryProposition)))
+                .content(mapper.writeValueAsString(itemProposition)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -83,15 +83,15 @@ public class DistributionControllerEntryPropositionTest {
     @WithMockUser(value = "test")
     @Test
     public void entryKo() throws Exception {
-        EntryProposition entryProposition = getEntryProposition();
-        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
+        ItemProposition itemProposition = getEntryProposition();
+        DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
-        distributionMessage.setContent(entryProposition);
-        Mockito.when(distributionService.addNewEntry(entryProposition)).thenReturn(distributionMessage);
-        mvc.perform(post("/entry/proposition")
+        distributionMessage.setContent(itemProposition);
+        Mockito.when(distributionService.addNewEntry(itemProposition)).thenReturn(distributionMessage);
+        mvc.perform(post("/item/proposition")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(entryProposition)))
+                .content(mapper.writeValueAsString(itemProposition)))
                 .andDo(print())
                 .andExpect(status().isNotAcceptable())
                 .andReturn();
@@ -100,15 +100,15 @@ public class DistributionControllerEntryPropositionTest {
     @WithAnonymousUser
     @Test
     public void entryNoUser() throws Exception {
-        EntryProposition entryProposition = getEntryProposition();
-        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
+        ItemProposition itemProposition = getEntryProposition();
+        DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
-        distributionMessage.setContent(entryProposition);
-        Mockito.when(distributionService.addNewEntry(entryProposition)).thenReturn(distributionMessage);
-        mvc.perform(post("/entry/proposition")
+        distributionMessage.setContent(itemProposition);
+        Mockito.when(distributionService.addNewEntry(itemProposition)).thenReturn(distributionMessage);
+        mvc.perform(post("/item/proposition")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(entryProposition)))
+                .content(mapper.writeValueAsString(itemProposition)))
                 .andDo(print())
                 .andExpect(status().isUnauthorized())
                 .andReturn();

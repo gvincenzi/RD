@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(DistributionController.class)
 @ActiveProfiles("test")
-public class DistributionControllerEntryListTest {
+public class DistributionControllerItemListTest {
     @Autowired
     private MockMvc mvc;
 
@@ -37,12 +37,12 @@ public class DistributionControllerEntryListTest {
 
     @WithMockUser(value = "test")
     @Test
-    public void entryOk() throws Exception {
+    public void itemOk() throws Exception {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.LIST_ENTRIES_REQUEST);
         Mockito.when(distributionService.getListOfAllExistingEntries()).thenReturn(distributionMessage);
-        mvc.perform(post("/entry/list")
+        mvc.perform(post("/item/list")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(""))
@@ -53,11 +53,11 @@ public class DistributionControllerEntryListTest {
 
     @WithMockUser(value = "test")
     @Test
-    public void entryKo() throws Exception {
+    public void itemKo() throws Exception {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.LIST_ENTRIES_REQUEST);
         Mockito.when(distributionService.getListOfAllExistingEntries()).thenReturn(distributionMessage);
-        mvc.perform(post("/entry/list")
+        mvc.perform(post("/item/list")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(""))
@@ -68,11 +68,11 @@ public class DistributionControllerEntryListTest {
 
     @WithAnonymousUser
     @Test
-    public void entryNoUser() throws Exception {
+    public void itemNoUser() throws Exception {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.LIST_ENTRIES_REQUEST);
         Mockito.when(distributionService.getListOfAllExistingEntries()).thenReturn(distributionMessage);
-        mvc.perform(post("/entry/list")
+        mvc.perform(post("/item/list")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(""))

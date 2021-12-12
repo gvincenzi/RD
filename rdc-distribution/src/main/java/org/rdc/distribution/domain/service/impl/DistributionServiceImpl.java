@@ -1,7 +1,7 @@
 package org.rdc.distribution.domain.service.impl;
 
 import org.rdc.distribution.binding.message.DistributionMessage;
-import org.rdc.distribution.domain.entity.EntryProposition;
+import org.rdc.distribution.domain.entity.ItemProposition;
 import org.rdc.distribution.domain.service.DistributionService;
 import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,8 @@ public class DistributionServiceImpl implements DistributionService {
     DeliveryValenceService deliveryValenceService;
 
     @Override
-    public DistributionMessage<EntryProposition> addNewEntry(EntryProposition entryProposition) {
-        return deliveryValenceService.addNewEntry(entryProposition);
+    public DistributionMessage<ItemProposition> addNewEntry(ItemProposition itemProposition) {
+        return deliveryValenceService.addNewEntry(itemProposition);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class CustomWebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/entry/**").authenticated()
+                .antMatchers("/item/**").authenticated()
                 .antMatchers("/verify/**").authenticated()
                 .and()
                 .httpBasic();

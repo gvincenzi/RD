@@ -1,18 +1,18 @@
-package org.rdc.distribution.domain.entity;
+package org.rdc.node.binding.message.entity;
 
 import lombok.Data;
 
 @Data
-public class EntryProposition {
+public class ItemProposition {
     Participant owner;
     Document document;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EntryProposition)) return false;
+        if (!(o instanceof ItemProposition)) return false;
 
-        EntryProposition that = (EntryProposition) o;
+        ItemProposition that = (ItemProposition) o;
 
         if (!getOwner().equals(that.getOwner())) return false;
         return getDocument().equals(that.getDocument());

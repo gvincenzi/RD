@@ -13,7 +13,7 @@ import org.rdc.distribution.domain.entity.Document;
 import org.rdc.distribution.domain.entity.Participant;
 import org.rdc.distribution.domain.service.DistributionService;
 import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
-import org.rdc.distribution.domain.entity.EntryProposition;
+import org.rdc.distribution.domain.entity.ItemProposition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -44,30 +44,30 @@ public class DistributionServiceTest {
         return document;
     }
 
-    private EntryProposition getEntryProposition() throws JsonProcessingException {
-        EntryProposition entryProposition = new EntryProposition();
+    private ItemProposition getEntryProposition() throws JsonProcessingException {
+        ItemProposition itemProposition = new ItemProposition();
         String json = "{\"title\":\"Test document\",\"countryName\":\"Italy\","
                 + "\"countryPopulation\":60591668,\"male\":29665645,\"female\":30921362}";
-        entryProposition.setDocument(getNewDocument(json));
+        itemProposition.setDocument(getNewDocument(json));
         Participant owner = new Participant();
         owner.setMail("test@test.com");
-        entryProposition.setOwner(owner);
-        return entryProposition;
+        itemProposition.setOwner(owner);
+        return itemProposition;
     }
 
     @Test
     public void addNewEntry() throws JsonProcessingException {
-        EntryProposition entryProposition = getEntryProposition();
-        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
+        ItemProposition itemProposition = getEntryProposition();
+        DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
-        distributionMessage.setContent(entryProposition);
-        Mockito.when(deliveryValenceService.addNewEntry(entryProposition)).thenReturn(distributionMessage);
+        distributionMessage.setContent(itemProposition);
+        Mockito.when(deliveryValenceService.addNewEntry(itemProposition)).thenReturn(distributionMessage);
 
-        DistributionMessage<EntryProposition> proposed = distributionService.addNewEntry(entryProposition);
+        DistributionMessage<ItemProposition> proposed = distributionService.addNewEntry(itemProposition);
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.ENTRY_PROPOSITION,proposed.getType());
-        AssertionErrors.assertEquals("EntryProposition is not equal", entryProposition, proposed.getContent());
+        AssertionErrors.assertEquals("EntryProposition is not equal", itemProposition, proposed.getContent());
     }
 
     @Test

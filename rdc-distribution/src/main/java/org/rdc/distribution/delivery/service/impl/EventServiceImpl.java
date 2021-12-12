@@ -5,7 +5,7 @@ import org.rdc.distribution.binding.MQListener;
 import org.rdc.distribution.binding.message.DistributionEventType;
 import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.delivery.service.EventService;
-import org.rdc.distribution.domain.entity.EntryProposition;
+import org.rdc.distribution.domain.entity.ItemProposition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -23,7 +23,7 @@ public class EventServiceImpl implements EventService {
     UUID lastCorrelationID;
 
     @Override
-    public DistributionMessage<EntryProposition> sendEntryProposition(EntryProposition entryProposition) {
+    public DistributionMessage<ItemProposition> sendEntryProposition(ItemProposition itemProposition) {
         while(MQListener.correlationIDs.contains(lastCorrelationID)){
             log.info("Waiting last correlationID process");
             try {
@@ -33,11 +33,11 @@ public class EventServiceImpl implements EventService {
             }
         }
 
-        DistributionMessage<EntryProposition> distributionMessage = new DistributionMessage<>();
+        DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
-        distributionMessage.setContent(entryProposition);
-        Message<DistributionMessage<EntryProposition>> msg = MessageBuilder.withPayload(distributionMessage).build();
+        distributionMessage.setContent(itemProposition);
+        Message<DistributionMessage<ItemProposition>> msg = MessageBuilder.withPayload(distributionMessage).build();
         requestChannel.send(msg);
         lastCorrelationID = distributionMessage.getCorrelationID();
         MQListener.correlationIDs.add(lastCorrelationID);

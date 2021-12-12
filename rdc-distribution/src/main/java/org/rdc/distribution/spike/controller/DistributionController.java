@@ -2,7 +2,7 @@ package org.rdc.distribution.spike.controller;
 
 import lombok.extern.java.Log;
 import org.rdc.distribution.binding.message.DistributionMessage;
-import org.rdc.distribution.domain.entity.EntryProposition;
+import org.rdc.distribution.domain.entity.ItemProposition;
 import org.rdc.distribution.domain.service.DistributionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,16 +17,16 @@ public class DistributionController {
     @Autowired
     DistributionService distributionService;
 
-    @PostMapping("/entry/proposition")
-    public ResponseEntity<DistributionMessage<EntryProposition>> entryProposition(@RequestBody EntryProposition entryProposition) {
-        DistributionMessage<EntryProposition> distributionMessage = distributionService.addNewEntry(entryProposition);
+    @PostMapping("/item/proposition")
+    public ResponseEntity<DistributionMessage<ItemProposition>> itemProposition(@RequestBody ItemProposition itemProposition) {
+        DistributionMessage<ItemProposition> distributionMessage = distributionService.addNewEntry(itemProposition);
         return distributionMessage.getCorrelationID() != null ?
             new ResponseEntity<>(distributionMessage, HttpStatus.OK) :
             new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @PostMapping("/entry/list")
-    public ResponseEntity<DistributionMessage<Void>> getListOfAllExistingEntries() {
+    @PostMapping("/item/list")
+    public ResponseEntity<DistributionMessage<Void>> getListOfAllExistingItems() {
         DistributionMessage<Void> distributionMessage = distributionService.getListOfAllExistingEntries();
         return distributionMessage.getCorrelationID() != null ?
                 new ResponseEntity<>(distributionMessage, HttpStatus.OK) :

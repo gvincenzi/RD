@@ -5,7 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.java.Log;
 import org.rdc.node.binding.message.DistributionEventType;
 import org.rdc.node.binding.message.DistributionMessage;
-import org.rdc.node.binding.message.entity.EntryProposition;
+import org.rdc.node.binding.message.entity.ItemProposition;
 import org.rdc.node.exception.RDCNodeException;
 import org.rdc.node.item.RDCItem;
 import org.rdc.node.service.impl.RDCItemService;
@@ -38,7 +38,7 @@ public class MQListener {
     }
 
     @StreamListener(target = "requestChannel")
-    public void processEntryResponse(DistributionMessage<EntryProposition> msg) {
+    public void processEntryResponse(DistributionMessage<ItemProposition> msg) {
         if(DistributionEventType.ENTRY_PROPOSITION.equals(msg.getType()) && msg.getContent() != null){
             RDCItem rdcItem = null;
             try {
