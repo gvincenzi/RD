@@ -62,9 +62,9 @@ public class DistributionServiceTest {
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(itemProposition);
-        Mockito.when(deliveryValenceService.addNewEntry(itemProposition)).thenReturn(distributionMessage);
+        Mockito.when(deliveryValenceService.proposeItem(itemProposition)).thenReturn(distributionMessage);
 
-        DistributionMessage<ItemProposition> proposed = distributionService.addNewEntry(itemProposition);
+        DistributionMessage<ItemProposition> proposed = distributionService.proposeItem(itemProposition);
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.ENTRY_PROPOSITION,proposed.getType());
         AssertionErrors.assertEquals("EntryProposition is not equal", itemProposition, proposed.getContent());

@@ -61,6 +61,11 @@ public abstract class RDCItemService implements IRDCItemService {
 	}
 
 	@Override
+	public List<RDCItem> findAll() {
+		return rdcItemRepository.findAll();
+	}
+
+	@Override
 	public Boolean validate(Iterable<RDCItem> items) throws RDCNodeException {
 		if (items == null) {
 			throw new RDCNodeException("Iterable items collection is mandatory");

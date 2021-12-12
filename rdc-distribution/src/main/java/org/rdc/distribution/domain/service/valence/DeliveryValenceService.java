@@ -4,7 +4,7 @@ import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.domain.entity.ItemProposition;
 
 public interface DeliveryValenceService {
-    DistributionMessage<ItemProposition> addNewEntry(ItemProposition itemProposition);
+    DistributionMessage<ItemProposition> proposeItem(ItemProposition itemProposition);
     DistributionMessage<Void> getListOfAllExistingEntries();
     DistributionMessage<Void> verifyRegistryIntegrity();
 }

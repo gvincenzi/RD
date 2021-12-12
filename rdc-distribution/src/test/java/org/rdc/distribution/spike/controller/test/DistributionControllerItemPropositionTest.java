@@ -70,7 +70,7 @@ public class DistributionControllerItemPropositionTest {
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(itemProposition);
-        Mockito.when(distributionService.addNewEntry(itemProposition)).thenReturn(distributionMessage);
+        Mockito.when(distributionService.proposeItem(itemProposition)).thenReturn(distributionMessage);
         mvc.perform(post("/item/proposition")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +87,7 @@ public class DistributionControllerItemPropositionTest {
         DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(itemProposition);
-        Mockito.when(distributionService.addNewEntry(itemProposition)).thenReturn(distributionMessage);
+        Mockito.when(distributionService.proposeItem(itemProposition)).thenReturn(distributionMessage);
         mvc.perform(post("/item/proposition")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,7 +104,7 @@ public class DistributionControllerItemPropositionTest {
         DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(itemProposition);
-        Mockito.when(distributionService.addNewEntry(itemProposition)).thenReturn(distributionMessage);
+        Mockito.when(distributionService.proposeItem(itemProposition)).thenReturn(distributionMessage);
         mvc.perform(post("/item/proposition")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)

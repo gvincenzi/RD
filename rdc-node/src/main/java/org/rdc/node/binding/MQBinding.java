@@ -9,6 +9,9 @@ public interface MQBinding {
     @Input("requestChannel")
     SubscribableChannel requestChannel();
 
+    @Input("requestIntegrityChannel")
+    SubscribableChannel requestIntegrityChannel();
+
     @Output("responseChannel")
     MessageChannel responseChannel();
 

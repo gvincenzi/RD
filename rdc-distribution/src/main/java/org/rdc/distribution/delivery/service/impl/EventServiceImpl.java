@@ -20,18 +20,14 @@ public class EventServiceImpl implements EventService {
     @Autowired
     MessageChannel requestChannel;
 
+    @Autowired
+    MessageChannel requestIntegrityChannel;
+
     UUID lastCorrelationID;
 
     @Override
-    public DistributionMessage<ItemProposition> sendEntryProposition(ItemProposition itemProposition) {
-        while(MQListener.correlationIDs.contains(lastCorrelationID)){
-            log.info("Waiting last correlationID process");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                log.severe(e.getMessage());
-            }
-        }
+    public DistributionMessage<ItemProposition> sendItemProposition(ItemProposition itemProposition) {
+        waitingForLastCorrelationIDProcessing();
 
         DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
@@ -45,13 +41,27 @@ public class EventServiceImpl implements EventService {
         return distributionMessage;
     }
 
+    private void waitingForLastCorrelationIDProcessing() {
+        while(MQListener.correlationIDs.contains(lastCorrelationID)){
+            log.info("Waiting last correlationID process");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                log.severe(e.getMessage());
+            }
+        }
+    }
+
     private DistributionMessage<Void> getVoidDistributionMessage(DistributionEventType listEntriesRequest) {
+        waitingForLastCorrelationIDProcessing();
+
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(listEntriesRequest);
         Message<DistributionMessage<Void>> msg = MessageBuilder.withPayload(distributionMessage).build();
-        requestChannel.send(msg);
-
+        requestIntegrityChannel.send(msg);
+        lastCorrelationID = distributionMessage.getCorrelationID();
+        MQListener.correlationIDs.add(lastCorrelationID);
         return distributionMessage;
     }
 

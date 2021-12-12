@@ -66,7 +66,7 @@ public class EventServiceTest {
         ItemProposition itemProposition = getEntryProposition();
         Mockito.when(requestChannel.send(Mockito.any(Message.class))).thenReturn(Boolean.TRUE);
 
-        DistributionMessage<ItemProposition> proposed = eventService.sendEntryProposition(itemProposition);
+        DistributionMessage<ItemProposition> proposed = eventService.sendItemProposition(itemProposition);
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.ENTRY_PROPOSITION,proposed.getType());
         AssertionErrors.assertEquals("EntryProposition is not equal", itemProposition, proposed.getContent());

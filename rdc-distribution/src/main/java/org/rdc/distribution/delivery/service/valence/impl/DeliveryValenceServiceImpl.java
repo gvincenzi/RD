@@ -15,8 +15,8 @@ public class DeliveryValenceServiceImpl implements DeliveryValenceService {
     EventService eventService;
 
     @Override
-    public DistributionMessage<ItemProposition> addNewEntry(ItemProposition itemProposition) {
-        return eventService.sendEntryProposition(itemProposition);
+    public DistributionMessage<ItemProposition> proposeItem(ItemProposition itemProposition) {
+        return eventService.sendItemProposition(itemProposition);
     }
 
     @Override
