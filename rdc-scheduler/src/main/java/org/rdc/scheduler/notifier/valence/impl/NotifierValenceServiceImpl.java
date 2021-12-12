@@ -1,7 +1,7 @@
 package org.rdc.scheduler.notifier.valence.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.rdc.scheduler.domain.entity.Entry;
+import org.rdc.scheduler.domain.entity.RDCItem;
 import org.rdc.scheduler.domain.entity.Participant;
 import org.rdc.scheduler.notifier.valence.NotifierValenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +22,12 @@ public class NotifierValenceServiceImpl implements NotifierValenceService {
     public String templateEntrySubject;
 
     @Override
-    public void sendEntryResponseMail(Entry entry, Participant... participants) {
+    public void sendEntryResponseMail(RDCItem RDCItem, Participant... participants) {
         for (Participant participant : participants) {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(participant.getMail());
             message.setSubject(templateEntrySubject);
-            message.setText(templateEntryMessage != null && templateEntryMessage.getText() != null ? String.format(templateEntryMessage.getText(), entry.getDocument()) : StringUtils.EMPTY);
+            message.setText(templateEntryMessage != null && templateEntryMessage.getText() != null ? String.format(templateEntryMessage.getText(), RDCItem.getDocument()) : StringUtils.EMPTY);
             javaMailSender.send(message);
         }
     }

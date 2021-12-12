@@ -7,7 +7,7 @@ import lombok.extern.java.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.rdc.scheduler.domain.entity.Document;
-import org.rdc.scheduler.domain.entity.Entry;
+import org.rdc.scheduler.domain.entity.RDCItem;
 import org.rdc.scheduler.notifier.valence.NotifierValenceService;
 import org.rdc.scheduler.domain.entity.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
-import java.util.Random;
 import java.util.UUID;
 
 @Log
@@ -42,17 +41,17 @@ public class NotifierValenceServiceTest {
         return document;
     }
 
-    private Entry getEntry() throws JsonProcessingException {
-        Entry entry = new Entry();
+    private RDCItem getEntry() throws JsonProcessingException {
+        RDCItem RDCItem = new RDCItem();
         String json = "{\"title\":\"Test document\",\"countryName\":\"Italy\","
                 + "\"countryPopulation\":60591668,\"male\":29665645,\"female\":30921362}";
-        entry.setDocument(getNewDocument(json));
+        RDCItem.setDocument(getNewDocument(json));
         Participant owner = new Participant();
         owner.setMail("test@test.com");
-        entry.setOwner(owner);
-        entry.setId(UUID.randomUUID().toString());
-        entry.setInsertionInstant(Instant.now());
-        return entry;
+        RDCItem.setOwner(owner);
+        RDCItem.setId(UUID.randomUUID().toString());
+        RDCItem.setTimestamp(Instant.now());
+        return RDCItem;
     }
 
     @Test
