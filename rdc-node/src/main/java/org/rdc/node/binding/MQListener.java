@@ -6,8 +6,10 @@ import lombok.extern.java.Log;
 import org.rdc.node.binding.message.DistributionEventType;
 import org.rdc.node.binding.message.DistributionMessage;
 import org.rdc.node.binding.message.entity.ItemProposition;
+import org.rdc.node.client.SpikeClient;
 import org.rdc.node.domain.entity.RDCItem;
 import org.rdc.node.exception.RDCNodeException;
+import org.rdc.node.service.IRDCItemService;
 import org.rdc.node.service.impl.RDCItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,20 +27,13 @@ import java.util.List;
 @EnableBinding(MQBinding.class)
 public class MQListener {
     @Autowired
-    RDCItemService rdcItemService;
+    IRDCItemService rdcItemService;
 
     @Autowired
     MessageChannel responseChannel;
 
     @Value("${spring.application.name}")
     private String instanceName;
-
-    @Bean
-    ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        return objectMapper;
-    }
 
     @StreamListener(target = "requestChannel")
     public void processItemProposition(DistributionMessage<ItemProposition> msg) {
@@ -71,9 +66,14 @@ public class MQListener {
             try {
                 if (rdcItemService.forceAddItem(msg.getContent().iterator().next())) {
                     log.info("RDC correctly validated");
-                } else {
-                    log.severe("RDC is corrupted");
                 }
+            } catch (RDCNodeException e) {
+                log.severe(e.getMessage());
+            }
+        } else if (DistributionEventType.INTEGRITY_VERIFICATION.equals(msg.getType()) && msg.getContent() != null && !instanceName.equals(msg.getInstanceName())) {
+            try {
+                rdcItemService.init(msg.getContent());
+                log.info("RDC correctly validated");
             } catch (RDCNodeException e) {
                 log.severe(e.getMessage());
             }

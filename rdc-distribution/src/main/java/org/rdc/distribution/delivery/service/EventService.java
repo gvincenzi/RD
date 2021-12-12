@@ -5,6 +5,5 @@ import org.rdc.distribution.domain.entity.ItemProposition;
 
 public interface EventService {
     DistributionMessage<ItemProposition> sendItemProposition(ItemProposition itemProposition);
-    DistributionMessage<Void> sendListEntriesRequest();
     DistributionMessage<Void> sendIntegrityVerificationRequest();
 }

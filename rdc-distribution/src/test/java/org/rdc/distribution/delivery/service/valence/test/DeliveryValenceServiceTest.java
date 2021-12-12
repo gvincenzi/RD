@@ -70,17 +70,6 @@ public class DeliveryValenceServiceTest {
     }
 
     @Test
-    public void getListOfAllExistingEntries() {
-        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
-        distributionMessage.setType(DistributionEventType.LIST_ENTRIES_REQUEST);
-        distributionMessage.setCorrelationID(UUID.randomUUID());
-        Mockito.when(eventService.sendListEntriesRequest()).thenReturn(distributionMessage);
-        DistributionMessage<Void> proposed = deliveryValenceService.getListOfAllExistingEntries();
-        AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
-        AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.LIST_ENTRIES_REQUEST,proposed.getType());
-    }
-
-    @Test
     public void verifyRegistryIntegrity() {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);

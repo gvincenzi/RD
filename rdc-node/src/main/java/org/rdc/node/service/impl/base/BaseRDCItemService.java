@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class BaseRDCItemService extends RDCItemService {
 	private static final String REGEX_DIGIT = "[0-9].*";
-	
+
 	@Override
 	public boolean isHashResolved(RDCItem rdcItem, Integer difficultLevel) {
 		List<Integer> digits = new ArrayList<>(difficultLevel);

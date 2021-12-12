@@ -18,11 +18,6 @@ public class DistributionServiceImpl implements DistributionService {
     }
 
     @Override
-    public DistributionMessage<Void> getListOfAllExistingEntries() {
-        return deliveryValenceService.getListOfAllExistingEntries();
-    }
-
-    @Override
     public DistributionMessage<Void> verifyRegistryIntegrity() {
         return deliveryValenceService.verifyRegistryIntegrity();
     }

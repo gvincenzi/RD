@@ -12,4 +12,6 @@ public interface IRDCItemService {
 	Boolean forceAddItem(RDCItem rdcItem) throws RDCNodeException;
 	Boolean validate(Iterable<RDCItem> items) throws RDCNodeException;
 	List<RDCItem> findAll();
+	void init(List<RDCItem> content) throws RDCNodeException;
+	void startup() throws RDCNodeException;
 }

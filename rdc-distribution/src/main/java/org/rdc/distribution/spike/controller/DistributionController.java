@@ -35,19 +35,10 @@ public class DistributionController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<?> get(@PathVariable UUID uuid) {
+    public ResponseEntity<DistributionMessage> get(@PathVariable UUID uuid) {
         if(ControllerResponseCache.cache.get(uuid) != null){
             return new ResponseEntity<>(ControllerResponseCache.cache.remove(uuid), HttpStatus.OK);
-        } else return new ResponseEntity<>(uuid, HttpStatus.NO_CONTENT);
-    }
-
-    @PostMapping("/item/list")
-    public ResponseEntity<DistributionMessage<Void>> getListOfAllExistingItems() {
-        DistributionMessage<Void> distributionMessage = distributionService.getListOfAllExistingEntries();
-        ControllerResponseCache.cache.put(distributionMessage.getCorrelationID(),null);
-        return distributionMessage.getCorrelationID() != null ?
-                new ResponseEntity<>(distributionMessage, HttpStatus.OK) :
-                new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
+        } else return new ResponseEntity(uuid, HttpStatus.NO_CONTENT);
     }
 
 }

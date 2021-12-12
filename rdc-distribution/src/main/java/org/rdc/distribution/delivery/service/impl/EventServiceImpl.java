@@ -66,11 +66,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public DistributionMessage<Void> sendListEntriesRequest() {
-        return getVoidDistributionMessage(DistributionEventType.LIST_ENTRIES_REQUEST);
-    }
-
-    @Override
     public DistributionMessage<Void> sendIntegrityVerificationRequest() {
         return getVoidDistributionMessage(DistributionEventType.INTEGRITY_VERIFICATION);
     }

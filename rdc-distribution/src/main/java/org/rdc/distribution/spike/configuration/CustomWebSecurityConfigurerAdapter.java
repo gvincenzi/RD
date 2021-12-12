@@ -34,7 +34,6 @@ public class CustomWebSecurityConfigurerAdapter
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/item/**").authenticated()
-                .antMatchers("/verify/**").authenticated()
                 .and()
                 .httpBasic();
     }

@@ -35,7 +35,6 @@ public class DistributionControllerIntegrityValidationTest {
     @MockBean
     DistributionService distributionService;
 
-    @WithMockUser(value = "test")
     @Test
     public void entryOk() throws Exception {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
@@ -51,7 +50,6 @@ public class DistributionControllerIntegrityValidationTest {
                 .andReturn();
     }
 
-    @WithMockUser(value = "test")
     @Test
     public void entryKo() throws Exception {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
@@ -63,21 +61,6 @@ public class DistributionControllerIntegrityValidationTest {
                 .content(""))
                 .andDo(print())
                 .andExpect(status().isNotAcceptable())
-                .andReturn();
-    }
-
-    @WithAnonymousUser
-    @Test
-    public void entryNoUser() throws Exception {
-        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
-        distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
-        Mockito.when(distributionService.verifyRegistryIntegrity()).thenReturn(distributionMessage);
-        mvc.perform(post("/verify")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(""))
-                .andDo(print())
-                .andExpect(status().isUnauthorized())
                 .andReturn();
     }
 }

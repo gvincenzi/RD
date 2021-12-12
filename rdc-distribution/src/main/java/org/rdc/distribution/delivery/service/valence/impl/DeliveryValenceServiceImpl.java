@@ -20,11 +20,6 @@ public class DeliveryValenceServiceImpl implements DeliveryValenceService {
     }
 
     @Override
-    public DistributionMessage<Void> getListOfAllExistingEntries() {
-        return eventService.sendListEntriesRequest();
-    }
-
-    @Override
     public DistributionMessage<Void> verifyRegistryIntegrity() {
         return eventService.sendIntegrityVerificationRequest();
     }
