@@ -31,5 +31,9 @@ difficult:
   level: 1
 
 required:
+  startup: false
   validation:
     number: 0
+
+spike:
+  url: http://localhost:8881/rdc/distribution/spike

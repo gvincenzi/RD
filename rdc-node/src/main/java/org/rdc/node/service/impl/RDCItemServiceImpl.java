@@ -10,19 +10,16 @@ import org.rdc.node.client.SpikeClient;
 import org.rdc.node.domain.entity.RDCItem;
 import org.rdc.node.exception.RDCNodeException;
 import org.rdc.node.repository.RDCItemRepository;
-import org.rdc.node.service.IRDCItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 @Log
-public abstract class RDCItemService implements IRDCItemService {
+public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItemService {
     private static final String GENESIS = "GENESIS";
 
     @Autowired

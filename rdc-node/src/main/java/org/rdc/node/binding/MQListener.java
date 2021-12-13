@@ -6,7 +6,7 @@ import org.rdc.node.binding.message.DistributionMessage;
 import org.rdc.node.binding.message.entity.ItemProposition;
 import org.rdc.node.domain.entity.RDCItem;
 import org.rdc.node.exception.RDCNodeException;
-import org.rdc.node.service.IRDCItemService;
+import org.rdc.node.service.RDCItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -22,7 +22,7 @@ import java.util.List;
 @EnableBinding(MQBinding.class)
 public class MQListener {
     @Autowired
-    IRDCItemService rdcItemService;
+    RDCItemService rdcItemService;
 
     @Autowired
     MessageChannel responseChannel;

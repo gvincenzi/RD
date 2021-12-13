@@ -2,7 +2,7 @@ package org.rdc.node.service.impl.base;
 
 import org.rdc.node.exception.RDCNodeException;
 import org.rdc.node.domain.entity.RDCItem;
-import org.rdc.node.service.impl.RDCItemService;
+import org.rdc.node.service.impl.RDCItemServiceImpl;
 import org.rdc.node.util.NodeUtils;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BaseRDCItemService extends RDCItemService {
+public class BaseRDCItemServiceImpl extends RDCItemServiceImpl {
 	private static final String REGEX_DIGIT = "[0-9].*";
 
 	@Override
