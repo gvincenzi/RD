@@ -70,25 +70,22 @@ public abstract class RDCItemService implements IRDCItemService {
     @Override
     public Boolean forceAddItem(RDCItem rdcItem) throws RDCNodeException {
         rdcItemRepository.save(rdcItem);
-        return validate(rdcItemRepository.findAll());
+        return validate(rdcItemRepository.findAllByOrderByTimestampAsc());
     }
 
     @Override
     public List<RDCItem> findAll() {
-        return rdcItemRepository.findAll();
+        return rdcItemRepository.findAllByOrderByTimestampAsc();
     }
 
     @Override
-    public Boolean validate(Iterable<RDCItem> items) throws RDCNodeException {
-        if (items == null) {
+    public Boolean validate(List<RDCItem> rdcItems) throws RDCNodeException {
+        if (rdcItems == null) {
             throw new RDCNodeException("Iterable items collection is mandatory");
         }
         RDCItem currentItem;
         RDCItem previousItem;
 
-        List<RDCItem> rdcItems = new ArrayList<>();
-
-        rdcItems.forEach(item -> rdcItems.add(item));
         Collections.sort(rdcItems);
 
         Boolean result = true;

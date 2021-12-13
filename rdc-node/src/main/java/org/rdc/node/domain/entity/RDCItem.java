@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -21,7 +22,7 @@ public class RDCItem implements Comparable<RDCItem>{
     private Integer nonce;
     private org.rdc.node.binding.message.entity.Document document;
     private Participant owner;
-    private Set<String> validators;
+    private Set<String> validators = new HashSet<>();
     private String nodeIstanceName;
 
     @Transient

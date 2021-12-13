@@ -19,8 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Log
 @RunWith(SpringRunner.class)
@@ -35,7 +34,7 @@ public class RDCItemServiceTest {
 	
 	@Before
 	public void init(){
-		Mockito.when(rdcItemRepository.findAll()).thenReturn(new ArrayList<>());
+		Mockito.when(rdcItemRepository.findAllByOrderByTimestampAsc()).thenReturn(new ArrayList<>());
 		Mockito.when(rdcItemRepository.save(Mockito.any(RDCItem.class))).then(i -> i.getArgument(0));
 	}
 	
@@ -51,7 +50,7 @@ public class RDCItemServiceTest {
 	
 	@Test
 	public void test() throws RDCNodeException {
-		Set<RDCItem> items = new HashSet<>();
+		List<RDCItem> items = new ArrayList<>();
 		
 		long now = System.currentTimeMillis();
 		Mockito.when(rdcItemRepository.findTopByOrderByTimestampDesc()).thenReturn(null);

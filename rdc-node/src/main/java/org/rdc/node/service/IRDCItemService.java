@@ -10,7 +10,7 @@ import java.util.List;
 public interface IRDCItemService {
 	RDCItem add(Document document, Participant owner) throws RDCNodeException;
 	Boolean forceAddItem(RDCItem rdcItem) throws RDCNodeException;
-	Boolean validate(Iterable<RDCItem> items) throws RDCNodeException;
+	Boolean validate(List<RDCItem> rdcItems) throws RDCNodeException;
 	List<RDCItem> findAll();
 	void init(List<RDCItem> content) throws RDCNodeException;
 	void startup() throws RDCNodeException;
