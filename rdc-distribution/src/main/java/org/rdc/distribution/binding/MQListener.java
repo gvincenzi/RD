@@ -6,6 +6,7 @@ import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.delivery.service.DistributionConcurrenceService;
 import org.rdc.distribution.domain.entity.ItemProposition;
 import org.rdc.distribution.domain.entity.RDCItem;
+import org.rdc.distribution.exception.RDCDistributionException;
 import org.rdc.distribution.spike.controller.ControllerResponseCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -35,7 +36,11 @@ public class MQListener {
         } else if(DistributionEventType.INTEGRITY_VERIFICATION.equals(msg.getType()) && msg.getContent() != null){
             log.info(String.format("Correlation ID [%s] processed",msg.getCorrelationID()));
             DistributionConcurrenceService.getCorrelationIDs().remove(msg.getCorrelationID());
-            ControllerResponseCache.cache.put(msg.getCorrelationID(),msg);
+            try {
+                ControllerResponseCache.putInCache(msg);
+            } catch (RDCDistributionException e) {
+                log.severe(e.getMessage());
+            }
             Message<DistributionMessage<List<RDCItem>>> message = MessageBuilder.withPayload(msg).build();
             distributionChannel.send(message);
         }

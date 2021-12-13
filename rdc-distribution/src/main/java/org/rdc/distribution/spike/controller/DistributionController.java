@@ -4,6 +4,7 @@ import lombok.extern.java.Log;
 import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.domain.entity.ItemProposition;
 import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
+import org.rdc.distribution.exception.RDCDistributionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,9 @@ public class DistributionController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<DistributionMessage<Void>> integrityVerification() {
+    public ResponseEntity<DistributionMessage<Void>> integrityVerification() throws RDCDistributionException {
         DistributionMessage<Void> distributionMessage = deliveryValenceService.sendIntegrityVerificationRequest();
-        ControllerResponseCache.cache.put(distributionMessage.getCorrelationID(),null);
+        ControllerResponseCache.putInCache(distributionMessage);
         return distributionMessage.getCorrelationID() != null ?
                 new ResponseEntity<>(distributionMessage, HttpStatus.OK) :
                 new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
@@ -36,8 +37,8 @@ public class DistributionController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<DistributionMessage> get(@PathVariable UUID uuid) {
-        if(ControllerResponseCache.cache.get(uuid) != null){
-            return new ResponseEntity<>(ControllerResponseCache.cache.remove(uuid), HttpStatus.OK);
+        if(ControllerResponseCache.getFromCache(uuid) != null){
+            return new ResponseEntity<>(ControllerResponseCache.removeFromCache(uuid), HttpStatus.OK);
         } else return new ResponseEntity(uuid, HttpStatus.NO_CONTENT);
     }
 

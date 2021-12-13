@@ -57,7 +57,7 @@ public class DistributionControllerGetUUIDTest {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
-        ControllerResponseCache.cache.put(distributionMessage.getCorrelationID(),distributionMessage);
+        ControllerResponseCache.putInCache(distributionMessage);
         Mockito.when(deliveryValenceService.sendIntegrityVerificationRequest()).thenReturn(distributionMessage);
         MvcResult mvcResult = mvc.perform(get("/" + distributionMessage.getCorrelationID()))
                 .andDo(print())
