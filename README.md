@@ -153,3 +153,45 @@ public class BaseRDCItemServiceImpl extends RDCItemServiceImpl {
 }
 ```
 [Qui l'implementazione dell'algoritmo](https://github.com/gvincenzi/RDC/tree/master/rdc-node/src/main/java/org/rdc/node/service/impl/base/BaseRDCItemServiceImpl.java)
+
+##Come accendere un RDC
+Nell'esempio che presentiamo come POC, si realizza lo schema presentato nella presentazione del progetto. I microseervizi e i componenti che realizzano l'architettura sono:
+- **3 database MongoDB** con una Collection "rdc_item"
+- **1 server RabbitMQ** con 4 exchanges
+    - distributionChannel
+    - requestChannel
+    - requestIntegrityChannel
+    - responseChannel
+- Un microservizio **Eureka Service Registry** denominato ***rdc-service-registry***
+- Il **sistema di accesso qualificat**o è realizzato da un microsevizio Gateway denominato ***rdc-spike***
+- Il **dispositivo di distribuzione** è realizzato dal microservizio ***rdc-distribution***
+- Il **dispositivo di programmazione** è realizzato dal microservizio ***rdc-scheduler***
+- Ogni **copia del registro** è gestita da un'instanza del microservizio ***rdc-node***
+
+##Procedura di startup
+1. Ci si assicura che il server RabbitMQ sia attivo
+2. Ci si assicura che il server MongoDB sia pronto
+3. Si fa partire il microservizio ***rdc-service-registry*** e possiamo controllarne il suo stato all'indirizzo http://localhost:8880
+![Screenshot Eureka Server](src/main/resources/img/eureka.png?raw=true)
+Man mano si potranno verificare tutti i servizi che si registreranno ad uno ad uno sull'interfaccia.
+4. Si fa partire il microservizio ***rdc-spike***
+5. Si fa partire il microservizio ***rdc-distribution***
+6. Si fa partire il microservizio ***rdc-scheduler***
+7. Si fanno partire quante istanze si vuole del microservizio ***rdc-node*** (alla prima esecuzione avranno tutti il parametro required.startup = false)
+
+##Esempio di inserimento di un documento
+Usando un applicazione come Postman, realizziamo una chiamata al servizio REST per la proposta dell'inserimento di un nuovo documento.
+La chiamata POST avrà un header per la sicurezza, nel caso del POC è una Basic Auth.
+![POST Header per proporre un nuovo documento](src/main/resources/img/postman_header.png?raw=true)
+![POST Body per proporre un nuovo documento](src/main/resources/img/postman_body.png?raw=true)
+
+Dopo aver inviato la richiesta, possiamo controllare il percorso della nostra domanda nell'exchange ***requestChannel***.
+Qui verrà consumato da uno solo dei nodi tra A, B e C e invierà la risposta con il documento inserito nel ***responseChannel***.
+Il dispositivo di distribuzione lo invirà infine nel ***distributionChannel*** per fare in modo che gli altri nodi possano aggiornarsi con il nuovo documento.
+![RabbitMQ : messaggio in transito nel requestChannel](src/main/resources/img/amqp_request.png?raw=true)
+![RabbitMQ : messaggio in transito nel responseChannel](src/main/resources/img/amqp_response.png?raw=true)
+![RabbitMQ : messaggio in transito nel distributionChannel](src/main/resources/img/amqp_distribution.png?raw=true)
+
+Potremo dunque controllare i databases: qui troveremo lo stesso documento inserito con informazioni identiche nei tre databases diversi.
+Nel caso di esempio la richiesta è stata consumata dal nodo A, ma troviamo il documento anche in B e C.
+![MongoDB : una delle copie con il documento inserito](src/main/resources/img/mongodb-after-distribution.png?raw=true)
