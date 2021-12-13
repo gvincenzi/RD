@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.rdc.node.RDCNodeApplication;
 import org.rdc.node.binding.message.entity.Document;
 import org.rdc.node.binding.message.entity.Participant;
+import org.rdc.node.client.SpikeClient;
 import org.rdc.node.domain.entity.RDCItem;
 import org.rdc.node.exception.RDCNodeException;
 import org.rdc.node.repository.RDCItemRepository;
@@ -34,6 +35,9 @@ public class RDCItemServiceImplTest {
 	
 	@MockBean
 	RDCItemRepository rdcItemRepository;
+
+	@MockBean
+	SpikeClient spikeClient;
 	
 	@Before
 	public void init(){
