@@ -21,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -100,7 +101,7 @@ public class RDCItemServiceImplTest {
 		RDCItem item2 = serviceUnderTest.add(getDocumentMock("Item 2"), getUserMock());
 		log.info("Item mined in "+ (System.currentTimeMillis()-now) + "ms >> " + item2);
 
-		item2.setTimestamp(Instant.now());
+		item2.setTimestamp(item2.getTimestamp().plus(Period.ofDays(3)));
 
 		items.add(item);
 		items.add(item1);
