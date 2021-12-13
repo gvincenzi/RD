@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.rdc.distribution.binding.message.DistributionEventType;
 import org.rdc.distribution.binding.message.DistributionMessage;
+import org.rdc.distribution.delivery.service.DistributionConcurrenceService;
 import org.rdc.distribution.delivery.service.EventService;
 import org.rdc.distribution.domain.entity.Document;
 import org.rdc.distribution.domain.entity.ItemProposition;
@@ -45,6 +46,9 @@ public class EventServiceTest {
     @MockBean
     @Qualifier("responseChannel")
     SubscribableChannel responseChannel;
+
+    @MockBean
+    DistributionConcurrenceService distributionConcurrenceService;
 
     protected static Document getNewDocument(String json) throws JsonProcessingException {
         log.info(json);
