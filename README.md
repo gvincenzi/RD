@@ -11,10 +11,17 @@ Questo codice ha l'obiettivo di fornire una base su cui implementare il proprio 
 Le tecnologie e i framework utilizzati in questo progetto sono principalmente:
 - Maven
 - Spring Boot
-- Spring Cloud (Netflix Eureka Server, Zuul, Hystrix, Stream Rabbit)
+- Spring Cloud (Netflix Eureka Server, Zuul, Hystrix, Stream Rabbit, Feign Client)
 - Spring Data REST
 - Spring Security
 - Swagger
+
+## Tecnologie di terze parti usate per far funzionare un POC basata su questa architettura
+Il sistema necessita di due componenti infrastrutturali per rendere operativa un'instanza di un RDC :
+- Un server per le comunicazioni AMQP tra atomi e tra molecole
+> Per il POC ho usato [CloudAMQP](https://www.cloudamqp.com/)
+- Un database NoSQL
+> Per il POC ho usato un [MongoDB](https://www.mongodb.com/)
 
 ## Build Information
 ![example workflow](https://github.com/gvincenzi/RDC/actions/workflows/maven.yml/badge.svg)
@@ -67,4 +74,82 @@ La molecola si compone di un solo atomo :
 ![Interazioni con l'esterno del nodo di un RDC](src/main/resources/img/node_schema.png?raw=true)
 
 [Qui l'implementazione del nodo di un RDC](https://github.com/gvincenzi/RDC/tree/master/rdc-node).
- 
+
+##Dispositivo di flusso documentale
+###Protocollo AMQP
+Il dispositivo di flusso documentale si realizza attraverso l'utiliszzo di un server che dia la possibilità di scambiare messaggi tramite il protocollo [AMQP](https://it.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol).
+Lo scopo è quello di far comunicare le molecole tra di loro, non attraverso una comunicazione sincrona, ma attraverso lo scambio di messaggi su exchanges dedicati.
+
+###Exchanges e queues utilizzate
+Il Sistema di comunicazione tra i dispositivi si basa, nella sua implementazione di base, su 4 exchanges:
+- RequestChannel
+>Il dispositivo di distribuzione scrive in questo canale le proposte di inserimento di nuovi documenti. Una richiesta sarà corredata da un identificativo per riconoscerne la risposta sul canale dedicato. Il dispositivo di distribuzione attende la risposta prima di inviare altre richieste di questo tipo.
+>>Tutti i nodi dell'RDC sono in ascolto del topic ma un messaggio sarà consumato da una solo istanza (condividono la stessa coda)
+
+- RequestIntegrityChannel
+>Il dispositivo di distribuzione scrive in questo canale le richiesta di verifica dell'integrità della catena. Una richiesta sarà corredata da un identificativo per riconoscerne la risposta sul canale dedicato. Il dispositivo di distribuzione attende la risposta prima di inviare altre richieste di questo tipo.
+>>Tutti i nodi dell'RDC sono in ascolto del topic ma un messaggio sarà consumato da una solo istanza (condividono la stessa coda)
+
+- ResponseChannel
+>I noi dell'RDC inviano le risposte alla richieste, sia di inserimento di nuovi documenti che di validazione dell'integrità del registro, in questo canale.
+>Il dispositivo di distribuzione e il dispositivo di programmazione consumano i messaggi che transitano in questo exchange.
+
+- DistributionChannel
+>Il dispositivo di distribuzione scrive in questo canale le informazioni che devono essere distribuite a tutti i nodi dell'RDC. Nell'implementazione di base ad ogni inseriemento di un nuovo documento ***(RDCItem)***, l'informazione viene distribuita a tutti i nodi perché possano inserirlo nelle loro copie della base di dati.
+
+![Exchanges del dispositivo di flusso documentale (RabbitMQ nella versione del POC)](src/main/resources/img/flow_exchanges.png?raw=true)
+
+##Startup di un nodo
+Quando un nuovo nodo viene lanciato, nelle proprietà Yammel della molecola si puo' precisare che il nodo necessità di un processo di startup: la molecola utilizzerà lo spike della macromolecola per richiedere una verifica dell'integrità della catena; in risposta riceverà un CorrelationID con cui potrà richiedere subito dopo il risultato della verifica che contiene anche l'intera copia del registro.
+Il nodo verificherà che la parte del registro che eventualmente conosce già deve essere rimasta intatta (in caso contrario il registro sarà definito corrotto) e inserirà il resto del registro che ancora non conosce. 
+![Due database di due nodi A e B di uno stesso RDC (due DB nello stesso Cluster nella versione del POC)](src/main/resources/img/mongodb-databases.png?raw=true)
+
+##Inserimento di un nuovo documento
+Quando un nodo riceve un messaggio con una proposta di inserimento di un nuovo documento ***(ItemPoposition)*** reagisce costruendo un nuovo identificativo univoco per il documento ***(RDCItem)*** secondo l'algoritmo definito nell'implementazione della interfaccia [RDCItemService](https://github.com/gvincenzi/RDC/tree/master/rdc-node/src/main/java/org/rdc/node/service/RDCItemService.java).
+Nella versione di base dell'RDC l'algoritmo proposto è il seguente:
+```java
+package org.rdc.node.service.impl.base;
+
+import org.rdc.node.exception.RDCNodeException;
+import org.rdc.node.domain.entity.RDCItem;
+import org.rdc.node.service.impl.RDCItemServiceImpl;
+import org.rdc.node.util.NodeUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class BaseRDCItemServiceImpl extends RDCItemServiceImpl {
+	private static final String REGEX_DIGIT = "[0-9].*";
+
+	@Override
+	public boolean isHashResolved(RDCItem rdcItem, Integer difficultLevel) {
+		List<Integer> digits = new ArrayList<>(difficultLevel);
+
+		Integer index = 0;
+		String hash = rdcItem.getId();
+		while (index < hash.length() && digits.size() < difficultLevel) {
+			String s = hash.substring(index, ++index);
+			if (s.matches(REGEX_DIGIT)) {
+				digits.add(Integer.parseInt(s));
+			}
+		}
+
+		Integer sum = digits.parallelStream().reduce(0, Integer::sum);
+		return sum % difficultLevel == 0;
+	}
+
+	@Override
+	public String calculateHash(RDCItem rdcItem) throws RDCNodeException {
+		return NodeUtils.applySha256(
+				rdcItem.getPreviousId() +
+						rdcItem.getTimestamp().toEpochMilli() +
+						rdcItem.getNonce() +
+						rdcItem.getDocument().getTitle() +
+						rdcItem.getOwner().getMail()
+		);
+	}
+}
+```
+[Qui l'implementazione dell'algoritmo](https://github.com/gvincenzi/RDC/tree/master/rdc-node/src/main/java/org/rdc/node/service/impl/base/BaseRDCItemServiceImpl.java)
