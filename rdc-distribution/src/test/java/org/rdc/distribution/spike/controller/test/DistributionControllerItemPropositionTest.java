@@ -10,10 +10,10 @@ import org.mockito.Mockito;
 import org.rdc.distribution.binding.message.DistributionEventType;
 import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.domain.entity.Participant;
+import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
 import org.rdc.distribution.spike.controller.DistributionController;
 import org.rdc.distribution.domain.entity.Document;
 import org.rdc.distribution.domain.entity.ItemProposition;
-import org.rdc.distribution.domain.service.DistributionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -41,7 +41,7 @@ public class DistributionControllerItemPropositionTest {
     private MockMvc mvc;
 
     @MockBean
-    DistributionService distributionService;
+    DeliveryValenceService deliveryValenceService;
 
     protected static Document getNewDocument(String json) throws JsonProcessingException {
         log.info(json);
@@ -70,7 +70,7 @@ public class DistributionControllerItemPropositionTest {
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(itemProposition);
-        Mockito.when(distributionService.proposeItem(itemProposition)).thenReturn(distributionMessage);
+        Mockito.when(deliveryValenceService.proposeItem(itemProposition)).thenReturn(distributionMessage);
         mvc.perform(post("/item/proposition")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +87,7 @@ public class DistributionControllerItemPropositionTest {
         DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(itemProposition);
-        Mockito.when(distributionService.proposeItem(itemProposition)).thenReturn(distributionMessage);
+        Mockito.when(deliveryValenceService.proposeItem(itemProposition)).thenReturn(distributionMessage);
         mvc.perform(post("/item/proposition")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,7 +104,7 @@ public class DistributionControllerItemPropositionTest {
         DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
         distributionMessage.setContent(itemProposition);
-        Mockito.when(distributionService.proposeItem(itemProposition)).thenReturn(distributionMessage);
+        Mockito.when(deliveryValenceService.proposeItem(itemProposition)).thenReturn(distributionMessage);
         mvc.perform(post("/item/proposition")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)

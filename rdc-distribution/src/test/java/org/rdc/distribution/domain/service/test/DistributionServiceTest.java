@@ -11,7 +11,6 @@ import org.rdc.distribution.binding.message.DistributionEventType;
 import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.domain.entity.Document;
 import org.rdc.distribution.domain.entity.Participant;
-import org.rdc.distribution.domain.service.DistributionService;
 import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
 import org.rdc.distribution.domain.entity.ItemProposition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,6 @@ import java.util.UUID;
 @ActiveProfiles("test")
 public class DistributionServiceTest {
     private static final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-
-    @Autowired
-    DistributionService distributionService;
 
     @MockBean
     DeliveryValenceService deliveryValenceService;
@@ -64,7 +60,7 @@ public class DistributionServiceTest {
         distributionMessage.setContent(itemProposition);
         Mockito.when(deliveryValenceService.proposeItem(itemProposition)).thenReturn(distributionMessage);
 
-        DistributionMessage<ItemProposition> proposed = distributionService.proposeItem(itemProposition);
+        DistributionMessage<ItemProposition> proposed = deliveryValenceService.proposeItem(itemProposition);
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.ENTRY_PROPOSITION,proposed.getType());
         AssertionErrors.assertEquals("EntryProposition is not equal", itemProposition, proposed.getContent());
@@ -75,8 +71,8 @@ public class DistributionServiceTest {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
-        Mockito.when(deliveryValenceService.verifyRegistryIntegrity()).thenReturn(distributionMessage);
-        DistributionMessage<Void> proposed = distributionService.verifyRegistryIntegrity();
+        Mockito.when(deliveryValenceService.sendIntegrityVerificationRequest()).thenReturn(distributionMessage);
+        DistributionMessage<Void> proposed = deliveryValenceService.sendIntegrityVerificationRequest();
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.INTEGRITY_VERIFICATION,proposed.getType());
     }

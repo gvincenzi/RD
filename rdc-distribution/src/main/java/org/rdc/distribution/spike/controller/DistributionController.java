@@ -3,7 +3,7 @@ package org.rdc.distribution.spike.controller;
 import lombok.extern.java.Log;
 import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.domain.entity.ItemProposition;
-import org.rdc.distribution.domain.service.DistributionService;
+import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,11 @@ import java.util.UUID;
 @RestController
 public class DistributionController {
     @Autowired
-    DistributionService distributionService;
+    DeliveryValenceService deliveryValenceService;
 
     @PostMapping("/item/proposition")
     public ResponseEntity<DistributionMessage<ItemProposition>> itemProposition(@RequestBody ItemProposition itemProposition) {
-        DistributionMessage<ItemProposition> distributionMessage = distributionService.proposeItem(itemProposition);
+        DistributionMessage<ItemProposition> distributionMessage = deliveryValenceService.proposeItem(itemProposition);
         return distributionMessage.getCorrelationID() != null ?
             new ResponseEntity<>(distributionMessage, HttpStatus.OK) :
             new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
@@ -27,7 +27,7 @@ public class DistributionController {
 
     @PostMapping("/verify")
     public ResponseEntity<DistributionMessage<Void>> integrityVerification() {
-        DistributionMessage<Void> distributionMessage = distributionService.verifyRegistryIntegrity();
+        DistributionMessage<Void> distributionMessage = deliveryValenceService.sendIntegrityVerificationRequest();
         ControllerResponseCache.cache.put(distributionMessage.getCorrelationID(),null);
         return distributionMessage.getCorrelationID() != null ?
                 new ResponseEntity<>(distributionMessage, HttpStatus.OK) :

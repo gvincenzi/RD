@@ -9,13 +9,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.rdc.distribution.binding.message.DistributionEventType;
 import org.rdc.distribution.binding.message.DistributionMessage;
-import org.rdc.distribution.domain.service.DistributionService;
+import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
 import org.rdc.distribution.spike.controller.ControllerResponseCache;
 import org.rdc.distribution.spike.controller.DistributionController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,14 +38,14 @@ public class DistributionControllerGetUUIDTest {
     private MockMvc mvc;
 
     @MockBean
-    DistributionService distributionService;
+    DeliveryValenceService deliveryValenceService;
 
     @Test
     public void noContent() throws Exception {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
-        Mockito.when(distributionService.verifyRegistryIntegrity()).thenReturn(distributionMessage);
+        Mockito.when(deliveryValenceService.sendIntegrityVerificationRequest()).thenReturn(distributionMessage);
         mvc.perform(get("/"+distributionMessage.getCorrelationID()))
                 .andDo(print())
                 .andExpect(status().isNoContent())
@@ -59,7 +58,7 @@ public class DistributionControllerGetUUIDTest {
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
         ControllerResponseCache.cache.put(distributionMessage.getCorrelationID(),distributionMessage);
-        Mockito.when(distributionService.verifyRegistryIntegrity()).thenReturn(distributionMessage);
+        Mockito.when(deliveryValenceService.sendIntegrityVerificationRequest()).thenReturn(distributionMessage);
         MvcResult mvcResult = mvc.perform(get("/" + distributionMessage.getCorrelationID()))
                 .andDo(print())
                 .andExpect(status().isOk())

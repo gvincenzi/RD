@@ -9,14 +9,18 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.rdc.distribution.binding.message.DistributionEventType;
 import org.rdc.distribution.binding.message.DistributionMessage;
-import org.rdc.distribution.delivery.service.EventService;
+import org.rdc.distribution.delivery.service.DistributionConcurrenceService;
 import org.rdc.distribution.domain.entity.Document;
 import org.rdc.distribution.domain.entity.ItemProposition;
 import org.rdc.distribution.domain.entity.Participant;
 import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.SubscribableChannel;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.AssertionErrors;
@@ -34,7 +38,19 @@ public class DeliveryValenceServiceTest {
     DeliveryValenceService deliveryValenceService;
 
     @MockBean
-    EventService eventService;
+    @Qualifier("requestChannel")
+    MessageChannel requestChannel;
+
+    @MockBean
+    @Qualifier("requestIntegrityChannel")
+    MessageChannel requestIntegrityChannel;
+
+    @MockBean
+    @Qualifier("responseChannel")
+    SubscribableChannel responseChannel;
+
+    @MockBean
+    DistributionConcurrenceService distributionConcurrenceService;
 
     protected static Document getNewDocument(String json) throws JsonProcessingException {
         log.info(json);
@@ -58,25 +74,22 @@ public class DeliveryValenceServiceTest {
     @Test
     public void addNewEntry() throws JsonProcessingException {
         ItemProposition itemProposition = getEntryProposition();
-        DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
-        distributionMessage.setContent(itemProposition);
-        distributionMessage.setType(DistributionEventType.ENTRY_PROPOSITION);
-        distributionMessage.setCorrelationID(UUID.randomUUID());
-        Mockito.when(eventService.sendItemProposition(itemProposition)).thenReturn(distributionMessage);
+        Mockito.when(requestChannel.send(Mockito.any(Message.class))).thenReturn(Boolean.TRUE);
+
         DistributionMessage<ItemProposition> proposed = deliveryValenceService.proposeItem(itemProposition);
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.ENTRY_PROPOSITION,proposed.getType());
         AssertionErrors.assertEquals("EntryProposition is not equal", itemProposition, proposed.getContent());
+
     }
 
     @Test
-    public void verifyRegistryIntegrity() {
-        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
-        distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
-        distributionMessage.setCorrelationID(UUID.randomUUID());
-        Mockito.when(eventService.sendIntegrityVerificationRequest()).thenReturn(distributionMessage);
-        DistributionMessage<Void> proposed = deliveryValenceService.verifyRegistryIntegrity();
+    public void sendIntegrityVerificationRequest() {
+        Mockito.when(requestChannel.send(Mockito.any(Message.class))).thenReturn(Boolean.TRUE);
+
+        DistributionMessage<Void> proposed = deliveryValenceService.sendIntegrityVerificationRequest();
         AssertionErrors.assertNotNull("Correlation ID is null", proposed.getCorrelationID());
         AssertionErrors.assertEquals("DistributionType is not coherent", DistributionEventType.INTEGRITY_VERIFICATION,proposed.getType());
+
     }
 }
