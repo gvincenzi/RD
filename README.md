@@ -87,31 +87,32 @@ La molecola si compone di un solo atomo :
 
 ## Dispositivo di flusso documentale
 ### Protocollo AMQP
-Il dispositivo di flusso documentale si realizza attraverso l'utiliszzo di un server che dia la possibilità di scambiare messaggi tramite il protocollo [AMQP](https://it.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol).
+Il dispositivo di flusso documentale si realizza attraverso l'utilizzo di un server che dia la possibilità di scambiare messaggi tramite il protocollo [AMQP](https://it.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol).
 Lo scopo è quello di far comunicare le molecole tra di loro, non attraverso una comunicazione sincrona, ma attraverso lo scambio di messaggi su exchanges dedicati.
 
-### Exchanges e queues utilizzate
-Il Sistema di comunicazione tra i dispositivi si basa, nella sua implementazione di base, su 4 exchanges:
+### Exchanges e queues utilizzati
+Il Sistema di comunicazione tra i dispositivi si fonda, nella sua implementazione di base, su 4 exchanges:
 - RequestChannel
 >Il dispositivo di distribuzione scrive in questo canale le proposte di inserimento di nuovi documenti. Una richiesta sarà corredata da un identificativo per riconoscerne la risposta sul canale dedicato. Il dispositivo di distribuzione attende la risposta prima di inviare altre richieste di questo tipo.
->>Tutti i nodi dell'RDC sono in ascolto del topic ma un messaggio sarà consumato da una solo istanza (condividono la stessa coda)
+>>Tutti i nodi dell'RDC sono in ascolto su questo exchange ma un messaggio sarà consumato da una sola istanza (i nodi condividono la stessa coda)
 
 - RequestIntegrityChannel
 >Il dispositivo di distribuzione scrive in questo canale le richiesta di verifica dell'integrità della catena. Una richiesta sarà corredata da un identificativo per riconoscerne la risposta sul canale dedicato. Il dispositivo di distribuzione attende la risposta prima di inviare altre richieste di questo tipo.
->>Tutti i nodi dell'RDC sono in ascolto del topic ma un messaggio sarà consumato da una solo istanza (condividono la stessa coda)
+>>Tutti i nodi dell'RDC sono in ascolto su questo exchange ma un messaggio sarà consumato da una sola istanza (i nodi condividono la stessa coda)
 
 - ResponseChannel
->I noi dell'RDC inviano le risposte alla richieste, sia di inserimento di nuovi documenti che di validazione dell'integrità del registro, in questo canale.
->Il dispositivo di distribuzione e il dispositivo di programmazione consumano i messaggi che transitano in questo exchange.
+>I nodi dell'RDC inviano le risposte alla richieste, sia di inserimento di nuovi documenti che di validazione dell'integrità del registro, in questo canale.
+>Il dispositivo di distribuzione e il dispositivo di programmazione consumano i messaggi che transitano in questo exchange, ognuno con una sua coda dedicata.
 
 - DistributionChannel
 >Il dispositivo di distribuzione scrive in questo canale le informazioni che devono essere distribuite a tutti i nodi dell'RDC. Nell'implementazione di base ad ogni inseriemento di un nuovo documento ***(RDCItem)***, l'informazione viene distribuita a tutti i nodi perché possano inserirlo nelle loro copie della base di dati.
+>>Tutti i nodi consumano i messaggi di questo exchange, ognuno con una coda dedicata.
 
 ![Exchanges del dispositivo di flusso documentale (RabbitMQ nella versione del POC)](src/main/resources/img/flow_exchanges.png?raw=true)
 
 ## Startup di un nodo
-Quando un nuovo nodo viene lanciato, nelle proprietà Yammel della molecola si puo' precisare che il nodo necessità di un processo di startup: la molecola utilizzerà lo spike della macromolecola per richiedere una verifica dell'integrità della catena; in risposta riceverà un CorrelationID con cui potrà richiedere subito dopo il risultato della verifica che contiene anche l'intera copia del registro.
-Il nodo verificherà che la parte del registro che eventualmente conosce già deve essere rimasta intatta (in caso contrario il registro sarà definito corrotto) e inserirà il resto del registro che ancora non conosce. 
+Quando un nuovo nodo viene lanciato, nelle proprietà Yammel della molecola si può precisare che il nodo necessità di un processo di startup: la molecola utilizzerà lo spike della macromolecola per richiedere una verifica dell'integrità della catena; in risposta riceverà un CorrelationID con cui potrà richiedere subito dopo il risultato della verifica che contiene anche l'intera copia del registro.
+Il nodo verificherà che la parte del registro, che eventualmente conosce già, sia rimasta intatta (in caso contrario il registro sarà definito corrotto) e inserirà il resto del registro che ancora non conosce. 
 ![Due database di due nodi A e B di uno stesso RDC (due DB nello stesso Cluster nella versione del POC)](src/main/resources/img/mongodb-databases.png?raw=true)
 
 ## Inserimento di un nuovo documento
@@ -165,15 +166,15 @@ public class BaseRDCItemServiceImpl extends RDCItemServiceImpl {
 [Qui l'implementazione dell'algoritmo](https://github.com/gvincenzi/RDC/tree/master/rdc-node/src/main/java/org/rdc/node/service/impl/base/BaseRDCItemServiceImpl.java)
 
 ## Come accendere un RDC
-Nell'esempio che presentiamo come POC, si realizza lo schema presentato nella presentazione del progetto. I microseervizi e i componenti che realizzano l'architettura sono:
-- **3 database MongoDB** con una Collection "rdc_item"
+Nell'esempio che si presenta come POC, si realizza lo schema presentato nella presentazione del progetto. I microseervizi e i componenti che realizzano l'architettura sono:
+- **3 database MongoDB** con una Collection ***rdc_item***
 - **1 server RabbitMQ** con 4 exchanges
     - distributionChannel
     - requestChannel
     - requestIntegrityChannel
     - responseChannel
 - Un microservizio **Eureka Service Registry** denominato ***rdc-service-registry***
-- Il **sistema di accesso qualificat**o è realizzato da un microsevizio Gateway denominato ***rdc-spike***
+- Il **sistema di accesso qualificato** è realizzato da un microsevizio Gateway denominato ***rdc-spike***
 - Il **dispositivo di distribuzione** è realizzato dal microservizio ***rdc-distribution***
 - Il **dispositivo di programmazione** è realizzato dal microservizio ***rdc-scheduler***
 - Ogni **copia del registro** è gestita da un'instanza del microservizio ***rdc-node***
@@ -181,16 +182,16 @@ Nell'esempio che presentiamo come POC, si realizza lo schema presentato nella pr
 ## Procedura di startup
 1. Ci si assicura che il server RabbitMQ sia attivo
 2. Ci si assicura che il server MongoDB sia pronto
-3. Si fa partire il microservizio ***rdc-service-registry*** e possiamo controllarne il suo stato all'indirizzo http://localhost:8880
+3. Si fa partire il microservizio ***rdc-service-registry*** : possiamo controllarne il suo stato all'indirizzo http://localhost:8880
 ![Screenshot Eureka Server](src/main/resources/img/eureka.png?raw=true)
 Man mano si potranno verificare tutti i servizi che si registreranno ad uno ad uno sull'interfaccia.
 4. Si fa partire il microservizio ***rdc-spike***
 5. Si fa partire il microservizio ***rdc-distribution***
 6. Si fa partire il microservizio ***rdc-scheduler***
-7. Si fanno partire quante istanze si vuole del microservizio ***rdc-node*** (alla prima esecuzione avranno tutti il parametro required.startup = false)
+7. Si fanno partire quante istanze si vuole del microservizio ***rdc-node*** (alla prima esecuzione avranno tutti il parametro ***required.startup = false***)
 
 ## Esempio di inserimento di un documento
-Usando un applicazione come Postman, realizziamo una chiamata al servizio REST per la proposta dell'inserimento di un nuovo documento.
+Usando un'applicazione REST Client, realizziamo una chiamata al servizio REST per la proposta dell'inserimento di un nuovo documento.
 La chiamata POST avrà un header per la sicurezza, nel caso del POC è una Basic Auth.
 ![POST Header per proporre un nuovo documento](src/main/resources/img/postman_header.png?raw=true)
 ![POST Body per proporre un nuovo documento](src/main/resources/img/postman_body.png?raw=true)
