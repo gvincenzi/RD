@@ -1,5 +1,63 @@
-# RDC
-Registro Digitale Contribuito
+# RDC : Registro Digitale Contribuito
+
+## Introduzione
+Il Web, il Wiki, la Blockchain, sono architetture nate da visioni, intuizioni di tecnici mossi dalla propria coscienza politica e dal senso di responsabilità sociale: con lo stesso spirito, proponiamo il Registro Digitale Contribuito.
+Di seguito una presentazione di [Francesco Varanini](https://it.linkedin.com/in/francescovaranini) delle idee e dei concetti che stanno alle fondamenta del progetto.
+ 
+### Una Rete di documenti
+I documenti sono supporti dove cittadini legati ad un interesse comune -ognuno interpretando il proprio ruolo sociale- riportano in forma scritta, ***notizie***. I documenti sono testi scritti da esseri umani.
+Sulla base dei documenti verranno sviluppati nuovi pensieri, prese decisioni e compiute azioni, che generano nuovi documenti.
+I documenti sono connessi tra di loro, in una rete in continua evoluzione. L'evoluzione è frutto dalla continua aggiunta di documenti. Ma anche dalle marcature di singole porzioni dei documenti, che permettono nuove connessioni e quindi la creazione di nuovi documenti.
+ 
+Avremo allora, ad accogliere i documenti connessi in Rete, un ***Registro***.
+In latino era ***Regesta***. Verbo ***gerere***: in origine ***portare*** ma poi: ***condurre a compimento***. Da cui ***gestione***. In latino stava per comportarsi, procedere, agire, fare, trattare, regolarsi, compiere, esercitare, sostenere, occuparsi di, governare, amministrare, presentare, rappresentare.
+Al ***gerere***, portare a compimento, consegue il ***re-gerere***, ***ri-portare*** ciò che si è fatto, descrivendo in un documento il senso dell'azione.
+Il concetto si completa ricordando anche il verbo latino ***periri***, ovvero ***provare***, ***tentare***: in origine, ognuna delle attività descritte dal verbo ***gerere*** non è che un tentativo. 
+Da *periri* discendono infatti ***esperienza***, ***esperimento***, ed anche ***pericolo ***. E discende anche *** Repertorium***, sinonimo di ***Regesta***.
+
+Il registro che immaginiamo raccoglie infatti esperienze. Che sono anche errori e tentativi non andati a buon fine. Il registro raccoglie anche cattive notizie. Raccoglie anche quei dati che i database filtrano e scartano considerandoli erronei o irrilevanti.
+
+Il ***Registro*** è il supporto -lo strumento tecnico compartecipato- che permette la condivisione della conoscenza.
+Il ***Registro Digitale Contribuito*** segue il cammino delle architetture civili già sviluppate, recuperandone l'originario senso.
+ 
+Il Registro si appoggia sul World Wide Web. Ma si offre come luogo dove, a differenza del World Wide Web degenerato:
+- sono accolti solo documenti scritti da esseri umani per essere letti da esseri umani;
+- è esclusa la manipolazione dei testi da parte di software e algoritmi;
+- è esclusa la presenza di qualsiasi agente non umano;
+- è assente qualsiasi tecnica tesa a condizionare i pensieri e le azioni degli esseri umani;
+- la scelta dei documenti da leggere è frutto del libero arbitrio umano;
+- è esclusa la raccolta di notizie personali sui cittadini e sui loro comportamenti;
+- non c'è presenza di Terze Parti dotate di autorità, di diritti di proprietà, di potere di controllo e di intervento.
+ 
+A differenza del World Wide Web, il ***Registro*** non è né globale né universale. Si dovrebbe parlare a rigore di ***Registri***, ognuno dedicato ad uno scopo: ad un argomento, ad un processo, a fornire supporto alla vita di una comunità, a verificare l'andamento di un fenomeno.
+In ogni caso uno scopo sociale, perché ogni ***Registro*** prevede la compresenza, nel duplice ruolo di scrittore e sociale, di una pluralità di cittadini.
+ 
+La gestione e la validazione dei documenti che costituiscono il ***Registro*** è affidata alla comunità costituita dai cittadini che scrivono e leggono il ***Registro***.
+ 
+A differenza di quanto accade nella originaria ***Blockchain***, nella filosofia del ***Registro*** è assente la scelta forte di garantire agli attori la maschera dell'animato, tramite cifratura.
+A differenza di ***Wikipedia***, ogni documento di ogni ***Registro*** è in ogni caso firmato da almeno un autore.
+ 
+Il ***Registro***, come una ***Blockchain***, si basa sulla partecipazione attiva di cittadini. I cittadini partecipanti, senza bisogno di sanzioni o legittimazione di Terze Parti, si abilitano ad agire tramite auto-dichiarazioni.
+Essendo un ***Registro*** dedicato ad uno scopo -ad un processo, ad una attività, ad un ambito lavorativo, o più in generale alle interazioni tra membri di un gruppo sociale- è richiesta ai partecipanti la dichiarazione della propria posizione organizzativa, del proprio ruolo sociale.
+Si tratta di auto-dichiarazioni, non soggette al controllo di una autorità terza, ma soggette al controllo incrociato degli altri cittadini che collaborano al ***Registro***.
+Resta comunque valido per il ***Registro*** il principio in base dell'originaria ***Blockchain***: ogni cittadino partecipante dichiara di sé solo quello che serve, solo quando serve.
+ 
+In ogni documento sarà esplicitato il legame tra la posizione auto-dichiarata dall'autore e l'argomento trattato nel documento.
+ 
+Il ***Registro*** offre, come il ***wiki***, spazio alla scrittura collaborativa, in duplice modo: prevede sia la possibilità di scrivere nuovi documenti, sia di intervenire -lasciando traccia esplicita di ognuno degli interventi- su documenti esistenti.
+Il ***Registro*** non prevede la figura del terzo esterno che si arroga, a scapito di altri, il ruolo di ***esperto*** che detta regole di scrittura, emenda, censura e corregge.
+In linea generale, ogni cittadino può scrivere, perché ogni cittadino -almeno in uno specifico campo- è portatore di conoscenze. Ed esiste certo per ogni essere umano un campo di conoscenza nel quale l'autorità a parlare non può in nessun caso essere messa in discussione: la propria autobiografia e la propria esperienza personale.
+ 
+La validità e l'affidabilità dei documenti sono affermate secondo il principio del progressivo miglioramento dei documenti ***wiki*** e della catena dell'onestà descritto nel paper di ***Satoshi Nakamoto***.
+Ogni cittadino, a partire dalla posizione auto-dichiarata, potrà modificare i documenti.
+La transazione disonesta sarà rifiutata dai cittadini onesti; così la catena della disonestà si interromperà.
+ 
+Come nelle ***Blockchain***, è possibile ripercorrere a ritroso la catena, o la rete, di documenti, ricostruendo così un fenomeno ed accrescendo la conoscenza immediatamente necessaria per compiere azioni o prendere decisioni.
+ 
+Il ***Registro*** è ***contribuito***. La storia delle architetture informatiche usa il termine ***distribuito***, per indicare un passaggio storico: ciò che nella fase iniziale è conservato su una sola macchina -il Maniframe-, successivamente è distribuito su più Server.
+
+Ma l'aggettivo distribuito descrive in modo insoddisfacente l'architettura di cui Blockchain è caso esemplare. Nativamente ogni nodo della Rete partecipa alla conservazione della conoscenza prodotta: dà, dunque, il suo contributo.
+Ricordiamo anche il senso originario del ***tributo***: ciò che si fa e si dice come cosa doverosa, come impegno civile.
 
 ## Il progetto
 Questo repository contiene un progetto discusso nel libro **"Blockchain e appalti"** 
