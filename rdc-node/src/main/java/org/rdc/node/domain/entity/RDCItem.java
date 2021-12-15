@@ -4,12 +4,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.rdc.node.binding.message.entity.Participant;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -22,18 +19,14 @@ public class RDCItem implements Comparable<RDCItem>{
     private Integer nonce;
     private org.rdc.node.binding.message.entity.Document document;
     private Participant owner;
-    private Set<String> validators = new HashSet<>();
-    private String nodeIstanceName;
+    private String nodeInstanceName;
 
-    @Transient
-    private Boolean validated;
-
-    public RDCItem(org.rdc.node.binding.message.entity.Document document, String previousId, Participant owner, String nodeIstanceName) {
+    public RDCItem(org.rdc.node.binding.message.entity.Document document, String previousId, Participant owner, String nodeInstanceName) {
         this.setOwner(owner);
         this.setPreviousId(previousId);
         this.setDocument(document);
         this.setTimestamp(Instant.now());
-        this.setNodeIstanceName(nodeIstanceName);
+        this.setNodeInstanceName(nodeInstanceName);
     }
 
     @Override

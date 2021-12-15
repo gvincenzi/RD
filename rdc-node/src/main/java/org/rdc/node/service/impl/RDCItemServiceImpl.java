@@ -31,11 +31,8 @@ public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItem
 	@Autowired
 	SpikeClient spikeClient;
 
-    @Value("${difficult.level}")
+    @Value("${required.difficult.level}")
     private Integer difficultLevel;
-
-    @Value("${required.validation.number}")
-    private Integer requiredValidationNumber;
 
     @Value("${spring.application.name}")
     private String instanceName;
@@ -97,11 +94,6 @@ public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItem
             }
             if (!isHashResolved(currentItem, difficultLevel)) {
                 result = false;
-            }
-
-            if (i == rdcItems.size() - 1 && currentItem.getValidators().size() < requiredValidationNumber && !currentItem.getValidators().contains(instanceName)) {
-                currentItem.getValidators().add(instanceName);
-                rdcItemRepository.save(currentItem);
             }
         }
 

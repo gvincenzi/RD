@@ -31,12 +31,10 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8880/eureka
 
-difficult:
-  level: 1
-
 required:
-  validation:
-    number: 0
+  startup: false
+  difficult:
+    level: 1
 
 spike:
   url: http://localhost:8881/rdc/distribution/spike

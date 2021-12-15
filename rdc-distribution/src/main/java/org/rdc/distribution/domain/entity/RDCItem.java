@@ -16,7 +16,6 @@ public class RDCItem implements Comparable<RDCItem>{
     private Integer nonce;
     private Document document;
     private Participant owner;
-    private Set<String> validators;
     private String nodeIstanceName;
 
     @Transient
