@@ -135,7 +135,7 @@ public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItem
         while (integrityVerificationResponse == null || integrityVerificationResponse.getContent() == null) {
             integrityVerificationResponse = spikeClient.getResult(integrityVerification.getCorrelationID());
         }
-        List<RDCItem> items = objectMapper.convertValue(integrityVerificationResponse.getContent(), new TypeReference<List<RDCItem>>() { });
+        List<RDCItem> items = objectMapper.convertValue(integrityVerificationResponse.getContent(), new TypeReference<>() { });
         init(items);
         log.info("RDC correctly started");
     }
