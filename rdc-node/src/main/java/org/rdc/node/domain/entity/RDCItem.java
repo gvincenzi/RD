@@ -20,6 +20,7 @@ public class RDCItem implements Comparable<RDCItem>{
     private org.rdc.node.binding.message.entity.Document document;
     private Participant owner;
     private String nodeInstanceName;
+    private Boolean isCorruptionDetected = Boolean.FALSE;
 
     public RDCItem(org.rdc.node.binding.message.entity.Document document, String previousId, Participant owner, String nodeInstanceName) {
         this.setOwner(owner);

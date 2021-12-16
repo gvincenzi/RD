@@ -31,7 +31,7 @@ public class MQListener {
     private String instanceName;
 
     @StreamListener(target = "requestChannel")
-    public void processItemProposition(DistributionMessage<ItemProposition> msg) {
+    public void processItemProposition(DistributionMessage<ItemProposition> msg) throws RDCNodeException {
         if (DistributionEventType.ENTRY_PROPOSITION.equals(msg.getType()) && msg.getContent() != null) {
             List<RDCItem> items = new ArrayList<>();
             RDCItem rdcItem = null;
@@ -40,18 +40,17 @@ public class MQListener {
             } catch (RDCNodeException e) {
                 log.severe(e.getMessage());
             }
-            items.add(rdcItem);
-
             if (rdcItem != null) {
+                items.add(rdcItem);
                 log.info("Item added with ID : " + rdcItem.getId());
-                DistributionMessage<List<RDCItem>> responseMessage = new DistributionMessage<>();
-                responseMessage.setCorrelationID(msg.getCorrelationID());
-                responseMessage.setInstanceName(instanceName);
-                responseMessage.setType(DistributionEventType.ENTRY_RESPONSE);
-                responseMessage.setContent(items);
-                Message<DistributionMessage<List<RDCItem>>> responseMsg = MessageBuilder.withPayload(responseMessage).build();
-                responseChannel.send(responseMsg);
             }
+            DistributionMessage<List<RDCItem>> responseMessage = new DistributionMessage<>();
+            responseMessage.setCorrelationID(msg.getCorrelationID());
+            responseMessage.setInstanceName(instanceName);
+            responseMessage.setType(DistributionEventType.ENTRY_RESPONSE);
+            responseMessage.setContent(items);
+            Message<DistributionMessage<List<RDCItem>>> responseMsg = MessageBuilder.withPayload(responseMessage).build();
+            responseChannel.send(responseMsg);
         }
     }
 
@@ -59,8 +58,12 @@ public class MQListener {
     public void processDistribution(DistributionMessage<List<RDCItem>> msg) {
         if (DistributionEventType.ENTRY_RESPONSE.equals(msg.getType()) && msg.getContent() != null && !instanceName.equals(msg.getInstanceName())) {
             try {
-                if (rdcItemService.forceAddItem(msg.getContent().iterator().next())) {
-                    log.info("RDC correctly validated");
+                for (RDCItem item : msg.getContent()) {
+                    if (rdcItemService.forceAddItem(item)) {
+                        log.info("RDC Item correctly validated");
+                    } else {
+                        corruptionDetected(msg);
+                    }
                 }
             } catch (RDCNodeException e) {
                 log.severe(e.getMessage());
@@ -71,8 +74,26 @@ public class MQListener {
                 log.info("RDC correctly validated");
             } catch (RDCNodeException e) {
                 log.severe(e.getMessage());
+                corruptionDetected(msg);
+            }
+        } else if (DistributionEventType.CORRUPTION_DETECTED.equals(msg.getType()) && msg.getContent() != null) {
+            try {
+                for (RDCItem item : msg.getContent()) {
+                    rdcItemService.forceAddItem(item);
+                }
+            } catch (RDCNodeException e) {
+                log.severe(e.getMessage());
             }
         }
+    }
+
+    private void corruptionDetected(DistributionMessage<?> msg) {
+        DistributionMessage<List<RDCItem>> responseMessage = new DistributionMessage<>();
+        responseMessage.setCorrelationID(msg.getCorrelationID());
+        responseMessage.setInstanceName(instanceName);
+        responseMessage.setType(DistributionEventType.CORRUPTION_DETECTED);
+        Message<DistributionMessage<List<RDCItem>>> responseMsg = MessageBuilder.withPayload(responseMessage).build();
+        responseChannel.send(responseMsg);
     }
 
     @StreamListener(target = "requestIntegrityChannel")
@@ -81,6 +102,9 @@ public class MQListener {
             try {
                 List<RDCItem> items = rdcItemService.findAll();
                 Boolean validation = rdcItemService.validate(items);
+                if (!validation) {
+                    corruptionDetected(msg);
+                }
                 DistributionMessage<List<RDCItem>> responseMessage = new DistributionMessage<>();
                 responseMessage.setCorrelationID(msg.getCorrelationID());
                 responseMessage.setInstanceName(instanceName);

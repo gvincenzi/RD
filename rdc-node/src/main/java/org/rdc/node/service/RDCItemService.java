@@ -14,4 +14,5 @@ public interface RDCItemService {
 	List<RDCItem> findAll();
 	void init(List<RDCItem> content) throws RDCNodeException;
 	void startup() throws RDCNodeException;
+	void reset() throws RDCNodeException;
 }

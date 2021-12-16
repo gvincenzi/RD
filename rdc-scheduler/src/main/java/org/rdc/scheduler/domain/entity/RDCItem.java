@@ -13,7 +13,8 @@ public class RDCItem {
     private Integer nonce;
     private Document document;
     private Participant owner;
-    private String nodeIstanceName;
+    private String nodeInstanceName;
+    private Boolean isCorruptionDetected = Boolean.FALSE;
 
     @Override
     public boolean equals(Object o) {

@@ -16,17 +16,18 @@ public class RDCItem implements Comparable<RDCItem>{
     private Integer nonce;
     private Document document;
     private Participant owner;
-    private String nodeIstanceName;
+    private String nodeInstanceName;
+    private Boolean isCorruptionDetected = Boolean.FALSE;
 
     @Transient
     private Boolean validated;
 
-    public RDCItem(Document document, String previousId, Participant owner, String nodeIstanceName) {
+    public RDCItem(Document document, String previousId, Participant owner, String nodeInstanceName) {
         this.setOwner(owner);
         this.setPreviousId(previousId);
         this.setDocument(document);
         this.setTimestamp(Instant.now());
-        this.setNodeIstanceName(nodeIstanceName);
+        this.setNodeInstanceName(nodeInstanceName);
     }
 
     @Override

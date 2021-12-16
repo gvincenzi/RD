@@ -4,7 +4,8 @@ import lombok.extern.java.Log;
 import org.rdc.distribution.binding.message.DistributionEventType;
 import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.delivery.service.DistributionConcurrenceService;
-import org.rdc.distribution.domain.entity.ItemProposition;
+import org.rdc.distribution.domain.entity.Document;
+import org.rdc.distribution.domain.entity.Participant;
 import org.rdc.distribution.domain.entity.RDCItem;
 import org.rdc.distribution.exception.RDCDistributionException;
 import org.rdc.distribution.spike.controller.ControllerResponseCache;
@@ -15,10 +16,9 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 
-import java.util.HashSet;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 @Log
 @EnableBinding(MQBinding.class)
@@ -43,6 +43,30 @@ public class MQListener {
             }
             Message<DistributionMessage<List<RDCItem>>> message = MessageBuilder.withPayload(msg).build();
             distributionChannel.send(message);
+        } else if(DistributionEventType.CORRUPTION_DETECTED.equals(msg.getType())){
+            log.info(String.format("Correlation ID [%s] processed",msg.getCorrelationID()));
+            DistributionConcurrenceService.getCorrelationIDs().remove(msg.getCorrelationID());
+
+            List<RDCItem> rdcItems = new ArrayList<>();
+            rdcItems.add(getRdcItemCorruption());
+            msg.setContent(rdcItems);
+            Message<DistributionMessage<List<RDCItem>>> message = MessageBuilder.withPayload(msg).build();
+            distributionChannel.send(message);
         }
+    }
+
+    private RDCItem getRdcItemCorruption() {
+        RDCItem rdcItemCorruption = new RDCItem();
+        rdcItemCorruption.setId("CORRUPTION_DETECTION");
+        rdcItemCorruption.setNodeInstanceName("rdc-distribution");
+        Participant bot = new Participant();
+        bot.setMail("automatic");
+        rdcItemCorruption.setOwner(bot);
+        rdcItemCorruption.setIsCorruptionDetected(Boolean.TRUE);
+        rdcItemCorruption.setTimestamp(Instant.now());
+        Document document = new Document();
+        document.setTitle("Corruption detected");
+        rdcItemCorruption.setDocument(document);
+        return rdcItemCorruption;
     }
 }

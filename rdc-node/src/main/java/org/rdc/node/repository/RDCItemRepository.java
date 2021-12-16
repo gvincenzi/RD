@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface RDCItemRepository extends MongoRepository<RDCItem, String> {
     RDCItem findTopByOrderByTimestampDesc();
+    List<RDCItem> findByIsCorruptionDetectedTrue();
     List<RDCItem> findAllByOrderByTimestampAsc();
 }
