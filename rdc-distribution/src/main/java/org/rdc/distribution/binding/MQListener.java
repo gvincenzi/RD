@@ -48,25 +48,10 @@ public class MQListener {
             DistributionConcurrenceService.getCorrelationIDs().remove(msg.getCorrelationID());
 
             List<RDCItem> rdcItems = new ArrayList<>();
-            rdcItems.add(getRdcItemCorruption());
+            rdcItems.add(RDCItem.getRdcItemCorruption());
             msg.setContent(rdcItems);
             Message<DistributionMessage<List<RDCItem>>> message = MessageBuilder.withPayload(msg).build();
             distributionChannel.send(message);
         }
-    }
-
-    private RDCItem getRdcItemCorruption() {
-        RDCItem rdcItemCorruption = new RDCItem();
-        rdcItemCorruption.setId("CORRUPTION_DETECTION");
-        rdcItemCorruption.setNodeInstanceName("rdc-distribution");
-        Participant bot = new Participant();
-        bot.setMail("automatic");
-        rdcItemCorruption.setOwner(bot);
-        rdcItemCorruption.setIsCorruptionDetected(Boolean.TRUE);
-        rdcItemCorruption.setTimestamp(Instant.now());
-        Document document = new Document();
-        document.setTitle("Corruption detected");
-        rdcItemCorruption.setDocument(document);
-        return rdcItemCorruption;
     }
 }
