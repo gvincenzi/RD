@@ -1,4 +1,4 @@
-package org.rdc.node.client;
+package org.rdc.node.spike.client;
 
 import org.rdc.node.binding.message.DistributionMessage;
 import org.springframework.cloud.openfeign.FeignClient;

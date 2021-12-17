@@ -1,4 +1,4 @@
-package org.rdc.node.service;
+package org.rdc.node.core.service;
 
 import org.rdc.node.exception.RDCNodeException;
 

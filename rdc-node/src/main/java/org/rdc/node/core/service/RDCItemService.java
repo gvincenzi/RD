@@ -1,9 +1,9 @@
-package org.rdc.node.service;
+package org.rdc.node.core.service;
 
 import org.rdc.node.binding.message.entity.Document;
 import org.rdc.node.binding.message.entity.Participant;
 import org.rdc.node.exception.RDCNodeException;
-import org.rdc.node.domain.entity.RDCItem;
+import org.rdc.node.core.entity.RDCItem;
 
 import java.util.List;
 

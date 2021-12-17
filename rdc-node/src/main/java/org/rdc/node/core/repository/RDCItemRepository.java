@@ -1,6 +1,6 @@
-package org.rdc.node.repository;
+package org.rdc.node.core.repository;
 
-import org.rdc.node.domain.entity.RDCItem;
+import org.rdc.node.core.entity.RDCItem;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

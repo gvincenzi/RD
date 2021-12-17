@@ -1,7 +1,7 @@
-package org.rdc.node.configuration;
+package org.rdc.node.core.configuration;
 
 import org.rdc.node.exception.RDCNodeException;
-import org.rdc.node.service.RDCItemService;
+import org.rdc.node.core.service.RDCItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package org.rdc.node.service.impl;
+package org.rdc.node.core.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,10 +6,11 @@ import lombok.extern.java.Log;
 import org.rdc.node.binding.message.DistributionMessage;
 import org.rdc.node.binding.message.entity.Document;
 import org.rdc.node.binding.message.entity.Participant;
-import org.rdc.node.client.SpikeClient;
-import org.rdc.node.domain.entity.RDCItem;
+import org.rdc.node.spike.client.SpikeClient;
+import org.rdc.node.core.entity.RDCItem;
+import org.rdc.node.core.service.RDCItemService;
 import org.rdc.node.exception.RDCNodeException;
-import org.rdc.node.repository.RDCItemRepository;
+import org.rdc.node.core.repository.RDCItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 @Log
-public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItemService {
+public abstract class RDCItemServiceImpl implements RDCItemService {
     private static final String GENESIS = "GENESIS";
 
     @Autowired
