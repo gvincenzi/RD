@@ -19,24 +19,6 @@ public class Document {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Document)) return false;
-
-        Document document = (Document) o;
-
-        if (!getTitle().equals(document.getTitle())) return false;
-        return getDetails().equals(document.getDetails());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getTitle().hashCode();
-        result = 31 * result + getDetails().hashCode();
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "{" +
                 "'" + title + '\'' +

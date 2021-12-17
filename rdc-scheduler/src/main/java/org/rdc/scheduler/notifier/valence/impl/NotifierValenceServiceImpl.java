@@ -22,12 +22,12 @@ public class NotifierValenceServiceImpl implements NotifierValenceService {
     public String templateEntrySubject;
 
     @Override
-    public void sendEntryResponseMail(RDCItem RDCItem, Participant... participants) {
+    public void sendEntryResponseMail(RDCItem rdcItem, Participant... participants) {
         for (Participant participant : participants) {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(participant.getMail());
             message.setSubject(templateEntrySubject);
-            message.setText(templateEntryMessage != null && templateEntryMessage.getText() != null ? String.format(templateEntryMessage.getText(), RDCItem.getDocument()) : StringUtils.EMPTY);
+            message.setText(templateEntryMessage != null && templateEntryMessage.getText() != null ? String.format(templateEntryMessage.getText(), rdcItem.getDocument()) : StringUtils.EMPTY);
             javaMailSender.send(message);
         }
     }
