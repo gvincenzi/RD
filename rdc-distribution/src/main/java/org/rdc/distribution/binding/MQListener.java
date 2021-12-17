@@ -4,7 +4,8 @@ import lombok.extern.java.Log;
 import org.rdc.distribution.binding.message.DistributionEventType;
 import org.rdc.distribution.binding.message.DistributionMessage;
 import org.rdc.distribution.delivery.service.DistributionConcurrenceService;
-import org.rdc.distribution.domain.entity.ItemProposition;
+import org.rdc.distribution.domain.entity.Document;
+import org.rdc.distribution.domain.entity.Participant;
 import org.rdc.distribution.domain.entity.RDCItem;
 import org.rdc.distribution.exception.RDCDistributionException;
 import org.rdc.distribution.spike.controller.ControllerResponseCache;
@@ -15,10 +16,9 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 
-import java.util.HashSet;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 @Log
 @EnableBinding(MQBinding.class)
@@ -41,6 +41,15 @@ public class MQListener {
             } catch (RDCDistributionException e) {
                 log.severe(e.getMessage());
             }
+            Message<DistributionMessage<List<RDCItem>>> message = MessageBuilder.withPayload(msg).build();
+            distributionChannel.send(message);
+        } else if(DistributionEventType.CORRUPTION_DETECTED.equals(msg.getType())){
+            log.info(String.format("Correlation ID [%s] processed",msg.getCorrelationID()));
+            DistributionConcurrenceService.getCorrelationIDs().remove(msg.getCorrelationID());
+
+            List<RDCItem> rdcItems = new ArrayList<>();
+            rdcItems.add(RDCItem.getRdcItemCorruption());
+            msg.setContent(rdcItems);
             Message<DistributionMessage<List<RDCItem>>> message = MessageBuilder.withPayload(msg).build();
             distributionChannel.send(message);
         }

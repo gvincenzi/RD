@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.rdc.node.RDCNodeApplication;
+import org.rdc.node.binding.message.DistributionEventType;
+import org.rdc.node.binding.message.DistributionMessage;
 import org.rdc.node.binding.message.entity.Document;
 import org.rdc.node.binding.message.entity.Participant;
 import org.rdc.node.client.SpikeClient;
@@ -190,6 +192,29 @@ public class RDCItemServiceImplTest {
 		items.add(item2);
 
 		serviceUnderTest.init(items);
+	}
+
+	@Test
+	public void testStartup() throws RDCNodeException {
+		DistributionMessage<Void> msg = new DistributionMessage<>();
+		msg.setType(DistributionEventType.INTEGRITY_VERIFICATION);
+		msg.setCorrelationID(UUID.randomUUID());
+		msg.setInstanceName("test-instance");
+
+		Mockito.when(spikeClient.integrityVerification()).thenReturn(msg);
+
+		DistributionMessage<List<RDCItem>> msgVerif = new DistributionMessage<>();
+		msgVerif.setType(DistributionEventType.INTEGRITY_VERIFICATION);
+		msgVerif.setCorrelationID(UUID.randomUUID());
+		msgVerif.setInstanceName("test-instance");
+		List<RDCItem> items = new ArrayList<>();
+		RDCItem item = serviceUnderTest.add(getDocumentMock("Genesis block"), getUserMock());
+		items.add(item);
+		msgVerif.setContent(items);
+
+		Mockito.when(spikeClient.getResult(msg.getCorrelationID())).thenReturn(msgVerif);
+
+		serviceUnderTest.startup();
 	}
 
 	@Test

@@ -2,35 +2,38 @@ package org.rdc.distribution.domain.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Transient;
 
 import java.time.Instant;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 public class RDCItem implements Comparable<RDCItem>{
-    private String id;
-    private String previousId;
-    private Instant timestamp;
-    private Integer nonce;
-    private Document document;
-    private Participant owner;
-    private String nodeIstanceName;
-
-    @Transient
-    private Boolean validated;
-
-    public RDCItem(Document document, String previousId, Participant owner, String nodeIstanceName) {
-        this.setOwner(owner);
-        this.setPreviousId(previousId);
-        this.setDocument(document);
-        this.setTimestamp(Instant.now());
-        this.setNodeIstanceName(nodeIstanceName);
-    }
+    String id;
+    String previousId;
+    Instant timestamp;
+    Integer nonce;
+    Document document;
+    Participant owner;
+    String nodeInstanceName;
+    Boolean isCorruptionDetected = Boolean.FALSE;
 
     @Override
     public int compareTo(RDCItem arg0) {
         return getTimestamp().compareTo(arg0.getTimestamp());
+    }
+
+    public static RDCItem getRdcItemCorruption() {
+        RDCItem rdcItemCorruption = new RDCItem();
+        rdcItemCorruption.setId("CORRUPTION_DETECTION");
+        rdcItemCorruption.setNodeInstanceName("rdc-distribution");
+        Participant bot = new Participant();
+        bot.setMail("automatic");
+        rdcItemCorruption.setOwner(bot);
+        rdcItemCorruption.setIsCorruptionDetected(Boolean.TRUE);
+        rdcItemCorruption.setTimestamp(Instant.now());
+        Document document = new Document();
+        document.setTitle("Corruption detected");
+        rdcItemCorruption.setDocument(document);
+        return rdcItemCorruption;
     }
 }

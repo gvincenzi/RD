@@ -28,8 +28,8 @@ public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItem
     @Autowired
     private RDCItemRepository rdcItemRepository;
 
-	@Autowired
-	SpikeClient spikeClient;
+    @Autowired
+    SpikeClient spikeClient;
 
     @Value("${required.difficult.level}")
     private Integer difficultLevel;
@@ -63,8 +63,12 @@ public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItem
 
     @Override
     public Boolean forceAddItem(RDCItem rdcItem) throws RDCNodeException {
-        rdcItemRepository.save(rdcItem);
-        return validate(rdcItemRepository.findAllByOrderByTimestampAsc());
+        if (rdcItemRepository.findByIsCorruptionDetectedTrue().size() == 0 && !rdcItemRepository.existsById(rdcItem.getId())) {
+                rdcItemRepository.save(rdcItem);
+                return validate(rdcItemRepository.findAllByOrderByTimestampAsc());
+        }
+
+        return Boolean.TRUE;
     }
 
     @Override
@@ -92,6 +96,9 @@ public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItem
             if (previousItem != null && !previousItem.getId().equals(currentItem.getPreviousId())) {
                 result = false;
             }
+            if (previousItem == null && !GENESIS.equals(currentItem.getPreviousId())) {
+                result = false;
+            }
             if (!isHashResolved(currentItem, difficultLevel)) {
                 result = false;
             }
@@ -107,6 +114,9 @@ public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItem
         }
         if (owner == null) {
             throw new RDCNodeException("Owner is mandatory");
+        }
+        if (rdcItemRepository.findByIsCorruptionDetectedTrue().size() > 0) {
+            throw new RDCNodeException("RDC is corrupted");
         }
         RDCItem previous = rdcItemRepository.findTopByOrderByTimestampDesc();
         RDCItem newItem = getNewItem(document, previous, owner);
@@ -135,7 +145,8 @@ public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItem
         while (integrityVerificationResponse == null || integrityVerificationResponse.getContent() == null) {
             integrityVerificationResponse = spikeClient.getResult(integrityVerification.getCorrelationID());
         }
-        List<RDCItem> items = objectMapper.convertValue(integrityVerificationResponse.getContent(), new TypeReference<List<RDCItem>>() { });
+        List<RDCItem> items = objectMapper.convertValue(integrityVerificationResponse.getContent(), new TypeReference<>() {
+        });
         init(items);
         log.info("RDC correctly started");
     }
