@@ -31,7 +31,7 @@ public class MQListener {
     private String instanceName;
 
     @StreamListener(target = "requestChannel")
-    public void processItemProposition(DistributionMessage<ItemProposition> msg) throws RDCNodeException {
+    public void processItemProposition(DistributionMessage<ItemProposition> msg) {
         if (DistributionEventType.ENTRY_PROPOSITION.equals(msg.getType()) && msg.getContent() != null) {
             List<RDCItem> items = new ArrayList<>();
             RDCItem rdcItem = null;

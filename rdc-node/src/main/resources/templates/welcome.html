@@ -25,6 +25,13 @@
             <span th:text="'Il nome della tua istanza : ' + ${instanceName}"></span>
         </h2>
         <h3><td th:text="${validation} ? 'Il Registro è valido' : 'Il Registro è corrotto'" /></h3>
+        <h5><td th:text="${startupTime != null} ? 'Startup realizzato in ' + ${startupTime} : ''" /></h5>
+    </div>
+
+    <div style="display: flex; margin: 1em">
+        <form th:action="@{/startup}">
+            <button class="btn btn-primary" type="submit" style="margin: 0.5em">Aggiornamento della copia (startup)</button>
+        </form>
     </div>
 
     <table class="table">
@@ -39,7 +46,7 @@
         <tbody>
             <tr th:each="item : ${items}">
                 <td scope="row" th:text="${item.document.title}"></td>
-                <td scope="row" th:text="${item.timestamp}"></td>
+                <td scope="row" th:text="${item.timestamp}+' da '+${item.nodeInstanceName}"></td>
                 <td scope="row" th:text="${item.owner}"></td>
                 <td scope="row" th:text="${item.id}"></td>
             </tr>

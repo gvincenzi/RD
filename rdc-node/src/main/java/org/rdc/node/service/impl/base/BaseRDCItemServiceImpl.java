@@ -3,7 +3,7 @@ package org.rdc.node.service.impl.base;
 import org.rdc.node.exception.RDCNodeException;
 import org.rdc.node.domain.entity.RDCItem;
 import org.rdc.node.service.impl.RDCItemServiceImpl;
-import org.rdc.node.util.NodeUtils;
+import org.rdc.node.service.NodeUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

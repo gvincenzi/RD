@@ -150,11 +150,4 @@ public abstract class RDCItemServiceImpl implements org.rdc.node.service.RDCItem
         init(items);
         log.info("RDC correctly started");
     }
-
-    @Override
-    public void reset() throws RDCNodeException {
-        rdcItemRepository.deleteAll();
-        log.info("RDC correctly deleted");
-        startup();
-    }
 }
