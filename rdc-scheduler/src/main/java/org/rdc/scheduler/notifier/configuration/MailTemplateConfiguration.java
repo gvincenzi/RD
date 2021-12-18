@@ -14,6 +14,9 @@ public class MailTemplateConfiguration {
     @Value("${template.entry}")
     public String templateEntry;
 
+    @Value("${template.corruption}")
+    public String templateCorruption;
+
     @Value("${mail.username}")
     public String mailUsername;
 
@@ -30,6 +33,13 @@ public class MailTemplateConfiguration {
     public SimpleMailMessage templateEntryMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setText(templateEntry);
+        return message;
+    }
+
+    @Bean
+    public SimpleMailMessage templateCorruptionMessage() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setText(templateCorruption);
         return message;
     }
 

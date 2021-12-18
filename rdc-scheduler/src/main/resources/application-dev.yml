@@ -18,8 +18,10 @@ eureka:
 
 template:
   entry: "Salve,\nCon questa mail si segnala il corretto inserimento del domcumento da lei proposto : \nTitolo: %s\n\nCordialmente\nMail automatica generata dal dispositivo di programmazione"
+  corruption: "Salve,\nCon questa mail si segnala il rilevamento della corruzione del registro.\n\nCordialmente\nMail automatica generata dal dispositivo di programmazione"
   subject:
     entry: "RDC - Conferma inserimento di un nuovo documento"
+    corruption: "RDC - Rilevamento della corruzione del registro"
 
 mail:
   host: smtp.test.com
@@ -34,3 +36,6 @@ mail:
     auth: true
     starttls:
       enable: true
+
+spike:
+  url: http://localhost:8881/rdc/distribution/spike
