@@ -18,6 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Log
@@ -55,7 +57,14 @@ public class NotifierValenceServiceTest {
     }
 
     @Test
-    public void sendEntryResponseMail() throws JsonProcessingException {
-        notifierValenceService.sendEntryResponseMail(getEntry(),getEntry().getOwner());
+    public void sendEntryResponseMailTest() throws JsonProcessingException {
+        notifierValenceService.sendEntryResponseMail(getEntry(), getEntry().getOwner());
+    }
+
+    @Test
+    public void sendCorruptionMailTest() throws JsonProcessingException {
+        Set<Participant> participants = new HashSet<>();
+        participants.add(getEntry().getOwner());
+        notifierValenceService.sendCorruptionMail(participants);
     }
 }
