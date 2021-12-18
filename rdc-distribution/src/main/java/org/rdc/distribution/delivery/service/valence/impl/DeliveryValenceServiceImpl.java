@@ -2,10 +2,11 @@ package org.rdc.distribution.delivery.service.valence.impl;
 
 import lombok.extern.java.Log;
 import org.rdc.distribution.binding.message.DistributionEventType;
-import org.rdc.distribution.delivery.service.DistributionConcurrenceService;
-import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
 import org.rdc.distribution.binding.message.DistributionMessage;
+import org.rdc.distribution.delivery.service.DistributionConcurrenceService;
 import org.rdc.distribution.domain.entity.ItemProposition;
+import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
+import org.rdc.distribution.exception.RDCDistributionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -27,7 +28,7 @@ public class DeliveryValenceServiceImpl implements DeliveryValenceService {
     DistributionConcurrenceService distributionConcurrenceService;
 
     @Override
-    public DistributionMessage<ItemProposition> proposeItem(ItemProposition itemProposition) {
+    public DistributionMessage<ItemProposition> proposeItem(ItemProposition itemProposition) throws RDCDistributionException {
         distributionConcurrenceService.waitingForLastCorrelationIDProcessing();
 
         DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
@@ -42,7 +43,7 @@ public class DeliveryValenceServiceImpl implements DeliveryValenceService {
         return distributionMessage;
     }
 
-    private DistributionMessage<Void> getVoidDistributionMessage(DistributionEventType listEntriesRequest) {
+    private DistributionMessage<Void> getVoidDistributionMessage(DistributionEventType listEntriesRequest) throws RDCDistributionException{
         distributionConcurrenceService.waitingForLastCorrelationIDProcessing();
 
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
@@ -56,7 +57,7 @@ public class DeliveryValenceServiceImpl implements DeliveryValenceService {
     }
 
     @Override
-    public DistributionMessage<Void> sendIntegrityVerificationRequest() {
+    public DistributionMessage<Void> sendIntegrityVerificationRequest() throws RDCDistributionException {
         return getVoidDistributionMessage(DistributionEventType.INTEGRITY_VERIFICATION);
     }
 }

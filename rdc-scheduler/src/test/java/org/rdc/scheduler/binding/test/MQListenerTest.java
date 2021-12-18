@@ -10,6 +10,7 @@ import org.rdc.scheduler.domain.entity.Document;
 import org.rdc.scheduler.domain.entity.Participant;
 import org.rdc.scheduler.domain.entity.RDCItem;
 import org.rdc.scheduler.notifier.valence.NotifierValenceService;
+import org.rdc.scheduler.spike.client.SpikeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -32,6 +33,9 @@ public class MQListenerTest {
 
     @MockBean
     NotifierValenceService notifierValenceService;
+
+    @MockBean
+    SpikeClient spikeClient;
 
     @Test
     public void processEntryResponseTest(){

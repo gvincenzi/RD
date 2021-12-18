@@ -10,6 +10,7 @@ import org.rdc.scheduler.domain.entity.Document;
 import org.rdc.scheduler.domain.entity.RDCItem;
 import org.rdc.scheduler.notifier.valence.NotifierValenceService;
 import org.rdc.scheduler.domain.entity.Participant;
+import org.rdc.scheduler.spike.client.SpikeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,6 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Log
@@ -32,6 +35,9 @@ public class NotifierValenceServiceTest {
 
     @MockBean
     JavaMailSender javaMailSender;
+
+    @MockBean
+    SpikeClient spikeClient;
 
     protected static Document getNewDocument(String json) throws JsonProcessingException {
         log.info(json);
@@ -55,7 +61,14 @@ public class NotifierValenceServiceTest {
     }
 
     @Test
-    public void sendEntryResponseMail() throws JsonProcessingException {
-        notifierValenceService.sendEntryResponseMail(getEntry(),getEntry().getOwner());
+    public void sendEntryResponseMailTest() throws JsonProcessingException {
+        notifierValenceService.sendEntryResponseMail(getEntry(), getEntry().getOwner());
+    }
+
+    @Test
+    public void sendCorruptionMailTest() throws JsonProcessingException {
+        Set<Participant> participants = new HashSet<>();
+        participants.add(getEntry().getOwner());
+        notifierValenceService.sendCorruptionMail(participants);
     }
 }
