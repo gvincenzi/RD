@@ -20,16 +20,33 @@ public class DistributionController {
 
     @PostMapping("/item/proposition")
     public ResponseEntity<DistributionMessage<ItemProposition>> itemProposition(@RequestBody ItemProposition itemProposition) {
-        DistributionMessage<ItemProposition> distributionMessage = deliveryValenceService.proposeItem(itemProposition);
+        DistributionMessage<ItemProposition> distributionMessage = null;
+        try {
+            distributionMessage = deliveryValenceService.proposeItem(itemProposition);
+        } catch (RDCDistributionException e) {
+            log.severe(e.getMessage());
+            return new ResponseEntity<>(distributionMessage, HttpStatus.GATEWAY_TIMEOUT);
+        }
         return distributionMessage.getCorrelationID() != null ?
             new ResponseEntity<>(distributionMessage, HttpStatus.OK) :
             new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<DistributionMessage<Void>> integrityVerification() throws RDCDistributionException {
-        DistributionMessage<Void> distributionMessage = deliveryValenceService.sendIntegrityVerificationRequest();
-        ControllerResponseCache.putInCache(distributionMessage);
+    public ResponseEntity<DistributionMessage<Void>> integrityVerification() {
+        DistributionMessage<Void> distributionMessage = null;
+        try {
+            distributionMessage = deliveryValenceService.sendIntegrityVerificationRequest();
+        } catch (RDCDistributionException e) {
+            log.severe(e.getMessage());
+            return new ResponseEntity<>(distributionMessage, HttpStatus.GATEWAY_TIMEOUT);
+        }
+        try {
+            ControllerResponseCache.putInCache(distributionMessage);
+        } catch (RDCDistributionException e) {
+            log.severe(e.getMessage());
+            return new ResponseEntity<>(distributionMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return distributionMessage.getCorrelationID() != null ?
                 new ResponseEntity<>(distributionMessage, HttpStatus.OK) :
                 new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);

@@ -13,6 +13,7 @@ import org.rdc.distribution.domain.entity.Document;
 import org.rdc.distribution.domain.entity.Participant;
 import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
 import org.rdc.distribution.domain.entity.ItemProposition;
+import org.rdc.distribution.exception.RDCDistributionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -52,7 +53,7 @@ public class DistributionServiceTest {
     }
 
     @Test
-    public void addNewEntry() throws JsonProcessingException {
+    public void addNewEntry() throws JsonProcessingException, RDCDistributionException {
         ItemProposition itemProposition = getEntryProposition();
         DistributionMessage<ItemProposition> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
@@ -67,7 +68,7 @@ public class DistributionServiceTest {
     }
 
     @Test
-    public void verifyRegistryIntegrity() {
+    public void verifyRegistryIntegrity() throws RDCDistributionException {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);

@@ -14,6 +14,7 @@ import org.rdc.distribution.domain.entity.Document;
 import org.rdc.distribution.domain.entity.ItemProposition;
 import org.rdc.distribution.domain.entity.Participant;
 import org.rdc.distribution.domain.service.valence.DeliveryValenceService;
+import org.rdc.distribution.exception.RDCDistributionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -72,7 +73,7 @@ public class DeliveryValenceServiceTest {
     }
 
     @Test
-    public void addNewEntry() throws JsonProcessingException {
+    public void addNewEntry() throws JsonProcessingException, RDCDistributionException {
         ItemProposition itemProposition = getEntryProposition();
         Mockito.when(requestChannel.send(Mockito.any(Message.class))).thenReturn(Boolean.TRUE);
 
@@ -84,7 +85,7 @@ public class DeliveryValenceServiceTest {
     }
 
     @Test
-    public void sendIntegrityVerificationRequest() {
+    public void sendIntegrityVerificationRequest() throws RDCDistributionException {
         Mockito.when(requestChannel.send(Mockito.any(Message.class))).thenReturn(Boolean.TRUE);
 
         DistributionMessage<Void> proposed = deliveryValenceService.sendIntegrityVerificationRequest();

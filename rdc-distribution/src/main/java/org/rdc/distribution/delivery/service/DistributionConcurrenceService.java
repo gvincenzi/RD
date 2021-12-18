@@ -1,5 +1,7 @@
 package org.rdc.distribution.delivery.service;
 
+import org.rdc.distribution.exception.RDCDistributionException;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -20,5 +22,5 @@ public abstract class DistributionConcurrenceService {
         DistributionConcurrenceService.lastBlockingCorrelationID = lastBlockingCorrelationID;
     }
 
-    public abstract void waitingForLastCorrelationIDProcessing();
+    public abstract void waitingForLastCorrelationIDProcessing() throws RDCDistributionException;
 }

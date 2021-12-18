@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.rdc.distribution.delivery.service.DistributionConcurrenceService;
+import org.rdc.distribution.exception.RDCDistributionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -21,7 +22,7 @@ public class DistributionConcurrenceServiceTest {
     DistributionConcurrenceService distributionConcurrenceService;
 
     @Test
-    public void waitingForLastCorrelationIDProcessingTest() {
+    public void waitingForLastCorrelationIDProcessingTest() throws RDCDistributionException {
         UUID test = UUID.randomUUID();
         DistributionConcurrenceService.getCorrelationIDs().add(test);
         DistributionConcurrenceService.setLastBlockingCorrelationID(test);
