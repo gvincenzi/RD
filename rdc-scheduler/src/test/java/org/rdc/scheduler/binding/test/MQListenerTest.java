@@ -17,6 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -33,11 +35,13 @@ public class MQListenerTest {
 
     @Test
     public void processEntryResponseTest(){
-        DistributionMessage<RDCItem> msg = new DistributionMessage<>();
+        DistributionMessage<List<RDCItem>> msg = new DistributionMessage<>();
         msg.setType(DistributionEventType.ENTRY_RESPONSE);
         msg.setCorrelationID(UUID.randomUUID());
         msg.setInstanceName("test-instance");
-        msg.setContent(getRdcItem());
+        List<RDCItem> items = new ArrayList<>();
+        items.add(getRdcItem());
+        msg.setContent(items);
 
         mqListener.processEntryResponse(msg);
     }

@@ -1,13 +1,15 @@
 package org.rdc.scheduler.binding.message;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
 public class DistributionMessage<T> {
-    UUID correlationID;
+    private UUID correlationID;
     String instanceName;
-    DistributionEventType type;
-    T content;
+    private DistributionEventType type;
+    Boolean rdcValid;
+    private T content;
 }

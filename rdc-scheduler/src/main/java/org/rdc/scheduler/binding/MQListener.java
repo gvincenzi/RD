@@ -11,6 +11,8 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @EnableBinding(MQBinding.class)
 public class MQListener {
     @Autowired
@@ -24,9 +26,13 @@ public class MQListener {
     }
 
     @StreamListener(target = "responseChannel")
-    public void processEntryResponse(DistributionMessage<RDCItem> msg) {
+    public void processEntryResponse(DistributionMessage<List<RDCItem>> msg) {
         if(DistributionEventType.ENTRY_RESPONSE.equals(msg.getType()) && msg.getContent() != null){
-            notifierValenceService.sendEntryResponseMail(msg.getContent(), msg.getContent().getOwner());
+            for (RDCItem rdcItem: msg.getContent()) {
+                if(rdcItem.getOwner() != null && rdcItem.getOwner().getMail() != null){
+                    notifierValenceService.sendEntryResponseMail(rdcItem,rdcItem.getOwner());
+                }
+            }
         }
     }
 }
