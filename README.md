@@ -1,4 +1,6 @@
 # RDC : Registro Digitale Contribuito
+## Build Information
+![example workflow](https://github.com/gvincenzi/RDC/actions/workflows/maven.yml/badge.svg)
 
 ## Introduzione
 Il Web, il Wiki, la Blockchain, sono architetture nate da visioni, intuizioni di tecnici mossi dalla propria coscienza politica e dal senso di responsabilità sociale: con lo stesso spirito, proponiamo il Registro Digitale Contribuito.
@@ -13,7 +15,7 @@ Avremo allora, ad accogliere i documenti connessi in Rete, un ***Registro***.
 In latino era ***Regesta***. Verbo ***gerere***: in origine ***portare*** ma poi: ***condurre a compimento***. Da cui ***gestione***. In latino stava per comportarsi, procedere, agire, fare, trattare, regolarsi, compiere, esercitare, sostenere, occuparsi di, governare, amministrare, presentare, rappresentare.
 Al ***gerere***, portare a compimento, consegue il ***re-gerere***, ***ri-portare*** ciò che si è fatto, descrivendo in un documento il senso dell'azione.
 Il concetto si completa ricordando anche il verbo latino ***periri***, ovvero ***provare***, ***tentare***: in origine, ognuna delle attività descritte dal verbo ***gerere*** non è che un tentativo. 
-Da *periri* discendono infatti ***esperienza***, ***esperimento***, ed anche ***pericolo ***. E discende anche *** Repertorium***, sinonimo di ***Regesta***.
+Da *periri* discendono infatti ***esperienza***, ***esperimento***, ed anche ***pericolo***. E discende anche ***Repertorium***, sinonimo di ***Regesta***.
 
 Il registro che immaginiamo raccoglie infatti esperienze. Che sono anche errori e tentativi non andati a buon fine. Il registro raccoglie anche cattive notizie. Raccoglie anche quei dati che i database filtrano e scartano considerandoli erronei o irrilevanti.
 
@@ -28,22 +30,22 @@ Il Registro si appoggia sul World Wide Web. Ma si offre come luogo dove, a diffe
 - la scelta dei documenti da leggere è frutto del libero arbitrio umano;
 - è esclusa la raccolta di notizie personali sui cittadini e sui loro comportamenti;
 - non c'è presenza di Terze Parti dotate di autorità, di diritti di proprietà, di potere di controllo e di intervento.
- 
+
 A differenza del World Wide Web, il ***Registro*** non è né globale né universale. Si dovrebbe parlare a rigore di ***Registri***, ognuno dedicato ad uno scopo: ad un argomento, ad un processo, a fornire supporto alla vita di una comunità, a verificare l'andamento di un fenomeno.
 In ogni caso uno scopo sociale, perché ogni ***Registro*** prevede la compresenza, nel duplice ruolo di scrittore e sociale, di una pluralità di cittadini.
- 
+
 La gestione e la validazione dei documenti che costituiscono il ***Registro*** è affidata alla comunità costituita dai cittadini che scrivono e leggono il ***Registro***.
- 
+
 A differenza di quanto accade nella originaria ***Blockchain***, nella filosofia del ***Registro*** è assente la scelta forte di garantire agli attori la maschera dell'animato, tramite cifratura.
 A differenza di ***Wikipedia***, ogni documento di ogni ***Registro*** è in ogni caso firmato da almeno un autore.
- 
+
 Il ***Registro***, come una ***Blockchain***, si basa sulla partecipazione attiva di cittadini. I cittadini partecipanti, senza bisogno di sanzioni o legittimazione di Terze Parti, si abilitano ad agire tramite auto-dichiarazioni.
 Essendo un ***Registro*** dedicato ad uno scopo -ad un processo, ad una attività, ad un ambito lavorativo, o più in generale alle interazioni tra membri di un gruppo sociale- è richiesta ai partecipanti la dichiarazione della propria posizione organizzativa, del proprio ruolo sociale.
 Si tratta di auto-dichiarazioni, non soggette al controllo di una autorità terza, ma soggette al controllo incrociato degli altri cittadini che collaborano al ***Registro***.
 Resta comunque valido per il ***Registro*** il principio in base dell'originaria ***Blockchain***: ogni cittadino partecipante dichiara di sé solo quello che serve, solo quando serve.
- 
+
 In ogni documento sarà esplicitato il legame tra la posizione auto-dichiarata dall'autore e l'argomento trattato nel documento.
- 
+
 Il ***Registro*** offre, come il ***wiki***, spazio alla scrittura collaborativa, in duplice modo: prevede sia la possibilità di scrivere nuovi documenti, sia di intervenire -lasciando traccia esplicita di ognuno degli interventi- su documenti esistenti.
 Il ***Registro*** non prevede la figura del terzo esterno che si arroga, a scapito di altri, il ruolo di ***esperto*** che detta regole di scrittura, emenda, censura e corregge.
 In linea generale, ogni cittadino può scrivere, perché ogni cittadino -almeno in uno specifico campo- è portatore di conoscenze. Ed esiste certo per ogni essere umano un campo di conoscenza nel quale l'autorità a parlare non può in nessun caso essere messa in discussione: la propria autobiografia e la propria esperienza personale.
@@ -51,9 +53,9 @@ In linea generale, ogni cittadino può scrivere, perché ogni cittadino -almeno 
 La validità e l'affidabilità dei documenti sono affermate secondo il principio del progressivo miglioramento dei documenti ***wiki*** e della catena dell'onestà descritto nel paper di ***Satoshi Nakamoto***.
 Ogni cittadino, a partire dalla posizione auto-dichiarata, potrà modificare i documenti.
 La transazione disonesta sarà rifiutata dai cittadini onesti; così la catena della disonestà si interromperà.
- 
+
 Come nelle ***Blockchain***, è possibile ripercorrere a ritroso la catena, o la rete, di documenti, ricostruendo così un fenomeno ed accrescendo la conoscenza immediatamente necessaria per compiere azioni o prendere decisioni.
- 
+
 Il ***Registro*** è ***contribuito***. La storia delle architetture informatiche usa il termine ***distribuito***, per indicare un passaggio storico: ciò che nella fase iniziale è conservato su una sola macchina -il Maniframe-, successivamente è distribuito su più Server.
 
 Ma l'aggettivo distribuito descrive in modo insoddisfacente l'architettura di cui Blockchain è caso esemplare. Nativamente ogni nodo della Rete partecipa alla conservazione della conoscenza prodotta: dà, dunque, il suo contributo.
@@ -65,14 +67,16 @@ di [Luca Barbieri](https://www.linkedin.com/in/luca-barbieri-213157139/)
 e [Giuseppe Vincenzi](https://www.linkedin.com/in/giuseppevincenzi/).
 Questo codice ha l'obiettivo di fornire una base su cui implementare il proprio Registro Digitale Contribuito, secondo i principi descritti nel libro, ma adattato al proprio singolo caso d'uso.
 
-### RDC vs RDD
-Nel libro si parla di Registro Digitale Distribuito: si tratta di una specializzazione del Registro Digitale Contribuito che il codice di questo repository realizza.
+### RDD : Registro Digitale Distribuito
+Nel libro si parla di ***Registro Digitale Distribuito***: si tratta di una specializzazione del Registro Digitale Contribuito che il codice di questo repository realizza.
 Un RDC si basa sulla contribuzione di più nodi e componenti che, grazie al loro lavoro collettivo, contribuiscono a fare funzionare il sistema.
 Tecnicamente l'architettura è organizzata in modo tale da rendere il più indipendenti possibili i componenti, disaccoppiandoli sempre là dove possibile.
 Le comunicazioni tra tutti i componenti sono asincrone in tutti gli scambi.
 Una delle molecole contiene il cuore del registro, la molecola ***rdc-node***: questa molecola può essere instanziata quante volte si ritiene necessario. 
 In questo caso, con l'aumentare del numero di instanze della molecola e il numero di attori coinvolti nell'utilizzo del registro, si rende il registro stesso Distribuito.
 Questo è il caso d'uso descritto nel libro.
+
+***Il POC (Proof of Concept) che si mostra di seguito è proprio un esempio di RDC Distribuito, o anche semplicemente Registro Digitale Distribuito (RDD)***.
 
 ## Tecnologie utilizzate
 Le tecnologie e i framework utilizzati in questo progetto sono principalmente:
@@ -83,15 +87,12 @@ Le tecnologie e i framework utilizzati in questo progetto sono principalmente:
 - Spring Security
 - Swagger
 
-## Tecnologie di terze parti usate per far funzionare un POC basata su questa architettura
-Il sistema necessita di due componenti infrastrutturali per rendere operativa un'instanza di un RDC :
+## Tecnologie di terze parti usate per far funzionare un POC basato su questa architettura
+Il sistema necessita di due componenti infrastrutturali per rendere operativa un'instanza di un RDC:
 - Un server per le comunicazioni AMQP tra atomi e tra molecole
 > Per il POC ho usato [CloudAMQP](https://www.cloudamqp.com/)
 - Un database NoSQL
 > Per il POC ho usato un [MongoDB](https://www.mongodb.com/)
-
-## Build Information
-![example workflow](https://github.com/gvincenzi/RDC/actions/workflows/maven.yml/badge.svg)
 
 ## Schema architetturale
 Il Registro Digitale Contribuito si basa sui principi del pattern di un'[Architettura Atomica di Giuseppe Vincenzi](https://www.linkedin.com/feed/update/urn:li:activity:6791100763025219584/).
@@ -131,7 +132,7 @@ La molecola si compone di due atomi :
 Questa molecola è il cuore del Registro Digitale Contribuito : è la molecola che contiene il registro nella sua interezza e potrà essere istanziata un numero di volte pari al numero di attori coinvolti nella vita del registro.
 Nel funzionamento di base proposto per un RDC non si procederà mai al fork del registro: ogni volta che uno dei nodi prenderà in carico l'inserimento di un nuovo documento, il sistema di distribuzione aspetterà che il lavoro sia completata prima di sollecitare nuovamente il registro.
 
-In questa implementazione Open Source di base di un RDC utilizziamo un database MongoDB e gli strumenti messi a disposizione dallo starter Spring Boot dedicato.embedded relazionale: il documento di un RDC, denominato **RDCItem**, è un oggetto Java che, grazie ad alcune caratteristiche del mapping di Jackson, contiene una sua parte chiamata ***details*** che non ha una struttura definita.
+In questa implementazione Open Source di base di un RDC utilizziamo un database MongoDB e gli strumenti messi a disposizione dallo starter Spring Boot dedicato: il documento di un RDC, denominato **RDCItem**, è un oggetto Java che, grazie ad alcune caratteristiche del mapping di Jackson, contiene una sua parte chiamata ***details*** che non ha una struttura definita.
 Questo è un modo, nell'implementazione di base, per mostrare che l'RDC ha il dovere di essere capace di salvare qualsiasi tipo di informazione, qualsiasi sia la sua struttura.
 
 Qualora necessario, si potranno anche integrare sistemi di ricerca (come Apache Lucene, per fornire un esempio) per rendere possibile, agevole ed efficiente una ricerca nel contenuto dei documenti salvati nell'RDC. 
@@ -169,9 +170,17 @@ Il Sistema di comunicazione tra i dispositivi si fonda, nella sua implementazion
 ![Exchanges del dispositivo di flusso documentale (RabbitMQ nella versione del POC)](src/main/resources/img/flow_exchanges.png?raw=true)
 
 ## Startup di un nodo
-Quando un nuovo nodo viene lanciato, nelle proprietà Yammel della molecola si può precisare che il nodo necessità di un processo di startup: la molecola utilizzerà lo spike della macromolecola per richiedere una verifica dell'integrità della catena; in risposta riceverà un CorrelationID con cui potrà richiedere subito dopo il risultato della verifica che contiene anche l'intera copia del registro.
-Il nodo verificherà che la parte del registro, che eventualmente conosce già, sia rimasta intatta (in caso contrario il registro sarà definito corrotto) e inserirà il resto del registro che ancora non conosce. 
+Quando un nuovo nodo viene lanciato, nelle proprietà Yammel della molecola si può precisare che il nodo necessità di un processo di startup: la molecola utilizzerà lo spike della macromolecola per richiedere una verifica dell'integrità della catena.
+In maniera asincrona, riceverà la risposta nel canale di distribuzione che conterrà l'intera copia del registro.
+Grazie alla classe di configurazione **StartupConfig** il nodo sarà in grado di non definirsi correttamete inizializzato se non avrà ricevuto una risposta (inviata da un altro nodo) contenente la copia del registro sul canale di distribuzione.
 ![Due database di due nodi A e B di uno stesso RDC (due DB nello stesso Cluster nella versione del POC)](src/main/resources/img/mongodb-databases.png?raw=true)
+
+## Interfaccia grafica per il monitoraggio di un nodo
+Nella versione di base del Registro è stata implementata un'interfaccia (raggiungibile nel ***context-root*** del'applicazione del nodo) che mostra:
+ - Lo stato dell'inizializzazione del nodo
+    - Qualora non fosse correttamete inizializzato, si puo' utilizzare un tasto presente nell'interfaccia che rilancia il processo
+ - L'elenco dei documenti inseriti nella copia locale del registro
+![Interfaccia di un nodo](src/main/resources/img/node-gui.png?raw=true)
 
 ## Inserimento di un nuovo documento
 Quando un nodo riceve un messaggio con una proposta di inserimento di un nuovo documento ***(ItemPoposition)*** reagisce costruendo un nuovo identificativo univoco per il documento ***(RDCItem)*** secondo l'algoritmo definito nell'implementazione della interfaccia [RDCItemService](https://github.com/gvincenzi/RDC/tree/master/rdc-node/src/main/java/org/rdc/node/service/RDCItemService.java).
@@ -257,6 +266,7 @@ La chiamata POST avrà un header per la sicurezza, nel caso del POC è una Basic
 Dopo aver inviato la richiesta, possiamo controllare il percorso della nostra domanda nell'exchange ***requestChannel***.
 Qui verrà consumato da uno solo dei nodi tra A, B e C e invierà la risposta con il documento inserito nel ***responseChannel***.
 Il dispositivo di distribuzione lo invirà infine nel ***distributionChannel*** per fare in modo che gli altri nodi possano aggiornarsi con il nuovo documento.
+
 ![RabbitMQ : messaggio in transito nel requestChannel](src/main/resources/img/amqp_request.png?raw=true)
 ![RabbitMQ : messaggio in transito nel responseChannel](src/main/resources/img/amqp_response.png?raw=true)
 ![RabbitMQ : messaggio in transito nel distributionChannel](src/main/resources/img/amqp_distribution.png?raw=true)
