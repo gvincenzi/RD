@@ -29,10 +29,7 @@ public abstract class RDCItemServiceImpl implements RDCItemService {
     @Autowired
     private RDCItemRepository rdcItemRepository;
 
-    @Autowired
-    SpikeClient spikeClient;
-
-    @Value("${required.difficult.level}")
+    @Value("${rdc.difficult.level}")
     private Integer difficultLevel;
 
     @Value("${spring.application.name}")
@@ -137,18 +134,5 @@ public abstract class RDCItemServiceImpl implements RDCItemService {
                 forceAddItem(content.get(i));
             }
         }
-    }
-
-    @Override
-    public void startup() throws RDCNodeException {
-        DistributionMessage<Void> integrityVerification = spikeClient.integrityVerification();
-        DistributionMessage<List<RDCItem>> integrityVerificationResponse = spikeClient.getResult(integrityVerification.getCorrelationID());
-        while (integrityVerificationResponse == null || integrityVerificationResponse.getContent() == null) {
-            integrityVerificationResponse = spikeClient.getResult(integrityVerification.getCorrelationID());
-        }
-        List<RDCItem> items = objectMapper.convertValue(integrityVerificationResponse.getContent(), new TypeReference<>() {
-        });
-        init(items);
-        log.info("RDC correctly started");
     }
 }

@@ -15,7 +15,7 @@ public class ControllerResponseCache {
         if(cache.size()<limitCache){
             cache.put(distributionMessage.getCorrelationID(),distributionMessage);
         } else {
-            throw new RDCDistributionException("Max cache limit exceeded");
+            throw new RDCDistributionException(String.format("Max cache limit [%d] exceeded",limitCache));
         }
     }
 

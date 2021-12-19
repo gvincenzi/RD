@@ -28,6 +28,7 @@ public class MQListener {
 
     @StreamListener(target = "responseChannel")
     public void processEntryResponse(DistributionMessage<List<RDCItem>> msg) {
+        log.info(String.format("START >> Message received in Response Channel with Correlation ID [%s]",msg.getCorrelationID()));
         if(DistributionEventType.ENTRY_RESPONSE.equals(msg.getType()) && msg.getContent() != null){
             log.info(String.format("Correlation ID [%s] processed",msg.getCorrelationID()));
             DistributionConcurrenceService.getCorrelationIDs().remove(msg.getCorrelationID());
@@ -53,5 +54,6 @@ public class MQListener {
             Message<DistributionMessage<List<RDCItem>>> message = MessageBuilder.withPayload(msg).build();
             distributionChannel.send(message);
         }
+        log.info(String.format("END >> Message received in Response Channel with Correlation ID [%s]",msg.getCorrelationID()));
     }
 }

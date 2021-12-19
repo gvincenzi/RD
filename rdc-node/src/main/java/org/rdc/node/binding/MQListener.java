@@ -32,6 +32,7 @@ public class MQListener {
 
     @StreamListener(target = "requestChannel")
     public void processItemProposition(DistributionMessage<ItemProposition> msg) {
+        log.info(String.format("START >> Message received in Request Channel with Correlation ID [%s]",msg.getCorrelationID()));
         if (DistributionEventType.ENTRY_PROPOSITION.equals(msg.getType()) && msg.getContent() != null) {
             List<RDCItem> items = new ArrayList<>();
             RDCItem rdcItem = null;
@@ -52,10 +53,12 @@ public class MQListener {
             Message<DistributionMessage<List<RDCItem>>> responseMsg = MessageBuilder.withPayload(responseMessage).build();
             responseChannel.send(responseMsg);
         }
+        log.info(String.format("END >> Message received in Request Channel with Correlation ID [%s]",msg.getCorrelationID()));
     }
 
     @StreamListener(target = "distributionChannel")
     public void processDistribution(DistributionMessage<List<RDCItem>> msg) {
+        log.info(String.format("START >> Message received in Distribution Channel with Correlation ID [%s]",msg.getCorrelationID()));
         if (DistributionEventType.ENTRY_RESPONSE.equals(msg.getType()) && msg.getContent() != null && !instanceName.equals(msg.getInstanceName())) {
             try {
                 for (RDCItem item : msg.getContent()) {
@@ -85,9 +88,11 @@ public class MQListener {
                 log.severe(e.getMessage());
             }
         }
+        log.info(String.format("END >> Message received in Distribution Channel with Correlation ID [%s]",msg.getCorrelationID()));
     }
 
     private void corruptionDetected(DistributionMessage<?> msg) {
+        log.warning(String.format("Corruption detected : send message with Correlation ID [%s]",msg.getCorrelationID()));
         DistributionMessage<List<RDCItem>> responseMessage = new DistributionMessage<>();
         responseMessage.setCorrelationID(msg.getCorrelationID());
         responseMessage.setInstanceName(instanceName);

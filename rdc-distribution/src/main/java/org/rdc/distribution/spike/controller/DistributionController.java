@@ -20,6 +20,7 @@ public class DistributionController {
 
     @PostMapping("/item/proposition")
     public ResponseEntity<DistributionMessage<ItemProposition>> itemProposition(@RequestBody ItemProposition itemProposition) {
+        log.info(String.format("[DISTRIBUTION SPIKE] Item proposition received"));
         DistributionMessage<ItemProposition> distributionMessage = null;
         try {
             distributionMessage = deliveryValenceService.proposeItem(itemProposition);
@@ -34,6 +35,7 @@ public class DistributionController {
 
     @PostMapping("/verify")
     public ResponseEntity<DistributionMessage<Void>> integrityVerification() {
+        log.info(String.format("[DISTRIBUTION SPIKE] Integrity verification request received"));
         DistributionMessage<Void> distributionMessage = null;
         try {
             distributionMessage = deliveryValenceService.sendIntegrityVerificationRequest();
@@ -52,8 +54,24 @@ public class DistributionController {
                 new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @PostMapping("/verify/internal")
+    public ResponseEntity<DistributionMessage<Void>> integrityVerificationInternal() {
+        log.info(String.format("[DISTRIBUTION SPIKE] Internal integrity verification request received"));
+        DistributionMessage<Void> distributionMessage = null;
+        try {
+            distributionMessage = deliveryValenceService.sendIntegrityVerificationRequest();
+        } catch (RDCDistributionException e) {
+            log.severe(e.getMessage());
+            return new ResponseEntity<>(distributionMessage, HttpStatus.GATEWAY_TIMEOUT);
+        }
+        return distributionMessage.getCorrelationID() != null ?
+                new ResponseEntity<>(distributionMessage, HttpStatus.OK) :
+                new ResponseEntity<>(distributionMessage, HttpStatus.NOT_ACCEPTABLE);
+    }
+
     @GetMapping("/{uuid}")
     public ResponseEntity<DistributionMessage> get(@PathVariable UUID uuid) {
+        log.info(String.format("[DISTRIBUTION SPIKE] Get asynchronous result request received with Correlation ID [%s]",uuid.toString()));
         if(ControllerResponseCache.getFromCache(uuid) != null){
             return new ResponseEntity<>(ControllerResponseCache.removeFromCache(uuid), HttpStatus.OK);
         } else return new ResponseEntity(uuid, HttpStatus.NO_CONTENT);

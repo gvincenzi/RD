@@ -34,7 +34,7 @@ public class DistributionControllerIntegrityValidationTest {
     DeliveryValenceService deliveryValenceService;
 
     @Test
-    public void entryOk() throws Exception {
+    public void integrityOk() throws Exception {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setCorrelationID(UUID.randomUUID());
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
@@ -49,11 +49,40 @@ public class DistributionControllerIntegrityValidationTest {
     }
 
     @Test
-    public void entryKo() throws Exception {
+    public void integrityKo() throws Exception {
         DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
         distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
         Mockito.when(deliveryValenceService.sendIntegrityVerificationRequest()).thenReturn(distributionMessage);
         mvc.perform(post("/verify")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(""))
+                .andDo(print())
+                .andExpect(status().isNotAcceptable())
+                .andReturn();
+    }
+
+    @Test
+    public void integrityInternalOk() throws Exception {
+        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
+        distributionMessage.setCorrelationID(UUID.randomUUID());
+        distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
+        Mockito.when(deliveryValenceService.sendIntegrityVerificationRequest()).thenReturn(distributionMessage);
+        mvc.perform(post("/verify/internal")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(""))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    public void integrityInternalKo() throws Exception {
+        DistributionMessage<Void> distributionMessage = new DistributionMessage<>();
+        distributionMessage.setType(DistributionEventType.INTEGRITY_VERIFICATION);
+        Mockito.when(deliveryValenceService.sendIntegrityVerificationRequest()).thenReturn(distributionMessage);
+        mvc.perform(post("/verify/internal")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(""))

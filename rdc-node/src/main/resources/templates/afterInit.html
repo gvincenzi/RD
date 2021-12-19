@@ -24,33 +24,14 @@
         <h2>
             <span th:text="'Il nome della tua istanza : ' + ${instanceName}"></span>
         </h2>
-        <h3><td th:text="${validation} ? 'Il Registro è valido' : 'Il Registro è corrotto'" /></h3>
+        <h3>La validazione e l'invio dei dati per realizzare una copia del registro sono stati richiesti</h3>
     </div>
 
     <div style="display: flex; margin: 1em">
-        <form th:action="@{/init}">
-            <button class="btn btn-primary" type="submit" style="margin: 0.5em">Aggiornamento della copia</button>
+        <form th:action="@{/}">
+            <button class="btn btn-primary" type="submit" style="margin: 0.5em">Torna alla lista dei documenti</button>
         </form>
     </div>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Titolo del documento</th>
-                <th scope="col">Data e ora dell'inserimento</th>
-                <th scope="col">Proprietario</th>
-                <th scope="col">Identificativo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="item : ${items}">
-                <td scope="row" th:text="${item.document.title}"></td>
-                <td scope="row" th:text="${item.timestamp}+' da '+${item.nodeInstanceName}"></td>
-                <td scope="row" th:text="${item.owner}"></td>
-                <td scope="row" th:text="${item.id}"></td>
-            </tr>
-        </tbody>
-    </table>
 
 </main>
 <!-- /.container -->

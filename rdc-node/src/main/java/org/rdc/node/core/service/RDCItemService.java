@@ -13,5 +13,4 @@ public interface RDCItemService {
 	Boolean validate(List<RDCItem> rdcItems) throws RDCNodeException;
 	List<RDCItem> findAll();
 	void init(List<RDCItem> content) throws RDCNodeException;
-	void startup() throws RDCNodeException;
 }

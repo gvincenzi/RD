@@ -14,6 +14,7 @@ import org.rdc.node.core.entity.RDCItem;
 import org.rdc.node.core.repository.RDCItemRepository;
 import org.rdc.node.core.service.RDCItemService;
 import org.rdc.node.exception.RDCNodeException;
+import org.rdc.node.spike.client.SpikeClient;
 import org.rdc.node.spike.controller.NodeController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,9 @@ public class NodeControllerTest {
     @MockBean
     RDCItemRepository rdcItemRepository;
 
+    @MockBean
+    SpikeClient spikeClient;
+
     @Test
     public void welcome() throws Exception {
         Mockito.when(rdcItemService.findAll()).thenReturn(new ArrayList<>());
@@ -58,48 +62,10 @@ public class NodeControllerTest {
     }
 
     @Test
-    public void startup() throws Exception {
-        List<RDCItem> items = new ArrayList<>();
-        RDCItem rdcItem = getRdcItem();
-        items.add(rdcItem);
-        Mockito.when(rdcItemService.findAll()).thenReturn(items);
-        Mockito.when(rdcItemService.validate(items)).thenReturn(Boolean.TRUE);
-
-        mvc.perform(get("/startup"))
+    public void init() throws Exception {
+        mvc.perform(get("/init"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
-    }
-
-    @Test
-    public void startupCorrupted() throws Exception {
-        List<RDCItem> items = new ArrayList<>();
-        RDCItem rdcItem = getRdcItem();
-        items.add(rdcItem);
-        Mockito.when(rdcItemService.findAll()).thenReturn(items);
-        Mockito.when(rdcItemService.validate(items)).thenReturn(Boolean.TRUE);
-
-        BDDMockito.willThrow(new RDCNodeException("Test")).given(rdcItemService).startup();
-        mvc.perform(get("/startup"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-    }
-
-    private RDCItem getRdcItem() {
-        RDCItem item = new RDCItem();
-        item.setIsCorruptionDetected(Boolean.FALSE);
-        item.setId(UUID.randomUUID().toString());
-        item.setTimestamp(Instant.now());
-        item.setNodeInstanceName("test-instance");
-        item.setPreviousId(UUID.randomUUID().toString());
-        item.setNonce(new Random().nextInt());
-        Participant owner = new Participant();
-        owner.setMail("test@test.com");
-        item.setOwner(owner);
-        Document document = new Document();
-        document.setTitle("Test document");
-        item.setDocument(document);
-        return item;
     }
 }
