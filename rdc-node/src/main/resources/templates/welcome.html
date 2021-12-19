@@ -24,6 +24,7 @@
         <h2>
             <span th:text="'Il nome della tua istanza : ' + ${instanceName}"></span>
         </h2>
+        <h3><td th:text="${startup} ? 'Il Registro è correttamente inizializzato' : 'Il Registro non è correttamente inizializzato'" /></h3>
         <h3><td th:text="${validation} ? 'Il Registro è valido' : 'Il Registro è corrotto'" /></h3>
     </div>
 

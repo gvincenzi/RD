@@ -1,6 +1,7 @@
 package org.rdc.node.spike.controller;
 
 import lombok.extern.java.Log;
+import org.rdc.node.core.configuration.StartupConfig;
 import org.rdc.node.core.entity.RDCItem;
 import org.rdc.node.core.service.RDCItemService;
 import org.rdc.node.exception.RDCNodeException;
@@ -30,6 +31,7 @@ public class NodeController {
         List<RDCItem> items = rdcItemService.findAll();
         model.addAttribute("instanceName", instanceName);
         model.addAttribute("validation", rdcItemService.validate(items));
+        model.addAttribute("startup", StartupConfig.startupProcessed);
         model.addAttribute("items", items);
 
         return "welcome"; //view

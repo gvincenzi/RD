@@ -4,6 +4,7 @@ import lombok.extern.java.Log;
 import org.rdc.node.binding.message.DistributionEventType;
 import org.rdc.node.binding.message.DistributionMessage;
 import org.rdc.node.binding.message.entity.ItemProposition;
+import org.rdc.node.core.configuration.StartupConfig;
 import org.rdc.node.core.entity.RDCItem;
 import org.rdc.node.exception.RDCNodeException;
 import org.rdc.node.core.service.RDCItemService;
@@ -33,7 +34,7 @@ public class MQListener {
     @StreamListener(target = "requestChannel")
     public void processItemProposition(DistributionMessage<ItemProposition> msg) {
         log.info(String.format("START >> Message received in Request Channel with Correlation ID [%s]",msg.getCorrelationID()));
-        if (DistributionEventType.ENTRY_PROPOSITION.equals(msg.getType()) && msg.getContent() != null) {
+        if (DistributionEventType.ENTRY_PROPOSITION.equals(msg.getType()) && msg.getContent() != null && StartupConfig.startupProcessed) {
             List<RDCItem> items = new ArrayList<>();
             RDCItem rdcItem = null;
             try {
@@ -43,7 +44,7 @@ public class MQListener {
             }
             if (rdcItem != null) {
                 items.add(rdcItem);
-                log.info("Item added with ID : " + rdcItem.getId());
+                log.info(String.format("New item with ID [%s] correctly validated and ingested",rdcItem.getId()));
             }
             DistributionMessage<List<RDCItem>> responseMessage = new DistributionMessage<>();
             responseMessage.setCorrelationID(msg.getCorrelationID());
@@ -59,11 +60,11 @@ public class MQListener {
     @StreamListener(target = "distributionChannel")
     public void processDistribution(DistributionMessage<List<RDCItem>> msg) {
         log.info(String.format("START >> Message received in Distribution Channel with Correlation ID [%s]",msg.getCorrelationID()));
-        if (DistributionEventType.ENTRY_RESPONSE.equals(msg.getType()) && msg.getContent() != null && !instanceName.equals(msg.getInstanceName())) {
+        if (DistributionEventType.ENTRY_RESPONSE.equals(msg.getType()) && msg.getContent() != null && !instanceName.equals(msg.getInstanceName()) && StartupConfig.startupProcessed) {
             try {
                 for (RDCItem item : msg.getContent()) {
                     if (rdcItemService.forceAddItem(item)) {
-                        log.info("RDC Item correctly validated");
+                        log.info(String.format("New item with ID [%s] correctly validated and ingested",item.getId()));
                     } else {
                         corruptionDetected(msg);
                     }
@@ -74,12 +75,18 @@ public class MQListener {
         } else if (DistributionEventType.INTEGRITY_VERIFICATION.equals(msg.getType()) && msg.getContent() != null && !instanceName.equals(msg.getInstanceName())) {
             try {
                 rdcItemService.init(msg.getContent());
-                log.info("RDC correctly validated");
+
+                if(Boolean.FALSE.equals(StartupConfig.startupProcessed)){
+                    log.info("Startup process for this node has been correctly terminated");
+                    StartupConfig.startupProcessed = Boolean.TRUE;
+                }
+
+                log.info("Integrity verification correctly validated and ingested");
             } catch (RDCNodeException e) {
                 log.severe(e.getMessage());
                 corruptionDetected(msg);
             }
-        } else if (DistributionEventType.CORRUPTION_DETECTED.equals(msg.getType()) && msg.getContent() != null) {
+        } else if (DistributionEventType.CORRUPTION_DETECTED.equals(msg.getType()) && msg.getContent() != null && StartupConfig.startupProcessed) {
             try {
                 for (RDCItem item : msg.getContent()) {
                     rdcItemService.forceAddItem(item);
