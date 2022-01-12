@@ -27,7 +27,7 @@
 
     <modules>
         <module>rdc-service-registry</module>
-        <module>rdc-spike</module>
+        <module>rd-spike</module>
         <module>rdc-distribution</module>
         <module>rdc-scheduler</module>
         <module>rdc-node</module>

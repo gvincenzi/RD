@@ -1,11 +1,11 @@
 server:
   port: 8881
   servlet:
-    context-path: /rdc
+    context-path: /rd
 
 spring:
   application:
-    name: rdc-spike
+    name: rd-spike
 eureka:
   instance:
     hostname: localhost
@@ -22,7 +22,7 @@ zuul:
   routes:
     rdc-distribution:
       path: /distribution/**
-      serviceId: rdc-distribution
+      serviceId: rd-distribution
       stripPrefix: true
       sensitiveHeaders:
 
