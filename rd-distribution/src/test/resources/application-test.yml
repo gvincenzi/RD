@@ -1,0 +1,22 @@
+info:
+  name: RD - Dispositivo di Distribuzione - Molecola (Test)
+  artifact: '@project.artifactId@'
+  version: '@project.version@'
+
+spring:
+  application:
+    name: rd-distribution
+  rabbitmq:
+    addresses: amqp://server
+  cloud:
+    stream:
+      bindings:
+        responseChannel:
+          destination: responseChannel
+        requestChannel:
+          producer:
+            routingKeyExpression: "'rdRequestChannel'"
+
+rd:
+  username: test
+  password: test

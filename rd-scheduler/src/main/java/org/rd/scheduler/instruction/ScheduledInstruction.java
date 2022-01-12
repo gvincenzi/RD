@@ -31,7 +31,7 @@ public class ScheduledInstruction {
     @Autowired
     NotifierValenceService notifierValenceService;
 
-    @Value("${rdc.instructionScheduled}")
+    @Value("${rd.instructionScheduled}")
     Boolean instructionScheduledActive;
 
     @Scheduled(fixedDelay = 60000)

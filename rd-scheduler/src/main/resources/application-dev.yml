@@ -37,7 +37,7 @@ mail:
     starttls:
       enable: true
 
-rdc:
+rd:
   instructionScheduled: true
   spike:
     url: http://localhost:8881/rd/distribution/spike

@@ -188,7 +188,7 @@ Nella versione di base dell'RDC l'algoritmo proposto è il seguente:
 ```java
 package org.rdc.node.service.impl.base;
 
-import org.rdc.node.exception.RDCNodeException;
+import RDCNodeException;
 import org.rdc.node.domain.entity.RDCItem;
 import org.rdc.node.service.impl.RDCItemServiceImpl;
 import org.rdc.node.service.NodeUtils;
@@ -202,11 +202,11 @@ public class BaseRDCItemServiceImpl extends RDCItemServiceImpl {
 	private static final String REGEX_DIGIT = "[0-9].*";
 
 	@Override
-	public boolean isHashResolved(RDCItem rdcItem, Integer difficultLevel) {
+	public boolean isHashResolved(RDCItem RDItem, Integer difficultLevel) {
 		List<Integer> digits = new ArrayList<>(difficultLevel);
 
 		Integer index = 0;
-		String hash = rdcItem.getId();
+		String hash = RDItem.getId();
 		while (index < hash.length() && digits.size() < difficultLevel) {
 			String s = hash.substring(index, ++index);
 			if (s.matches(REGEX_DIGIT)) {
@@ -219,13 +219,13 @@ public class BaseRDCItemServiceImpl extends RDCItemServiceImpl {
 	}
 
 	@Override
-	public String calculateHash(RDCItem rdcItem) throws RDCNodeException {
+	public String calculateHash(RDCItem RDItem) throws RDCNodeException {
 		return NodeUtils.applySha256(
-				rdcItem.getPreviousId() +
-						rdcItem.getTimestamp().toEpochMilli() +
-						rdcItem.getNonce() +
-						rdcItem.getDocument().getTitle() +
-						rdcItem.getOwner().getMail()
+				RDItem.getPreviousId() +
+						RDItem.getTimestamp().toEpochMilli() +
+						RDItem.getNonce() +
+						RDItem.getDocument().getTitle() +
+						RDItem.getOwner().getMail()
 		);
 	}
 }

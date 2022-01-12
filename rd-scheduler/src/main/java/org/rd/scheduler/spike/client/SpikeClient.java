@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.UUID;
 
-@FeignClient(name = "spike", url = "${rdc.spike.url}")
+@FeignClient(name = "spike", url = "${rd.spike.url}")
 public interface SpikeClient {
     @GetMapping("/{correlationID}")
     DistributionMessage getResult(@PathVariable UUID correlationID);
