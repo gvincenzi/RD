@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: rd-scheduler
+  rabbitmq:
+    addresses: amqp://test
+
+template:
+  entry: "Salve,\nCon questa mail si segnala il corretto inserimento del domcumento da lei proposto : \nTitolo: %s\n\nCordialmente\nMail automatica generata dal dispositivo di programmazione"
+  corruption: "Salve,\nCon questa mail si segnala il rilevamento della corruzione del registro.\n\nCordialmente\nMail automatica generata dal dispositivo di programmazione"
+  subject:
+    entry: "Registro Digitale - Conferma inserimento di un nuovo documento"
+    corruption: "Registro Digitale - Rilevamento della corruzione del registro"
+
+mail:
+  host: smtp.test.com
+  port: 587
+  username: user@test.com
+  password: pass
+
+  transport:
+    protocol: smtp
+
+  smtp:
+    auth: true
+    starttls:
+      enable: true
+
+rdc:
+  instructionScheduled: false
+  spike:
+    url: http://localhost:8881/rd/distribution/spike

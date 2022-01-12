@@ -29,7 +29,7 @@
         <module>rd-service-registry</module>
         <module>rd-spike</module>
         <module>rdc-distribution</module>
-        <module>rdc-scheduler</module>
+        <module>rd-scheduler</module>
         <module>rdc-node</module>
     </modules>
 
