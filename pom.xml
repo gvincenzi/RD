@@ -10,27 +10,26 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>org.rdc</groupId>
-    <artifactId>rdc-parent</artifactId>
+    <groupId>org.rd</groupId>
+    <artifactId>rd-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>rdc-parent</name>
-    <description>RDC - Registro Digitale Contribuito - Parent project</description>
+    <name>rd-parent</name>
+    <description>RD - Registro Digitale - Parent project</description>
     <packaging>pom</packaging>
 
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>Greenwich.SR4</spring-cloud.version>
-        <swagger.version>2.9.2</swagger.version>
         <lombok.version>1.18.16</lombok.version>
         <jackson.version>2.13.0</jackson.version>
     </properties>
 
     <modules>
-        <module>rdc-service-registry</module>
-        <module>rdc-spike</module>
-        <module>rdc-distribution</module>
-        <module>rdc-scheduler</module>
-        <module>rdc-node</module>
+        <module>rd-service-registry</module>
+        <module>rd-spike</module>
+        <module>rd-distribution</module>
+        <module>rd-scheduler</module>
+        <module>rd-node</module>
     </modules>
 
     <dependencyManagement>

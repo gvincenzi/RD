@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: rd-scheduler
+  rabbitmq:
+    addresses: amqp://server
+
+server:
+  port: 8883
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8880/eureka
+
+template:
+  entry: "Salve,\nCon questa mail si segnala il corretto inserimento del domcumento da lei proposto : \nTitolo: %s\n\nCordialmente\nMail automatica generata dal dispositivo di programmazione"
+  corruption: "Salve,\nCon questa mail si segnala il rilevamento della corruzione del registro.\n\nCordialmente\nMail automatica generata dal dispositivo di programmazione"
+  subject:
+    entry: "Registro Digitale - Conferma inserimento di un nuovo documento"
+    corruption: "Registro Digitale - Rilevamento della corruzione del registro"
+
+mail:
+  host: smtp.test.com
+  port: 587
+  username: test@test.com
+  password: pass
+
+  transport:
+    protocol: smtp
+
+  smtp:
+    auth: true
+    starttls:
+      enable: true
+
+rd:
+  instructionScheduled: true
+  spike:
+    url: http://localhost:8881/rd/distribution/spike
