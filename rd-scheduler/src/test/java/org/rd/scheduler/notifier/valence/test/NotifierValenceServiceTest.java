@@ -48,16 +48,16 @@ public class NotifierValenceServiceTest {
     }
 
     private RDItem getEntry() throws JsonProcessingException {
-        RDItem RDCItem = new RDItem();
+        RDItem rdItem = new RDItem();
         String json = "{\"title\":\"Test document\",\"countryName\":\"Italy\","
                 + "\"countryPopulation\":60591668,\"male\":29665645,\"female\":30921362}";
-        RDCItem.setDocument(getNewDocument(json));
+        rdItem.setDocument(getNewDocument(json));
         Participant owner = new Participant();
         owner.setMail("test@test.com");
-        RDCItem.setOwner(owner);
-        RDCItem.setId(UUID.randomUUID().toString());
-        RDCItem.setTimestamp(Instant.now());
-        return RDCItem;
+        rdItem.setOwner(owner);
+        rdItem.setId(UUID.randomUUID().toString());
+        rdItem.setTimestamp(Instant.now());
+        return rdItem;
     }
 
     @Test

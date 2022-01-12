@@ -10,11 +10,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>org.rdc</groupId>
-    <artifactId>rdc-parent</artifactId>
+    <groupId>org.rd</groupId>
+    <artifactId>rd-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>rdc-parent</name>
-    <description>RDC - Registro Digitale Contribuito - Parent project</description>
+    <name>rd-parent</name>
+    <description>RD - Registro Digitale - Parent project</description>
     <packaging>pom</packaging>
 
     <properties>

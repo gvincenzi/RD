@@ -45,9 +45,9 @@ public class MQListener {
             log.info(String.format("Correlation ID [%s] processed",msg.getCorrelationID()));
             DistributionConcurrenceService.getCorrelationIDs().remove(msg.getCorrelationID());
 
-            List<RDItem> RDItems = new ArrayList<>();
-            RDItems.add(RDItem.getRdItemCorruption());
-            msg.setContent(RDItems);
+            List<RDItem> rdItems = new ArrayList<>();
+            rdItems.add(RDItem.getRdItemCorruption());
+            msg.setContent(rdItems);
             Message<DistributionMessage<List<RDItem>>> message = MessageBuilder.withPayload(msg).build();
             distributionChannel.send(message);
         }

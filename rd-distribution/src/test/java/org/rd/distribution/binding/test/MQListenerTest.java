@@ -94,8 +94,8 @@ public class MQListenerTest {
 
         mqListener.processEntryResponse(msg);
 
-        RDItem RDItem = msg.getContent().iterator().next();
-        Assert.assertTrue(RDItem.getIsCorruptionDetected());
+        RDItem rdItem = msg.getContent().iterator().next();
+        Assert.assertTrue(rdItem.getIsCorruptionDetected());
         Assert.assertFalse(DistributionConcurrenceService.getCorrelationIDs().contains(msg.getCorrelationID()));
     }
 

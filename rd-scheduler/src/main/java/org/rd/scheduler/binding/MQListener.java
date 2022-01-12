@@ -31,9 +31,9 @@ public class MQListener {
     public void processEntryResponse(DistributionMessage<List<RDItem>> msg) {
         log.info(String.format("START >> Message received in Response Channel with Correlation ID [%s]",msg.getCorrelationID()));
         if(DistributionEventType.ENTRY_RESPONSE.equals(msg.getType()) && msg.getContent() != null){
-            for (RDItem rdcItem: msg.getContent()) {
-                if(rdcItem.getOwner() != null && rdcItem.getOwner().getMail() != null){
-                    notifierValenceService.sendEntryResponseMail(rdcItem,rdcItem.getOwner());
+            for (RDItem rdItem: msg.getContent()) {
+                if(rdItem.getOwner() != null && rdItem.getOwner().getMail() != null){
+                    notifierValenceService.sendEntryResponseMail(rdItem,rdItem.getOwner());
                 }
             }
         }

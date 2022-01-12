@@ -25,7 +25,7 @@ public class RDItem implements Comparable<RDItem>{
     public static RDItem getRdItemCorruption() {
         RDItem rdItemCorruption = new RDItem();
         rdItemCorruption.setId("CORRUPTION_DETECTION");
-        rdItemCorruption.setNodeInstanceName("rdc-distribution");
+        rdItemCorruption.setNodeInstanceName("rd-distribution");
         Participant bot = new Participant();
         bot.setMail("automatic");
         rdItemCorruption.setOwner(bot);

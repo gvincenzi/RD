@@ -49,9 +49,9 @@ public class ScheduledInstruction {
                 List<RDItem> items = objectMapper.convertValue(integrityVerificationResponse.getContent(), new TypeReference<>() {
                 });
                 Set<Participant> participants = new HashSet<>();
-                for (RDItem rdcItem : items) {
-                    if (rdcItem.getOwner() != null) {
-                        participants.add(rdcItem.getOwner());
+                for (RDItem rdItem : items) {
+                    if (rdItem.getOwner() != null) {
+                        participants.add(rdItem.getOwner());
                     }
                 }
                 notifierValenceService.sendCorruptionMail(participants);

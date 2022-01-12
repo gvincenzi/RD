@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface RDItemService {
 	RDItem add(Document document, Participant owner) throws RDNodeException;
-	Boolean forceAddItem(RDItem RDItem) throws RDNodeException;
-	Boolean validate(List<RDItem> RDItems) throws RDNodeException;
+	Boolean forceAddItem(RDItem rdItem) throws RDNodeException;
+	Boolean validate(List<RDItem> rdItems) throws RDNodeException;
 	List<RDItem> findAll();
 	void init(List<RDItem> content) throws RDNodeException;
 }

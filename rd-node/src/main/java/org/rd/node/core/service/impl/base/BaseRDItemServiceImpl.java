@@ -14,11 +14,11 @@ public class BaseRDItemServiceImpl extends RDItemServiceImpl {
 	private static final String REGEX_DIGIT = "[0-9].*";
 
 	@Override
-	public boolean isHashResolved(RDItem RDItem, Integer difficultLevel) {
+	public boolean isHashResolved(RDItem rdItem, Integer difficultLevel) {
 		List<Integer> digits = new ArrayList<>(difficultLevel);
 
 		Integer index = 0;
-		String hash = RDItem.getId();
+		String hash = rdItem.getId();
 		while (index < hash.length() && digits.size() < difficultLevel) {
 			String s = hash.substring(index, ++index);
 			if (s.matches(REGEX_DIGIT)) {
@@ -31,13 +31,13 @@ public class BaseRDItemServiceImpl extends RDItemServiceImpl {
 	}
 
 	@Override
-	public String calculateHash(RDItem RDItem) throws RDNodeException {
+	public String calculateHash(RDItem rdItem) throws RDNodeException {
 		return NodeUtils.applySha256(
-				RDItem.getPreviousId() +
-						RDItem.getTimestamp().toEpochMilli() +
-						RDItem.getNonce() +
-						RDItem.getDocument().getTitle() +
-						RDItem.getOwner().getMail()
+				rdItem.getPreviousId() +
+						rdItem.getTimestamp().toEpochMilli() +
+						rdItem.getNonce() +
+						rdItem.getDocument().getTitle() +
+						rdItem.getOwner().getMail()
 		);
 	}
 }

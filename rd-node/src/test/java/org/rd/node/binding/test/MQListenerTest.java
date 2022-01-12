@@ -45,15 +45,15 @@ public class MQListenerTest {
 
     @Test
     public void processItemPropositionTest(){
-        RDItem RDItem = getRdcItem();
+        RDItem rdItem = getRdItem();
 
         DistributionMessage<ItemProposition> msg = new DistributionMessage<>();
         msg.setType(DistributionEventType.ENTRY_PROPOSITION);
         msg.setCorrelationID(UUID.randomUUID());
         msg.setInstanceName("test-instance");
         ItemProposition proposition = new ItemProposition();
-        proposition.setDocument(RDItem.getDocument());
-        proposition.setOwner(RDItem.getOwner());
+        proposition.setDocument(rdItem.getDocument());
+        proposition.setOwner(rdItem.getOwner());
         msg.setContent(proposition);
 
         mqListener.processItemProposition(msg);
@@ -66,11 +66,11 @@ public class MQListenerTest {
         msg.setCorrelationID(UUID.randomUUID());
         msg.setInstanceName("test-instance");
         List<RDItem> items = new ArrayList<>();
-        RDItem RDItem = getRdcItem();
-        items.add(RDItem);
+        RDItem rdItem = getRdItem();
+        items.add(rdItem);
         msg.setContent(items);
 
-        Mockito.when(RDItemService.forceAddItem(RDItem)).thenReturn(Boolean.TRUE);
+        Mockito.when(RDItemService.forceAddItem(rdItem)).thenReturn(Boolean.TRUE);
 
         mqListener.processDistribution(msg);
     }
@@ -82,11 +82,11 @@ public class MQListenerTest {
         msg.setCorrelationID(UUID.randomUUID());
         msg.setInstanceName("test-instance");
         List<RDItem> items = new ArrayList<>();
-        RDItem RDItem = getRdcItem();
-        items.add(RDItem);
+        RDItem rdItem = getRdItem();
+        items.add(rdItem);
         msg.setContent(items);
 
-        Mockito.when(RDItemService.forceAddItem(RDItem)).thenReturn(Boolean.FALSE);
+        Mockito.when(RDItemService.forceAddItem(rdItem)).thenReturn(Boolean.FALSE);
 
         mqListener.processDistribution(msg);
     }
@@ -98,8 +98,8 @@ public class MQListenerTest {
         msg.setCorrelationID(UUID.randomUUID());
         msg.setInstanceName("test-instance");
         List<RDItem> items = new ArrayList<>();
-        RDItem RDItem = getRdcItem();
-        items.add(RDItem);
+        RDItem rdItem = getRdItem();
+        items.add(rdItem);
         msg.setContent(items);
 
         mqListener.processDistribution(msg);
@@ -112,8 +112,8 @@ public class MQListenerTest {
         msg.setCorrelationID(UUID.randomUUID());
         msg.setInstanceName("test-instance");
         List<RDItem> items = new ArrayList<>();
-        RDItem RDItem = getRdcItem();
-        items.add(RDItem);
+        RDItem rdItem = getRdItem();
+        items.add(rdItem);
         msg.setContent(items);
 
         BDDMockito.willThrow(new RDNodeException("Test")).given(RDItemService).init(items);
@@ -128,8 +128,8 @@ public class MQListenerTest {
         msg.setCorrelationID(UUID.randomUUID());
         msg.setInstanceName("test-instance");
         List<RDItem> items = new ArrayList<>();
-        RDItem RDItem = getRdcItem();
-        items.add(RDItem);
+        RDItem rdItem = getRdItem();
+        items.add(rdItem);
         msg.setContent(items);
 
         mqListener.processDistribution(msg);
@@ -142,11 +142,11 @@ public class MQListenerTest {
         msg.setCorrelationID(UUID.randomUUID());
         msg.setInstanceName("test-instance");
         List<RDItem> items = new ArrayList<>();
-        RDItem RDItem = getRdcItem();
-        items.add(RDItem);
+        RDItem rdItem = getRdItem();
+        items.add(rdItem);
         msg.setContent(items);
 
-        Mockito.when(RDItemService.forceAddItem(RDItem)).thenThrow(new RDNodeException("Test"));
+        Mockito.when(RDItemService.forceAddItem(rdItem)).thenThrow(new RDNodeException("Test"));
         mqListener.processDistribution(msg);
     }
 
@@ -158,8 +158,8 @@ public class MQListenerTest {
         msg.setInstanceName("test-instance");
         
         List<RDItem> items = new ArrayList<>();
-        RDItem RDItem = getRdcItem();
-        items.add(RDItem);
+        RDItem rdItem = getRdItem();
+        items.add(rdItem);
         Mockito.when(RDItemService.findAll()).thenReturn(items);
         Mockito.when(RDItemService.validate(items)).thenReturn(Boolean.TRUE);
         
@@ -174,15 +174,15 @@ public class MQListenerTest {
         msg.setInstanceName("test-instance");
 
         List<RDItem> items = new ArrayList<>();
-        RDItem RDItem = getRdcItem();
-        items.add(RDItem);
+        RDItem rdItem = getRdItem();
+        items.add(rdItem);
         Mockito.when(RDItemService.findAll()).thenReturn(items);
         Mockito.when(RDItemService.validate(items)).thenReturn(Boolean.FALSE);
 
         mqListener.processIntegrity(msg);
     }
 
-    private RDItem getRdcItem() {
+    private RDItem getRdItem() {
         RDItem item = new RDItem();
         item.setIsCorruptionDetected(Boolean.FALSE);
         item.setId(UUID.randomUUID().toString());

@@ -20,7 +20,7 @@ zuul:
     socket-timeout-millis: 15000
   ignored-services: '*'
   routes:
-    rdc-distribution:
+    rd-distribution:
       path: /distribution/**
       serviceId: rd-distribution
       stripPrefix: true

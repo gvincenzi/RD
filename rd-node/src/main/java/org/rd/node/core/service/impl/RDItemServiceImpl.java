@@ -32,34 +32,34 @@ public abstract class RDItemServiceImpl implements RDItemService {
     @Value("${spring.application.name}")
     private String instanceName;
 
-    public abstract boolean isHashResolved(RDItem RDItem, Integer difficultLevel);
+    public abstract boolean isHashResolved(RDItem rdItem, Integer difficultLevel);
 
-    public abstract String calculateHash(RDItem RDItem) throws RDNodeException;
+    public abstract String calculateHash(RDItem rdItem) throws RDNodeException;
 
     protected RDItem getNewItem(Document document, RDItem previous, Participant owner) throws RDNodeException {
         if (document == null || owner == null) {
             throw new RDNodeException("Document and Owner are mandatory");
         }
-        RDItem RDItem = new RDItem(document, previous != null ? previous.getId() : GENESIS, owner, instanceName);
+        RDItem rdItem = new RDItem(document, previous != null ? previous.getId() : GENESIS, owner, instanceName);
 
-        Random random = new Random(RDItem.getTimestamp().toEpochMilli());
+        Random random = new Random(rdItem.getTimestamp().toEpochMilli());
         int nonce = random.nextInt();
-        RDItem.setNonce(nonce);
-        RDItem.setId(calculateHash(RDItem));
-        while (!isHashResolved(RDItem, difficultLevel)) {
+        rdItem.setNonce(nonce);
+        rdItem.setId(calculateHash(rdItem));
+        while (!isHashResolved(rdItem, difficultLevel)) {
             nonce = random.nextInt();
-            RDItem.setNonce(nonce);
-            RDItem.setId(calculateHash(RDItem));
+            rdItem.setNonce(nonce);
+            rdItem.setId(calculateHash(rdItem));
         }
 
-        RDItem.setOwner(owner);
-        return RDItem;
+        rdItem.setOwner(owner);
+        return rdItem;
     }
 
     @Override
-    public Boolean forceAddItem(RDItem RDItem) throws RDNodeException {
-        if (RDItemRepository.findByIsCorruptionDetectedTrue().size() == 0 && !RDItemRepository.existsById(RDItem.getId())) {
-                RDItemRepository.save(RDItem);
+    public Boolean forceAddItem(RDItem rdItem) throws RDNodeException {
+        if (RDItemRepository.findByIsCorruptionDetectedTrue().size() == 0 && !RDItemRepository.existsById(rdItem.getId())) {
+                RDItemRepository.save(rdItem);
                 return validate(RDItemRepository.findAllByOrderByTimestampAsc());
         }
 
@@ -72,19 +72,19 @@ public abstract class RDItemServiceImpl implements RDItemService {
     }
 
     @Override
-    public Boolean validate(List<RDItem> RDItems) throws RDNodeException {
-        if (RDItems == null) {
+    public Boolean validate(List<RDItem> rdItems) throws RDNodeException {
+        if (rdItems == null) {
             throw new RDNodeException("Iterable items collection is mandatory");
         }
         RDItem currentItem;
         RDItem previousItem;
 
-        Collections.sort(RDItems);
+        Collections.sort(rdItems);
 
         Boolean result = true;
-        for (int i = 0; i < RDItems.size(); i++) {
-            previousItem = i > 0 ? RDItems.get(i - 1) : null;
-            currentItem = RDItems.get(i);
+        for (int i = 0; i < rdItems.size(); i++) {
+            previousItem = i > 0 ? rdItems.get(i - 1) : null;
+            currentItem = rdItems.get(i);
             if (!currentItem.getId().equals(calculateHash(currentItem))) {
                 result = false;
             }

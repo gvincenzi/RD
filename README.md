@@ -1,6 +1,6 @@
-# RDC : Registro Digitale Contribuito
+# RD : Registro Digitale
 ## Build Information
-![example workflow](https://github.com/gvincenzi/RDC/actions/workflows/maven.yml/badge.svg)
+![example workflow](https://github.com/gvincenzi/RD/actions/workflows/maven.yml/badge.svg)
 
 ## Introduzione
 Il Web, il Wiki, la Blockchain, sono architetture nate da visioni, intuizioni di tecnici mossi dalla propria coscienza politica e dal senso di responsabilità sociale: con lo stesso spirito, proponiamo il Registro Digitale Contribuito.
@@ -69,14 +69,14 @@ Questo codice ha l'obiettivo di fornire una base su cui implementare il proprio 
 
 ### RDD : Registro Digitale Distribuito
 Nel libro si parla di ***Registro Digitale Distribuito***: si tratta di una specializzazione del Registro Digitale Contribuito che il codice di questo repository realizza.
-Un RDC si basa sulla contribuzione di più nodi e componenti che, grazie al loro lavoro collettivo, contribuiscono a fare funzionare il sistema.
+Un RD si basa sulla contribuzione di più nodi e componenti che, grazie al loro lavoro collettivo, contribuiscono a fare funzionare il sistema.
 Tecnicamente l'architettura è organizzata in modo tale da rendere il più indipendenti possibili i componenti, disaccoppiandoli sempre là dove possibile.
 Le comunicazioni tra tutti i componenti sono asincrone in tutti gli scambi.
-Una delle molecole contiene il cuore del registro, la molecola ***rdc-node***: questa molecola può essere instanziata quante volte si ritiene necessario. 
+Una delle molecole contiene il cuore del registro, la molecola ***rd-node***: questa molecola può essere instanziata quante volte si ritiene necessario. 
 In questo caso, con l'aumentare del numero di instanze della molecola e il numero di attori coinvolti nell'utilizzo del registro, si rende il registro stesso Distribuito.
 Questo è il caso d'uso descritto nel libro.
 
-***Il POC (Proof of Concept) che si mostra di seguito è proprio un esempio di RDC Distribuito, o anche semplicemente Registro Digitale Distribuito (RDD)***.
+***Il POC (Proof of Concept) che si mostra di seguito è proprio un esempio di RD Distribuito, o anche semplicemente Registro Digitale Distribuito (RDD)***.
 
 ## Tecnologie utilizzate
 Le tecnologie e i framework utilizzati in questo progetto sono principalmente:
@@ -88,7 +88,7 @@ Le tecnologie e i framework utilizzati in questo progetto sono principalmente:
 - Swagger
 
 ## Tecnologie di terze parti usate per far funzionare un POC basato su questa architettura
-Il sistema necessita di due componenti infrastrutturali per rendere operativa un'instanza di un RDC:
+Il sistema necessita di due componenti infrastrutturali per rendere operativa un'instanza di un RD:
 - Un server per le comunicazioni AMQP tra atomi e tra molecole
 > Per il POC ho usato [CloudAMQP](https://www.cloudamqp.com/)
 - Un database NoSQL
@@ -96,9 +96,9 @@ Il sistema necessita di due componenti infrastrutturali per rendere operativa un
 
 ## Schema architetturale
 Il Registro Digitale Contribuito si basa sui principi del pattern di un'[Architettura Atomica di Giuseppe Vincenzi](https://www.linkedin.com/feed/update/urn:li:activity:6791100763025219584/).
-In particolare lo schema molecolare di un RDC sarà il seguente :
+In particolare lo schema molecolare di un RD sarà il seguente :
 
-![Schema molecolare di un RDC](src/main/resources/img/schema.png?raw=true)
+![Schema molecolare di un RD](src/main/resources/img/schema.png?raw=true)
 
 ### Sistema di accesso qualificato
 Questo sistema è il punto di accesso alla macromolecola di un Registro Digitale Contribuito.
@@ -115,7 +115,7 @@ La molecola si compone di due atomi e uno spike:
 
 ![Interazioni con l'esterno del dispositivo di distribuzione](src/main/resources/img/distribution_schema.png?raw=true)
 
-[Qui l'implementazione della molecola di distribuzione](https://github.com/gvincenzi/RDC/tree/master/rdc-distribution).
+[Qui l'implementazione della molecola di distribuzione](https://github.com/gvincenzi/RD/tree/master/rd-distribution).
 
 ### Dispositivo di programmazione
 Questa molecola rappresenta il dispositivo che ha il compito di inviare notifiche in caso di eventi particolari (aggiunta di un documento nel registro, per esempio), 
@@ -126,23 +126,23 @@ La molecola si compone di due atomi :
 
 ![Interazioni con l'esterno del dispositivo di programmazione](src/main/resources/img/scheduler_schema.png?raw=true)
 
-[Qui l'implementazione della molecola di programmazione](https://github.com/gvincenzi/RDC/tree/master/rdc-scheduler).
+[Qui l'implementazione della molecola di programmazione](https://github.com/gvincenzi/RD/tree/master/rd-scheduler).
 
 ### Nodo del registro
 Questa molecola è il cuore del Registro Digitale Contribuito : è la molecola che contiene il registro nella sua interezza e potrà essere istanziata un numero di volte pari al numero di attori coinvolti nella vita del registro.
-Nel funzionamento di base proposto per un RDC non si procederà mai al fork del registro: ogni volta che uno dei nodi prenderà in carico l'inserimento di un nuovo documento, il sistema di distribuzione aspetterà che il lavoro sia completata prima di sollecitare nuovamente il registro.
+Nel funzionamento di base proposto per un RD non si procederà mai al fork del registro: ogni volta che uno dei nodi prenderà in carico l'inserimento di un nuovo documento, il sistema di distribuzione aspetterà che il lavoro sia completata prima di sollecitare nuovamente il registro.
 
-In questa implementazione Open Source di base di un RDC utilizziamo un database MongoDB e gli strumenti messi a disposizione dallo starter Spring Boot dedicato: il documento di un RDC, denominato **RDCItem**, è un oggetto Java che, grazie ad alcune caratteristiche del mapping di Jackson, contiene una sua parte chiamata ***details*** che non ha una struttura definita.
-Questo è un modo, nell'implementazione di base, per mostrare che l'RDC ha il dovere di essere capace di salvare qualsiasi tipo di informazione, qualsiasi sia la sua struttura.
+In questa implementazione Open Source di base di un RD utilizziamo un database MongoDB e gli strumenti messi a disposizione dallo starter Spring Boot dedicato: il documento di un RD, denominato **RDItem**, è un oggetto Java che, grazie ad alcune caratteristiche del mapping di Jackson, contiene una sua parte chiamata ***details*** che non ha una struttura definita.
+Questo è un modo, nell'implementazione di base, per mostrare che l'RD ha il dovere di essere capace di salvare qualsiasi tipo di informazione, qualsiasi sia la sua struttura.
 
-Qualora necessario, si potranno anche integrare sistemi di ricerca (come Apache Lucene, per fornire un esempio) per rendere possibile, agevole ed efficiente una ricerca nel contenuto dei documenti salvati nell'RDC. 
+Qualora necessario, si potranno anche integrare sistemi di ricerca (come Apache Lucene, per fornire un esempio) per rendere possibile, agevole ed efficiente una ricerca nel contenuto dei documenti salvati nell'RD. 
 
 La molecola si compone di un solo atomo :
 - L'atomo del cuore delle operazioni, Core atom (Co)
 
-![Interazioni con l'esterno del nodo di un RDC](src/main/resources/img/node_schema.png?raw=true)
+![Interazioni con l'esterno del nodo di un RD](src/main/resources/img/node_schema.png?raw=true)
 
-[Qui l'implementazione del nodo di un RDC](https://github.com/gvincenzi/RDC/tree/master/rdc-node).
+[Qui l'implementazione del nodo di un RD](https://github.com/gvincenzi/RD/tree/master/rd-node).
 
 ## Dispositivo di flusso documentale
 ### Protocollo AMQP
@@ -153,18 +153,18 @@ Lo scopo è quello di far comunicare le molecole tra di loro, non attraverso una
 Il Sistema di comunicazione tra i dispositivi si fonda, nella sua implementazione di base, su 4 exchanges:
 - RequestChannel
 >Il dispositivo di distribuzione scrive in questo canale le proposte di inserimento di nuovi documenti. Una richiesta sarà corredata da un identificativo per riconoscerne la risposta sul canale dedicato. Il dispositivo di distribuzione attende la risposta prima di inviare altre richieste di questo tipo.
->>Tutti i nodi dell'RDC sono in ascolto su questo exchange ma un messaggio sarà consumato da una sola istanza (i nodi condividono la stessa coda)
+>>Tutti i nodi dell'RD sono in ascolto su questo exchange ma un messaggio sarà consumato da una sola istanza (i nodi condividono la stessa coda)
 
 - RequestIntegrityChannel
 >Il dispositivo di distribuzione scrive in questo canale le richiesta di verifica dell'integrità della catena. Una richiesta sarà corredata da un identificativo per riconoscerne la risposta sul canale dedicato. Il dispositivo di distribuzione attende la risposta prima di inviare altre richieste di questo tipo.
->>Tutti i nodi dell'RDC sono in ascolto su questo exchange ma un messaggio sarà consumato da una sola istanza (i nodi condividono la stessa coda)
+>>Tutti i nodi dell'RD sono in ascolto su questo exchange ma un messaggio sarà consumato da una sola istanza (i nodi condividono la stessa coda)
 
 - ResponseChannel
->I nodi dell'RDC inviano le risposte alla richieste, sia di inserimento di nuovi documenti che di validazione dell'integrità del registro, in questo canale.
+>I nodi dell'RD inviano le risposte alla richieste, sia di inserimento di nuovi documenti che di validazione dell'integrità del registro, in questo canale.
 >Il dispositivo di distribuzione e il dispositivo di programmazione consumano i messaggi che transitano in questo exchange, ognuno con una sua coda dedicata.
 
 - DistributionChannel
->Il dispositivo di distribuzione scrive in questo canale le informazioni che devono essere distribuite a tutti i nodi dell'RDC. Nell'implementazione di base ad ogni inseriemento di un nuovo documento ***(RDCItem)***, l'informazione viene distribuita a tutti i nodi perché possano inserirlo nelle loro copie della base di dati.
+>Il dispositivo di distribuzione scrive in questo canale le informazioni che devono essere distribuite a tutti i nodi dell'RD. Nell'implementazione di base ad ogni inseriemento di un nuovo documento ***(RDItem)***, l'informazione viene distribuita a tutti i nodi perché possano inserirlo nelle loro copie della base di dati.
 >>Tutti i nodi consumano i messaggi di questo exchange, ognuno con una coda dedicata.
 
 ![Exchanges del dispositivo di flusso documentale (RabbitMQ nella versione del POC)](src/main/resources/img/flow_exchanges.png?raw=true)
@@ -173,7 +173,7 @@ Il Sistema di comunicazione tra i dispositivi si fonda, nella sua implementazion
 Quando un nuovo nodo viene lanciato, nelle proprietà Yammel della molecola si può precisare che il nodo necessità di un processo di startup: la molecola utilizzerà lo spike della macromolecola per richiedere una verifica dell'integrità della catena.
 In maniera asincrona, riceverà la risposta nel canale di distribuzione che conterrà l'intera copia del registro.
 Grazie alla classe di configurazione **StartupConfig** il nodo sarà in grado di non definirsi correttamete inizializzato se non avrà ricevuto una risposta (inviata da un altro nodo) contenente la copia del registro sul canale di distribuzione.
-![Due database di due nodi A e B di uno stesso RDC (due DB nello stesso Cluster nella versione del POC)](src/main/resources/img/mongodb-databases.png?raw=true)
+![Due database di due nodi A e B di uno stesso RD (due DB nello stesso Cluster nella versione del POC)](src/main/resources/img/mongodb-databases.png?raw=true)
 
 ## Interfaccia grafica per il monitoraggio di un nodo
 Nella versione di base del Registro è stata implementata un'interfaccia (raggiungibile nel ***context-root*** del'applicazione del nodo) che mostra:
@@ -183,30 +183,30 @@ Nella versione di base del Registro è stata implementata un'interfaccia (raggiu
 ![Interfaccia di un nodo](src/main/resources/img/node-gui.png?raw=true)
 
 ## Inserimento di un nuovo documento
-Quando un nodo riceve un messaggio con una proposta di inserimento di un nuovo documento ***(ItemPoposition)*** reagisce costruendo un nuovo identificativo univoco per il documento ***(RDCItem)*** secondo l'algoritmo definito nell'implementazione della interfaccia [RDCItemService](https://github.com/gvincenzi/RDC/tree/master/rdc-node/src/main/java/org/rdc/node/service/RDCItemService.java).
-Nella versione di base dell'RDC l'algoritmo proposto è il seguente:
+Quando un nodo riceve un messaggio con una proposta di inserimento di un nuovo documento ***(ItemPoposition)*** reagisce costruendo un nuovo identificativo univoco per il documento ***(RDItem)*** secondo l'algoritmo definito nell'implementazione della interfaccia [RDItemService](https://github.com/gvincenzi/RD/tree/master/rd-node/src/main/java/org/rd/node/service/RDItemService.java).
+Nella versione di base dell'RD l'algoritmo proposto è il seguente:
 ```java
-package org.rdc.node.service.impl.base;
+package org.rd.node.service.impl.base;
 
-import RDCNodeException;
-import org.rdc.node.domain.entity.RDCItem;
-import org.rdc.node.service.impl.RDCItemServiceImpl;
-import org.rdc.node.service.NodeUtils;
+import RDNodeException;
+import org.rd.node.domain.entity.RDItem;
+import org.rd.node.service.impl.RDItemServiceImpl;
+import org.rd.node.service.NodeUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BaseRDCItemServiceImpl extends RDCItemServiceImpl {
+public class BaseRDItemServiceImpl extends RDItemServiceImpl {
 	private static final String REGEX_DIGIT = "[0-9].*";
 
 	@Override
-	public boolean isHashResolved(RDCItem RDItem, Integer difficultLevel) {
+	public boolean isHashResolved(RDItem rdItem, Integer difficultLevel) {
 		List<Integer> digits = new ArrayList<>(difficultLevel);
 
 		Integer index = 0;
-		String hash = RDItem.getId();
+		String hash = rdItem.getId();
 		while (index < hash.length() && digits.size() < difficultLevel) {
 			String s = hash.substring(index, ++index);
 			if (s.matches(REGEX_DIGIT)) {
@@ -219,43 +219,43 @@ public class BaseRDCItemServiceImpl extends RDCItemServiceImpl {
 	}
 
 	@Override
-	public String calculateHash(RDCItem RDItem) throws RDCNodeException {
+	public String calculateHash(RDItem rdItem) throws RDNodeException {
 		return NodeUtils.applySha256(
 				RDItem.getPreviousId() +
-						RDItem.getTimestamp().toEpochMilli() +
-						RDItem.getNonce() +
-						RDItem.getDocument().getTitle() +
-						RDItem.getOwner().getMail()
+						rdItem.getTimestamp().toEpochMilli() +
+						rdItem.getNonce() +
+						rdItem.getDocument().getTitle() +
+						rdItem.getOwner().getMail()
 		);
 	}
 }
 ```
-[Qui l'implementazione dell'algoritmo](https://github.com/gvincenzi/RDC/tree/master/rdc-node/src/main/java/org/rdc/node/service/impl/base/BaseRDCItemServiceImpl.java)
+[Qui l'implementazione dell'algoritmo](https://github.com/gvincenzi/RD/tree/master/rd-node/src/main/java/org/rd/node/service/impl/base/BaseRDItemServiceImpl.java)
 
-## Come accendere un RDC
+## Come accendere un RD
 Nell'esempio che si presenta come POC, si realizza lo schema presentato nella presentazione del progetto. I microseervizi e i componenti che realizzano l'architettura sono:
-- **3 database MongoDB** con una Collection ***rdc_item***
+- **3 database MongoDB** con una Collection ***rd_item***
 - **1 server RabbitMQ** con 4 exchanges
     - distributionChannel
     - requestChannel
     - requestIntegrityChannel
     - responseChannel
-- Un microservizio **Eureka Service Registry** denominato ***rdc-service-registry***
-- Il **sistema di accesso qualificato** è realizzato da un microsevizio Gateway denominato ***rdc-spike***
-- Il **dispositivo di distribuzione** è realizzato dal microservizio ***rdc-distribution***
-- Il **dispositivo di programmazione** è realizzato dal microservizio ***rdc-scheduler***
-- Ogni **copia del registro** è gestita da un'instanza del microservizio ***rdc-node***
+- Un microservizio **Eureka Service Registry** denominato ***rd-service-registry***
+- Il **sistema di accesso qualificato** è realizzato da un microsevizio Gateway denominato ***rd-spike***
+- Il **dispositivo di distribuzione** è realizzato dal microservizio ***rd-distribution***
+- Il **dispositivo di programmazione** è realizzato dal microservizio ***rd-scheduler***
+- Ogni **copia del registro** è gestita da un'instanza del microservizio ***rd-node***
 
 ## Procedura di startup
 1. Ci si assicura che il server RabbitMQ sia attivo
 2. Ci si assicura che il server MongoDB sia pronto
-3. Si fa partire il microservizio ***rdc-service-registry*** : possiamo controllarne il suo stato all'indirizzo http://localhost:8880
+3. Si fa partire il microservizio ***rd-service-registry*** : possiamo controllarne il suo stato all'indirizzo http://localhost:8880
 ![Screenshot Eureka Server](src/main/resources/img/eureka.png?raw=true)
 Man mano si potranno verificare tutti i servizi che si registreranno ad uno ad uno sull'interfaccia.
-4. Si fa partire il microservizio ***rdc-spike***
-5. Si fa partire il microservizio ***rdc-distribution***
-6. Si fa partire il microservizio ***rdc-scheduler***
-7. Si fanno partire quante istanze si vuole del microservizio ***rdc-node*** (alla prima esecuzione avranno tutti il parametro ***required.startup = false***)
+4. Si fa partire il microservizio ***rd-spike***
+5. Si fa partire il microservizio ***rd-distribution***
+6. Si fa partire il microservizio ***rd-scheduler***
+7. Si fanno partire quante istanze si vuole del microservizio ***rd-node*** (alla prima esecuzione avranno tutti il parametro ***required.startup = false***)
 
 ## Esempio di inserimento di un documento
 Usando un'applicazione REST Client, realizziamo una chiamata al servizio REST per la proposta dell'inserimento di un nuovo documento.

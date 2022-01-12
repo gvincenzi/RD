@@ -6,6 +6,6 @@ import org.rd.scheduler.domain.entity.Participant;
 import java.util.Set;
 
 public interface NotifierValenceService {
-    void sendEntryResponseMail(RDItem RDCItem, Participant ... participants);
+    void sendEntryResponseMail(RDItem rdItem, Participant ... participants);
     void sendCorruptionMail(Set<Participant> participants);
 }

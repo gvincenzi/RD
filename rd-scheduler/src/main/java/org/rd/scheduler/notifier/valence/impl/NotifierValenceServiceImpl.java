@@ -30,12 +30,12 @@ public class NotifierValenceServiceImpl implements NotifierValenceService {
     public String templateCorruptionSubject;
 
     @Override
-    public void sendEntryResponseMail(RDItem rdcItem, Participant... participants) {
+    public void sendEntryResponseMail(RDItem rdItem, Participant... participants) {
         for (Participant participant : participants) {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(participant.getMail());
             message.setSubject(templateEntrySubject);
-            message.setText(templateEntryMessage != null && templateEntryMessage.getText() != null ? String.format(templateEntryMessage.getText(), rdcItem.getDocument()) : StringUtils.EMPTY);
+            message.setText(templateEntryMessage != null && templateEntryMessage.getText() != null ? String.format(templateEntryMessage.getText(), rdItem.getDocument()) : StringUtils.EMPTY);
             javaMailSender.send(message);
         }
     }

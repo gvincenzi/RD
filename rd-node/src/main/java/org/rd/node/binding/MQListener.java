@@ -36,15 +36,15 @@ public class MQListener {
         log.info(String.format("START >> Message received in Request Channel with Correlation ID [%s]",msg.getCorrelationID()));
         if (DistributionEventType.ENTRY_PROPOSITION.equals(msg.getType()) && msg.getContent() != null && StartupConfig.startupProcessed) {
             List<RDItem> items = new ArrayList<>();
-            RDItem RDItem = null;
+            RDItem rdItem = null;
             try {
-                RDItem = RDItemService.add(msg.getContent().getDocument(), msg.getContent().getOwner());
+                rdItem = RDItemService.add(msg.getContent().getDocument(), msg.getContent().getOwner());
             } catch (RDNodeException e) {
                 log.severe(e.getMessage());
             }
-            if (RDItem != null) {
-                items.add(RDItem);
-                log.info(String.format("New item with ID [%s] correctly validated and ingested", RDItem.getId()));
+            if (rdItem != null) {
+                items.add(rdItem);
+                log.info(String.format("New item with ID [%s] correctly validated and ingested", rdItem.getId()));
             }
             DistributionMessage<List<RDItem>> responseMessage = new DistributionMessage<>();
             responseMessage.setCorrelationID(msg.getCorrelationID());
