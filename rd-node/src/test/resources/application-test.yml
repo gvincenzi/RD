@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: rd-node-test
+  rabbitmq:
+    addresses: amqp://test
+  cloud:
+    stream:
+      bindings:
+        requestChannel:
+          destination: requestChannel
+          group: nodeGroup
+        responseChannel:
+          producer:
+            routingKeyExpression: "'rdResponseChannel'"
+        distributionChannel:
+          destination: distributionChannel
+
+server:
+  port: 8884
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8880/eureka
+
+rd:
+  startup: false
+  difficult:
+    level: 1
+  spike:
+    url: http://localhost:8881/rd/distribution/spike

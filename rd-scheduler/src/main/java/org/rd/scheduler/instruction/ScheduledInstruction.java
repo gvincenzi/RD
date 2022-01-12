@@ -44,7 +44,7 @@ public class ScheduledInstruction {
                 integrityVerificationResponse = spikeClient.getResult(integrityVerification.getCorrelationID());
             }
 
-            if (Boolean.FALSE.equals(integrityVerificationResponse.getRdcValid())) {
+            if (Boolean.FALSE.equals(integrityVerificationResponse.getRdValid())) {
                 log.info("ALERT >> Scheduled Instruction - IntegrityVerification : Corruption detected");
                 List<RDItem> items = objectMapper.convertValue(integrityVerificationResponse.getContent(), new TypeReference<>() {
                 });

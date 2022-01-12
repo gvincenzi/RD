@@ -52,7 +52,7 @@ public class ScheduledInstructionTest {
         List<RDItem> items = new ArrayList<>();
         items.add(getRdcItem());
         msg.setContent(items);
-        msg.setRdcValid(Boolean.TRUE);
+        msg.setRdValid(Boolean.TRUE);
         Mockito.when(spikeClient.getResult(distributionMessage.getCorrelationID())).thenReturn(msg);
 
         scheduledInstruction.setInstructionScheduledActive(Boolean.TRUE);
@@ -74,7 +74,7 @@ public class ScheduledInstructionTest {
         List<RDItem> items = new ArrayList<>();
         items.add(getRdcItem());
         msg.setContent(items);
-        msg.setRdcValid(Boolean.FALSE);
+        msg.setRdValid(Boolean.FALSE);
         Mockito.when(spikeClient.getResult(distributionMessage.getCorrelationID())).thenReturn(msg);
 
         scheduledInstruction.setInstructionScheduledActive(Boolean.TRUE);

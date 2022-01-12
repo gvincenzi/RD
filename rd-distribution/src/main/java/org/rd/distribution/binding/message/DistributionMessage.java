@@ -12,6 +12,6 @@ public class DistributionMessage<T> {
     private UUID correlationID;
     String instanceName;
     private DistributionEventType type;
-    Boolean rdcValid;
+    Boolean rdValid;
     private T content;
 }

@@ -29,7 +29,7 @@
         <module>rd-spike</module>
         <module>rd-distribution</module>
         <module>rd-scheduler</module>
-        <module>rdc-node</module>
+        <module>rd-node</module>
     </modules>
 
     <dependencyManagement>
