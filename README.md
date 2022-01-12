@@ -3,7 +3,7 @@
 ![example workflow](https://github.com/gvincenzi/RD/actions/workflows/maven.yml/badge.svg)
 
 ## Introduzione
-Il Web, il Wiki, la Blockchain, sono architetture nate da visioni, intuizioni di tecnici mossi dalla propria coscienza politica e dal senso di responsabilità sociale: con lo stesso spirito, proponiamo il Registro Digitale Contribuito.
+Il Web, il Wiki, la Blockchain, sono architetture nate da visioni, intuizioni di tecnici mossi dalla propria coscienza politica e dal senso di responsabilità sociale: con lo stesso spirito, proponiamo il Registro Digitale.
 Di seguito una presentazione di [Francesco Varanini](https://it.linkedin.com/in/francescovaranini) delle idee e dei concetti che stanno alle fondamenta del progetto.
  
 ### Una Rete di documenti
@@ -20,7 +20,7 @@ Da *periri* discendono infatti ***esperienza***, ***esperimento***, ed anche ***
 Il registro che immaginiamo raccoglie infatti esperienze. Che sono anche errori e tentativi non andati a buon fine. Il registro raccoglie anche cattive notizie. Raccoglie anche quei dati che i database filtrano e scartano considerandoli erronei o irrilevanti.
 
 Il ***Registro*** è il supporto -lo strumento tecnico compartecipato- che permette la condivisione della conoscenza.
-Il ***Registro Digitale Contribuito*** segue il cammino delle architetture civili già sviluppate, recuperandone l'originario senso.
+Il ***Registro Digitale*** segue il cammino delle architetture civili già sviluppate, recuperandone l'originario senso.
  
 Il Registro si appoggia sul World Wide Web. Ma si offre come luogo dove, a differenza del World Wide Web degenerato:
 - sono accolti solo documenti scritti da esseri umani per essere letti da esseri umani;
@@ -65,10 +65,10 @@ Ricordiamo anche il senso originario del ***tributo***: ciò che si fa e si dice
 Questo repository contiene un progetto discusso nel libro **"Blockchain e appalti"** 
 di [Luca Barbieri](https://www.linkedin.com/in/luca-barbieri-213157139/)
 e [Giuseppe Vincenzi](https://www.linkedin.com/in/giuseppevincenzi/).
-Questo codice ha l'obiettivo di fornire una base su cui implementare il proprio Registro Digitale Contribuito, secondo i principi descritti nel libro, ma adattato al proprio singolo caso d'uso.
+Questo codice ha l'obiettivo di fornire una base su cui implementare il proprio Registro Digitale, secondo i principi descritti nel libro, ma adattato al proprio singolo caso d'uso.
 
 ### RDD : Registro Digitale Distribuito
-Nel libro si parla di ***Registro Digitale Distribuito***: si tratta di una specializzazione del Registro Digitale Contribuito che il codice di questo repository realizza.
+Nel libro si parla di ***Registro Digitale Distribuito***: si tratta di una specializzazione del Registro Digitale che il codice di questo repository realizza.
 Un RD si basa sulla contribuzione di più nodi e componenti che, grazie al loro lavoro collettivo, contribuiscono a fare funzionare il sistema.
 Tecnicamente l'architettura è organizzata in modo tale da rendere il più indipendenti possibili i componenti, disaccoppiandoli sempre là dove possibile.
 Le comunicazioni tra tutti i componenti sono asincrone in tutti gli scambi.
@@ -95,15 +95,15 @@ Il sistema necessita di due componenti infrastrutturali per rendere operativa un
 > Per il POC ho usato un [MongoDB](https://www.mongodb.com/)
 
 ## Schema architetturale
-Il Registro Digitale Contribuito si basa sui principi del pattern di un'[Architettura Atomica di Giuseppe Vincenzi](https://www.linkedin.com/feed/update/urn:li:activity:6791100763025219584/).
+Il Registro Digitale si basa sui principi del pattern di un'[Architettura Atomica di Giuseppe Vincenzi](https://www.linkedin.com/feed/update/urn:li:activity:6791100763025219584/).
 In particolare lo schema molecolare di un RD sarà il seguente :
 
 ![Schema molecolare di un RD](src/main/resources/img/schema.png?raw=true)
 
 ### Sistema di accesso qualificato
-Questo sistema è il punto di accesso alla macromolecola di un Registro Digitale Contribuito.
+Questo sistema è il punto di accesso alla macromolecola di un Registro Digitale.
 Il Sistema di accesso qualificato si compone di due moduli:
-- **Service registry**, per registrare tutti i microservizi che contribuiscono al funzionamento del Registro Digitale Contribuito;
+- **Service registry**, per registrare tutti i microservizi che contribuiscono al funzionamento del Registro Digitale;
 - Un **Gateway service** che realizza, aprendo un accesso all'API esposta dal modulo ***alpha*** (nello schema è rappresentata dalla freccia entrante dal Sistema di accesso qualificato al dispositivo di distribuzione), lo ***Spike*** del pattern dell'Architettura Atomica, ovvero il servizio grazie al quale dall'esterno si potranno realizzare chiamate su protocollo HTTP verso la macromolecola.
 
 ### Dispositivo di distribuzione
@@ -129,7 +129,7 @@ La molecola si compone di due atomi :
 [Qui l'implementazione della molecola di programmazione](https://github.com/gvincenzi/RD/tree/master/rd-scheduler).
 
 ### Nodo del registro
-Questa molecola è il cuore del Registro Digitale Contribuito : è la molecola che contiene il registro nella sua interezza e potrà essere istanziata un numero di volte pari al numero di attori coinvolti nella vita del registro.
+Questa molecola è il cuore del Registro Digitale : è la molecola che contiene il registro nella sua interezza e potrà essere istanziata un numero di volte pari al numero di attori coinvolti nella vita del registro.
 Nel funzionamento di base proposto per un RD non si procederà mai al fork del registro: ogni volta che uno dei nodi prenderà in carico l'inserimento di un nuovo documento, il sistema di distribuzione aspetterà che il lavoro sia completata prima di sollecitare nuovamente il registro.
 
 In questa implementazione Open Source di base di un RD utilizziamo un database MongoDB e gli strumenti messi a disposizione dallo starter Spring Boot dedicato: il documento di un RD, denominato **RDItem**, è un oggetto Java che, grazie ad alcune caratteristiche del mapping di Jackson, contiene una sua parte chiamata ***details*** che non ha una struttura definita.
