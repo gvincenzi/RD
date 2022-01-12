@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: rdc-service-registry
+    name: rd-service-registry
 
 eureka:
   instance:

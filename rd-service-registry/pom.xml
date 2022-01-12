@@ -10,8 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <packaging>jar</packaging>
-    <artifactId>rdc-service-registry</artifactId>
-    <description>RDC - Registro Digitale Contribuito - Service Registry</description>
+    <artifactId>rd-service-registry</artifactId>
+    <description>RD - Registro Digitale - Service Registry</description>
 
     <dependencies>
         <dependency>

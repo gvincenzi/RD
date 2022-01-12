@@ -26,7 +26,7 @@
     </properties>
 
     <modules>
-        <module>rdc-service-registry</module>
+        <module>rd-service-registry</module>
         <module>rd-spike</module>
         <module>rdc-distribution</module>
         <module>rdc-scheduler</module>
