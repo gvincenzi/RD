@@ -9,6 +9,9 @@ spring:
         requestChannel:
           destination: requestChannel
           group: nodeGroup
+        requestIntegrityChannel:
+          destination: requestIntegrityChannel
+          group: nodeGroup
         responseChannel:
           producer:
             routingKeyExpression: "'rdResponseChannel'"
