@@ -4,9 +4,9 @@ import lombok.extern.java.Log;
 import org.rd.node.spike.client.SpikeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PostConstruct;
+import org.springframework.context.event.EventListener;
 
 @Log
 @Configuration
@@ -19,7 +19,7 @@ public class StartupConfig {
     @Value("${rd.startup}")
     private Boolean requiredStartup;
 
-    @PostConstruct
+    @EventListener(ApplicationReadyEvent.class)
     void getStartup() {
         if(requiredStartup){
             log.info("Startup node required");
